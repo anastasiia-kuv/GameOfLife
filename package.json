@@ -1,0 +1,38 @@
+{
+  "name": "GameOfLife",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "dependencies": {
+    "hard-source-webpack-plugin": "^0.9.0"
+  },
+  "devDependencies": {
+    "css-loader": "^0.28.11",
+    "file-loader": "^1.1.11",
+    "jquery": "^3.3.1",
+    "style-loader": "^0.21.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "uglifyjs-webpack-plugin": "^1.2.7",
+    "webpack": "^4.12.1",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.1.4",
+    "webpack-merge": "^4.1.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --env development --mode=development --open",
+    "build": "webpack --env production --mode=production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kuvshinova-am/GameOfLife.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kuvshinova-am/GameOfLife/issues"
+  },
+  "homepage": "https://github.com/kuvshinova-am/GameOfLife#readme"
+}
