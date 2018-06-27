@@ -8,7 +8,10 @@
   font-style: normal
 
 white-color = #FFFFFF
-text-color = #4F4F4F
+title-text-color = #4F4F4F
+green-color = #4EB7A8
+green-shadow-color = #28A290
+green-text-color = #45AC9D
 
 @media only screen and (max-width: 319px)
     html
@@ -45,3 +48,57 @@ text-color = #4F4F4F
 body
     font: 1.2rem SourceSansPro
     background-color: white-color
+    color: title-text-color
+    
+.nameOfGame
+    text-align: center
+
+.buttons-container
+    display: grid
+    grid-template-columns: 25% 4rem 1rem 4rem 1rem 8rem 1rem 8rem 1rem 8rem 1rem 8rem 25%
+    grid-template-rows: 3rem 2.5rem
+    grid-template-areas: ". labelWidth . labelHeight .  labelSpeed . . . . . . ." ". widthField . heightField . rangeSpeed . newGameButton . startButton . pauseButton ."
+    text-align: center
+
+.labelWidth
+    grid-area: labelWidth
+
+.widthField
+    grid-area: widthField
+
+.labelHeight
+    grid-area: labelHeight
+
+.heightField
+    grid-area: heightField
+
+.labelSpeed
+    grid-area: labelSpeed
+
+.rangeSpeed
+    grid-area: rangeSpeed
+
+.newGameButton
+    grid-area: newGameButton
+
+.startButton
+    grid-area: startButton
+
+.pauseButton
+    grid-area: pauseButton
+
+.button
+  height: 100%
+  border-radius: 0.3rem
+  font-size: 1rem  
+  border: solid 0.1rem green-color
+  box-shadow: 0 -0.3rem green-shadow-color inset
+  background-color: white-color
+  color: green-text-color
+  text-transform: uppercase
+  cursor: pointer
+  outline: none
+  &:hover
+    background-color: green-color
+    color: white-color
+    border: none
