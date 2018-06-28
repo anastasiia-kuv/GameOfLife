@@ -3,10 +3,11 @@ const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const merge = require('webpack-merge');
-const fonts = require('./src/webpack/fonts');
-const stylus = require('./src/webpack/stylus');
-const css = require('./src/webpack/css');
-const devserver = require('./src/webpack/devserver');
+const fonts = require('./webpack/fonts');
+const stylus = require('./webpack/stylus');
+const css = require('./webpack/css');
+const babel = require('./webpack/babel');
+const devServer = require('./webpack/devServer');
 
 const PATHS = {
   root: path.join(__dirname, './'),
@@ -34,6 +35,7 @@ plugins: [
   new webpack.IgnorePlugin(/\.\/locale$/)  
   ],
 },
+babel(),
 fonts(),
 stylus(),
 css()
@@ -48,7 +50,7 @@ module.exports = function(env) {
   if (env === 'development') {
     return merge([
         common,
-        devserver()
+        devServer()
     ])
   }
 };
