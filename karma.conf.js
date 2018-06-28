@@ -1,38 +1,38 @@
 module.exports = function(config) {
-  config.set({
+	config.set({
 
-    basePath: '',
+		basePath: "",
 
-    frameworks: ['mocha'],
+		frameworks: ["mocha"],
 
-    files: [
-      "src/**/*.js",
-      "test/**/*.js"
-    ],
+		files: [
+			"src/**/*.js",
+			"test/**/*.js"
+		],
 
-    preprocessors: {
-      "src/**/*.js": ['webpack', 'sourcemap'],
-      "test/**/*.js": ['webpack', 'sourcemap']
-    },
+		preprocessors: {
+			"src/**/*.js": ["webpack", "sourcemap"],
+			"test/**/*.js": ["webpack", "sourcemap"]
+		},
 
-    reporters: ['mocha'],
+		reporters: ["mocha"],
 
-    plugins: [
-      require("karma-webpack"),
-      require("karma-mocha"),
-      require("karma-mocha-reporter"),
-      require("karma-chrome-launcher"),
-      require("karma-sourcemap-loader")
-    ],
+		plugins: [
+			require("karma-webpack"),
+			require("karma-mocha"),
+			require("karma-mocha-reporter"),
+			require("karma-chrome-launcher"),
+			require("karma-sourcemap-loader")
+		],
 
-    autoWatch: true,
+		autoWatch: true,
 
-    browsers: ['Chrome'],
+		browsers: ["Chrome"],
 
-    singleRun: false,
+		singleRun: false,
 
-    webpackServer: {
-      noInfo: true
-    }
-  })
-}
+		webpackServer: {
+			noInfo: true
+		}
+	});
+};

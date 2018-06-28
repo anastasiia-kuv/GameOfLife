@@ -1,2 +1,3 @@
-import '../style.styl';
-import '../fonts/SourceSansPro.woff2';
+"use strict";
+
+require("../style.styl");
