@@ -1,79 +1,108 @@
 export default function () {
+	
 	const initView = function () {
-		var nameOfGame = document.createElement("h1");
+		let nameOfGame = document.createElement("h1");
 		nameOfGame.className = "name-of-game";
 		nameOfGame.innerHTML = "Game of Life";
 		document.body.insertBefore(nameOfGame, document.body.firstChild);
     
-		var buttonsContainer = document.createElement("div");
+		let buttonsContainer = document.createElement("div");
 		buttonsContainer.className = "buttons-container";
 		document.body.appendChild(buttonsContainer);
     
-		var labelWidth = document.createElement("label");
+		let labelWidth = document.createElement("label");
 		labelWidth.className = "label-width";
 		labelWidth.innerHTML = "Width";
 		buttonsContainer.appendChild(labelWidth);
     
-		var widthField = document.createElement("input");
+		let widthField = document.createElement("input");
 		widthField.className = "width-field";
 		widthField.setAttribute("value", "30");
-		widthField.setAttribute("id", "width");
+		widthField.onblur = function() {
+			let event = jQuery.Event("updateWidthField");
+			event.width = widthField.value;
+			event.height = heightField.value;
+			("body").trigger(event);
+		};
 		buttonsContainer.appendChild(widthField);
-    
-		var labelHeight = document.createElement("label");
+
+		let labelHeight = document.createElement("label");
 		labelHeight.className = "label-height";
 		labelHeight.innerHTML = "Height";
 		buttonsContainer.appendChild(labelHeight);
     
-		var heightField = document.createElement("input");
+		let heightField = document.createElement("input");
 		heightField.className = "height-field";
 		heightField.setAttribute("value", "30");
-		heightField.setAttribute("id", "height");
+		heightField.onblur = function() {
+			let event = jQuery.Event("updateHeightField");
+			event.width = widthField.value;
+			event.height = heightField.value;
+			("body").trigger(event);
+		};
 		buttonsContainer.appendChild(heightField);
-    
-		var labelSpeed = document.createElement("label");
+   
+		let labelSpeed = document.createElement("label");
 		labelSpeed.className = "label-speed";
 		labelSpeed.innerHTML = "Speed";
 		buttonsContainer.appendChild(labelSpeed);
     
-		var rangeSpeed = document.createElement("input");
+		let rangeSpeed = document.createElement("input");
 		rangeSpeed.className = "range-speed";
 		rangeSpeed.setAttribute("type", "range");
 		rangeSpeed.setAttribute("min", "1");
 		rangeSpeed.setAttribute("max", "10");
 		rangeSpeed.setAttribute("value", "5");
-		rangeSpeed.setAttribute("id", "speed");
+		rangeSpeed.onchange = function() {
+			let event = jQuery.Event("changeSpeed");
+			event.speed = rangeSpeed.value;
+			("body").trigger(event);
+		};
 		buttonsContainer.appendChild(rangeSpeed);
-    
-		var newGameButton = document.createElement("input");
+   
+		let newGameButton = document.createElement("input");
 		newGameButton.className = "button new-game-button";
 		newGameButton.setAttribute("type", "button");
 		newGameButton.setAttribute("value", "New game");
-		newGameButton.setAttribute("id", "new-game-button");
+		newGameButton.onclick = function(){
+			let event = jQuery.Event("newGameButtonPressed");
+			("body").trigger(event);
+		};
 		buttonsContainer.appendChild(newGameButton);
-    
-		var startButton = document.createElement("input");
+
+		let startButton = document.createElement("input");
 		startButton.className = "button start-button";
 		startButton.setAttribute("type", "button");
 		startButton.setAttribute("value", "Start");
-		startButton.setAttribute("id", "start-button");
+		startButton.onclick =  function(){
+			let event = jQuery.Event("startButtonPressed");
+			("body").trigger(event);
+		};
 		buttonsContainer.appendChild(startButton);
     
-		var pauseButton = document.createElement("input");
+		let pauseButton = document.createElement("input");
 		pauseButton.className = "button pause-button";
 		pauseButton.setAttribute("type", "button");
 		pauseButton.setAttribute("value", "Pause");
-		pauseButton.setAttribute("id", "pause-button");
+		pauseButton.onclick =  function(){
+			let event = jQuery.Event("pauseButtonPressed");
+			("body").trigger(event);
+		};
 		buttonsContainer.appendChild(pauseButton);
-    
-		var canvas = document.createElement("canvas");
+		
+		let canvas = document.createElement("canvas");
 		canvas.className = "canvas";
-		canvas.setAttribute("id", "canvas");
-		canvas.setAttribute("width", "300");
-		canvas.setAttribute("height", "300");
-		canvas.style.marginTop = "5%";
-		canvas.style.marginLeft = "40%";
-        document.body.appendChild(canvas);      
+		canvas.setAttribute("width", widthField.value * 10);
+		canvas.setAttribute("height", heightField.value * 10);
+		canvas.style.width = widthField.value * 10 + "px";
+		canvas.style.height = heightField.value * 10 + "px";
+		canvas.onclick = function(e){
+			let event = jQuery.Event("cellChangeStatus");
+			event.x = Math.floor(e.offsetX/10) + 1; 
+			event.y = Math.floor(e.offsetY/10) + 1;
+			("body").trigger(event);
+		};
+		document.body.appendChild(canvas);  
 	};
 	initView();
 }

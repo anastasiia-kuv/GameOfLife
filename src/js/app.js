@@ -6,6 +6,8 @@ import Model from "./model.js";
 import View from "./view.js";
 import Controller from "./controller.js";
 
-var model = Model();
-var view = View();
-var controller = Controller(view, model);
+$(document).ready(function () {
+    var model = Model();
+    var view = View();
+    var controller = Controller(view, model);
+});
