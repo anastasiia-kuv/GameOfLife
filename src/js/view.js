@@ -1,4 +1,6 @@
 export default function () {
+
+	var canvas;
 	
 	const initView = function () {
 		let nameOfGame = document.createElement("h1");
@@ -19,10 +21,10 @@ export default function () {
 		widthField.className = "width-field";
 		widthField.setAttribute("value", "30");
 		widthField.onblur = function() {
-			let event = jQuery.Event("updateWidthField");
+			let event = jQuery.Event("changeSizeCanvas");
 			event.width = widthField.value;
 			event.height = heightField.value;
-			("body").trigger(event);
+			$("body").trigger(event);
 		};
 		buttonsContainer.appendChild(widthField);
 
@@ -35,10 +37,10 @@ export default function () {
 		heightField.className = "height-field";
 		heightField.setAttribute("value", "30");
 		heightField.onblur = function() {
-			let event = jQuery.Event("updateHeightField");
+			let event = jQuery.Event("changeSizeCanvas");
 			event.width = widthField.value;
 			event.height = heightField.value;
-			("body").trigger(event);
+			$("body").trigger(event);
 		};
 		buttonsContainer.appendChild(heightField);
    
@@ -56,7 +58,7 @@ export default function () {
 		rangeSpeed.onchange = function() {
 			let event = jQuery.Event("changeSpeed");
 			event.speed = rangeSpeed.value;
-			("body").trigger(event);
+			$("body").trigger(event);
 		};
 		buttonsContainer.appendChild(rangeSpeed);
    
@@ -66,7 +68,7 @@ export default function () {
 		newGameButton.setAttribute("value", "New game");
 		newGameButton.onclick = function(){
 			let event = jQuery.Event("newGameButtonPressed");
-			("body").trigger(event);
+			$("body").trigger(event);
 		};
 		buttonsContainer.appendChild(newGameButton);
 
@@ -76,7 +78,7 @@ export default function () {
 		startButton.setAttribute("value", "Start");
 		startButton.onclick =  function(){
 			let event = jQuery.Event("startButtonPressed");
-			("body").trigger(event);
+			$("body").trigger(event);
 		};
 		buttonsContainer.appendChild(startButton);
     
@@ -86,11 +88,11 @@ export default function () {
 		pauseButton.setAttribute("value", "Pause");
 		pauseButton.onclick =  function(){
 			let event = jQuery.Event("pauseButtonPressed");
-			("body").trigger(event);
+			$("body").trigger(event);
 		};
 		buttonsContainer.appendChild(pauseButton);
 		
-		let canvas = document.createElement("canvas");
+		canvas = document.createElement("canvas");
 		canvas.className = "canvas";
 		canvas.setAttribute("width", widthField.value * 10);
 		canvas.setAttribute("height", heightField.value * 10);
@@ -100,9 +102,23 @@ export default function () {
 			let event = jQuery.Event("cellChangeStatus");
 			event.x = Math.floor(e.offsetX/10) + 1; 
 			event.y = Math.floor(e.offsetY/10) + 1;
-			("body").trigger(event);
+			$("body").trigger(event);
 		};
 		document.body.appendChild(canvas);  
 	};
 	initView();
+
+	const updateSizeCanvas = function(width, height) {
+		canvas.width = width * 10;
+		canvas.height = height * 10;
+		canvas.style.width = width * 10 + "px";
+		canvas.style.height = height * 10 + "px";
+		document.body.appendChild(canvas);
+	};
+
+	return  {
+		updateSizeCanvas: function (width, height) {
+			updateSizeCanvas(width, height);
+		}
+	};
 }
