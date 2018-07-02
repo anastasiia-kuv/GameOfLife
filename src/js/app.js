@@ -7,7 +7,7 @@ import View from "./view.js";
 import Controller from "./controller.js";
 
 $(document).ready(function () {
-	var model = Model();
-	var view = View();
-	var controller = Controller(view, model);
+	let model = Model();
+	let view = View();
+	let controller = Controller(view, model);
 });

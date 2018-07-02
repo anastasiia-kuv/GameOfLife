@@ -1,6 +1,6 @@
 export default function () {
 
-	var canvas;
+	let canvas;
 	
 	const initView = function () {
 		let nameOfGame = document.createElement("h1");
@@ -100,8 +100,8 @@ export default function () {
 		canvas.style.height = heightField.value * 10 + "px";
 		canvas.onclick = function(e){
 			let event = jQuery.Event("cellChangeStatus");
-			event.x = Math.floor(e.offsetX/10) + 1; 
-			event.y = Math.floor(e.offsetY/10) + 1;
+			event.x = Math.floor(e.offsetX/10); 
+			event.y = Math.floor(e.offsetY/10);
 			$("body").trigger(event);
 		};
 		document.body.appendChild(canvas);  
@@ -116,9 +116,25 @@ export default function () {
 		document.body.appendChild(canvas);
 	};
 
+	const updateField = function (cells, width, height) {
+		let c = canvas.getContext("2d");
+		c.clearRect(0, 0, width * 10, height * 10);
+		for (let i=0; i< width; i++){
+			for (let j=0; j< height; j++){
+				if (cells[i][j]===1){
+					c.fillRect(j*10, i*10, 10, 10);
+				} 
+			}
+		}
+	};
+
 	return  {
 		updateSizeCanvas: function (width, height) {
 			updateSizeCanvas(width, height);
+		},
+
+		updateField: function (cells, width, height) {
+			updateField(cells, width, height);
 		}
 	};
 }

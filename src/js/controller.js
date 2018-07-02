@@ -9,5 +9,18 @@ export default function (view, model) {
 
 	$("body").bind("updateSizeCanvas", function() {
 		_view.updateSizeCanvas(_model.getWidth(), _model.getHeight());
+		_model.newGame();
+	});
+
+	$("body").bind("newGameButtonPressed", function() {
+		_model.newGame();
+	});
+
+	$("body").bind("cellChangeStatus", function(e) {
+		_model.updateCellStatus(e.x,e.y);
+	});
+
+	$("body").bind("updateField", function() {
+		_view.updateField(_model.getCells(), _model.getWidth(), _model.getHeight());
 	});
 }
