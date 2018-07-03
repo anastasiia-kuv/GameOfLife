@@ -27,4 +27,8 @@ export default function (view, model) {
 	$("body").bind("startButtonPressed", function() {
 		_model.start();
 	});
+
+	$("body").bind("pauseButtonPressed", function() {
+		_model.pause();
+	});
 }

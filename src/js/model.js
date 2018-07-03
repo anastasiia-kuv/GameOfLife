@@ -2,6 +2,8 @@ export default function () {
 	let width = 30;
 	let height = 30; 
 	let cells = [];
+	let timer;
+	let isRun = false;
 
 	let initFieldDate = function() {
 		for (let i=0; i< width; i++){
@@ -94,6 +96,8 @@ export default function () {
 		},
 
 		newGame: function () {
+			clearInterval(timer);
+			isRun = false;
 			initFieldDate();
 		},
 
@@ -108,9 +112,17 @@ export default function () {
 		},
 
 		start: function() {
-			setInterval(function () {
-				updateCells();
-			}, 1000);
+			if (isRun === false) {
+				timer = setInterval(function () {
+					updateCells();
+				}, 1000);
+				isRun=true;
+			}
+		},
+
+		pause:function () {
+			clearInterval(timer);
+			isRun = false;
 		}
 	};
 }
