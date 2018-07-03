@@ -14,6 +14,64 @@ export default function () {
 	};
 	initFieldDate();
 
+	let countNeighbors = function(x,y) {
+		let neighbors = 0;
+		for (let i = x-1; i <= x+1; i++) {
+			for (let j = y-1; j <= y+1; j++) {
+				if (x!=i || y!=j) {
+					let tempI=i;
+					let tempJ=j;
+
+					if (i === -1) {
+						tempI = width-1;
+					}
+
+					if (j === -1) {
+						tempJ = height-1;
+					}
+
+					if (i === width) {
+						tempI = 0;
+					}
+
+					if (j === height) {
+						tempJ = 0;
+					}
+
+					if (cells[tempI][tempJ] == 1) {
+						neighbors++;
+					}
+				}
+			}
+		}
+
+		return ((cells[x][y] === 0 && neighbors ===3) || (cells[x][y] === 1 && (neighbors === 2 || neighbors === 3))) ? 1 : 0;
+
+	};
+
+	let step = function () {
+		let tempCells = [];
+		for (let i = 0; i < width; i++){
+			tempCells[i] = [];
+			for (let j = 0; j < height; j++){
+				tempCells[i][j] = 0;
+			}
+		}
+
+		for (let i = 0; i < width; i++) {
+			for (let j = 0; j < height; j++) {
+				tempCells[i][j] = countNeighbors(i, j);
+			}
+		}
+		return tempCells;
+	};
+
+	let updateCells = function() {
+		cells = step();
+
+		$("body").trigger("updateField");
+	};
+	
 	return  {
 		widthField:function (w) {
 			width = w;
@@ -47,6 +105,12 @@ export default function () {
 		
 		getCells: function() {
 			return cells;
+		},
+
+		start: function() {
+			setInterval(function () {
+				updateCells();
+			}, 1000);
 		}
 	};
 }

@@ -23,4 +23,8 @@ export default function (view, model) {
 	$("body").bind("updateField", function() {
 		_view.updateField(_model.getCells(), _model.getWidth(), _model.getHeight());
 	});
+
+	$("body").bind("startButtonPressed", function() {
+		_model.start();
+	});
 }
