@@ -4,17 +4,19 @@ export default function () {
 	let cells = [];
 	let timer;
 	let isRun = false;
+	let speedGame = 500;
 
-	let initFieldDate = function() {
+	let initFieldDate = function(width, height) {
 		for (let i=0; i< width; i++){
 			cells[i]=[];
 			for (let j=0; j< height; j++){
 				cells[i][j]=0;
 			}
 		}
+
 		$("body").trigger("updateField");
 	};
-	initFieldDate();
+	initFieldDate(width, height);
 
 	let countNeighbors = function(x,y) {
 		let neighbors = 0;
@@ -95,10 +97,13 @@ export default function () {
 			return height;
 		},
 
+		getSpeedGame:function () {
+			return speedGame;
+		},
+
 		newGame: function () {
-			clearInterval(timer);
-			isRun = false;
-			initFieldDate();
+			isRun === false;
+			initFieldDate(width, height);
 		},
 
 		updateCellStatus:function (x,y) {
@@ -115,7 +120,7 @@ export default function () {
 			if (isRun === false) {
 				timer = setInterval(function () {
 					updateCells();
-				}, 1000);
+				}, speedGame);
 				isRun=true;
 			}
 		},
@@ -123,6 +128,14 @@ export default function () {
 		pause:function () {
 			clearInterval(timer);
 			isRun = false;
+		},
+
+		updateSpeedGame: function (speed) {
+			speedGame = speed * 100;
+			if (isRun === true) {
+				this.pause();
+				this.start();
+			}
 		}
 	};
 }
