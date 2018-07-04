@@ -1,22 +1,22 @@
 export default function () {
-	let width = 30;
+	let width = 40;
 	let height = 30; 
 	let cells = [];
 	let timer;
 	let isRun = false;
 	let speedGame = 500;
 
-	let initFieldDate = function(width, height) {
+	let initFieldData = function(width, height) {
 		for (let i=0; i< width; i++){
 			cells[i]=[];
 			for (let j=0; j< height; j++){
 				cells[i][j]=0;
 			}
 		}
-
 		$("body").trigger("updateField");
 	};
-	initFieldDate(width, height);
+
+	initFieldData(width, height);
 
 	let countNeighbors = function(x,y) {
 		let neighbors = 0;
@@ -101,9 +101,8 @@ export default function () {
 			return speedGame;
 		},
 
-		newGame: function () {
-			isRun === false;
-			initFieldDate(width, height);
+		initFieldData: function (width, height) {
+			initFieldData(width, height);
 		},
 
 		updateCellStatus:function (x,y) {

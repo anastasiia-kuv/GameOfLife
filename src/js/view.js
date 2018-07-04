@@ -19,7 +19,8 @@ export default function () {
     
 		let widthField = document.createElement("input");
 		widthField.className = "width-field";
-		widthField.setAttribute("value", "30");
+		widthField.setAttribute("type", "number");
+		widthField.setAttribute("value", "40");
 		widthField.onblur = function() {
 			let event = jQuery.Event("changeSizeCanvas");
 			event.width = widthField.value;
@@ -35,6 +36,7 @@ export default function () {
     
 		let heightField = document.createElement("input");
 		heightField.className = "height-field";
+		heightField.setAttribute("type", "number");
 		heightField.setAttribute("value", "30");
 		heightField.onblur = function() {
 			let event = jQuery.Event("changeSizeCanvas");

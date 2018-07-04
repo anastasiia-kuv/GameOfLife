@@ -3,19 +3,19 @@ export default function (view, model) {
 	const _model = model;
 
 	$("body").bind("changeSizeCanvas", function(e) {
+		_model.pause();
 		_model.widthField(e.width);
 		_model.heightField(e.height);
 	});
 
 	$("body").bind("updateSizeCanvas", function() {
-		_model.pause();
 		_view.updateSizeCanvas(_model.getWidth(), _model.getHeight());
-		_model.newGame();
+		_model.initFieldData();
 	});
 
 	$("body").bind("newGameButtonPressed", function() {
 		_model.pause();
-		_model.newGame();
+		_model.initFieldData();
 	});
 
 	$("body").bind("cellChangeStatus", function(e) {
