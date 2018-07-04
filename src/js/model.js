@@ -18,43 +18,60 @@ export default function () {
 
 	initFieldData(width, height);
 
-	let countNeighbors = function(x,y) {
+	let countNeighbors = function(i,j) {
 		let neighbors = 0;
-		for (let i = x-1; i <= x+1; i++) {
-			for (let j = y-1; j <= y+1; j++) {
-				if (x!=i || y!=j) {
-					let tempI=i;
-					let tempJ=j;
-
-					if (i === -1) {
-						tempI = width-1;
-					}
-
-					if (j === -1) {
-						tempJ = height-1;
-					}
-
-					if (i === width) {
-						tempI = 0;
-					}
-
-					if (j === height) {
-						tempJ = 0;
-					}
-
-					if (cells[tempI][tempJ] == 1) {
-						neighbors++;
-					}
-				}
-			}
+		if (cells[checkLeft(i)-1][j]==1) {
+			neighbors++;
+		}
+		if (cells[i][checkBottom(j)+1]==1)  {
+			neighbors++;
+		}
+		if (cells[checkRight(i)+1][j]==1)  {
+			neighbors++;
+		}
+		if (cells[i][checkTop(j)-1]==1)  {
+			neighbors++;
+		}
+		if (cells[checkLeft(i)-1][checkBottom(j)+1]==1)  {
+			neighbors++;
+		}
+		if (cells[checkRight(i)+1][checkBottom(j)+1]==1)  {
+			neighbors++;
+		}
+		if (cells[checkRight(i)+1][checkTop(j)-1]==1)  {
+			neighbors++;
+		}
+		if (cells[checkLeft(i)-1][checkTop(j)-1]==1)  {
+			neighbors++;
 		}
 
-		return ((cells[x][y] === 0 && neighbors ===3) || (cells[x][y] === 1 && (neighbors === 2 || neighbors === 3))) ? 1 : 0;
+		return ((cells[i][j] === 0 && neighbors ===3) || (cells[i][j] === 1 && (neighbors === 2 || neighbors === 3))) ? 1 : 0;
+	};
 
+
+	let checkTop = function (j){
+		if(j==0) return height;
+		else return j;
+	};
+
+	let checkBottom = function (j){
+		if(j==height-1) return -1;
+		else return j;
+	};
+
+	let checkLeft = function (i){
+		if(i==0) return width;
+		else return i;
+	};
+
+	let checkRight = function (i){
+		if(i==width -1) return -1;
+		else return i;
 	};
 
 	let step = function () {
 		let tempCells = [];
+			
 		for (let i = 0; i < width; i++){
 			tempCells[i] = [];
 			for (let j = 0; j < height; j++){
@@ -71,6 +88,7 @@ export default function () {
 	};
 
 	let updateCells = function() {
+
 		cells = step();
 
 		$("body").trigger("updateField");
@@ -102,6 +120,11 @@ export default function () {
 		},
 
 		initFieldData: function (width, height) {
+			initFieldData(width, height);
+		},
+
+		newGame: function () {
+			isRun === false;
 			initFieldData(width, height);
 		},
 

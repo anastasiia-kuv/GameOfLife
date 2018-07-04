@@ -9,13 +9,14 @@ export default function (view, model) {
 	});
 
 	$("body").bind("updateSizeCanvas", function() {
+		_model.pause();
 		_view.updateSizeCanvas(_model.getWidth(), _model.getHeight());
-		_model.initFieldData();
+		_model.newGame();
 	});
 
 	$("body").bind("newGameButtonPressed", function() {
 		_model.pause();
-		_model.initFieldData();
+		_model.newGame();
 	});
 
 	$("body").bind("cellChangeStatus", function(e) {
