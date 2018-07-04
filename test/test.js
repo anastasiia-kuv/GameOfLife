@@ -8,15 +8,18 @@ const model = new Model();
 const view = new View();
 const controller = new Controller(view, model);
 
+let width = 40;
+let height = 20; 
+
 describe("initFieldData", function() {
 
 	before(function () {
-		model.initFieldData(40, 20);
+		model.initFieldData(width, height);
 	});
 
-	describe("Проверка содержит ли массив cells ноли", function() {
+	describe("Проверка содержит ли массив cells нули", function() {
     
-		function chekCell(x, y) {
+		function checkCell(x, y) {
 			let expected = 0;
 
 			it("ячейка [" + x + "][" + y + "] массива cells содержит " + expected, function() {
@@ -24,10 +27,39 @@ describe("initFieldData", function() {
 			});
 		}
         
-		for (let i=0; i< 40; i++){
-			for (let j=0; j< 20; j++){
-				chekCell(i, j);
+		for (let i=0; i< width; i++){
+			for (let j=0; j< height; j++){
+				checkCell(i, j);
+			}
+		}
+	});  
+});
+
+describe("checkFieldData", function() {
+
+	before(function () {
+
+		for (let i=0; i< width; i++){
+			for (let j=0; j< height; j++){
+				model.updateCellStatus(i, j);
 			}
 		}
 	});
-});
+
+	describe("Проверка содержит ли массив cells единицы", function() {
+
+		function checkCell(x, y) {
+			let expected = 1;
+
+			it("ячейка [" + x + "][" + y + "] массива cells содержит " + expected, function() {
+				assert.equal(model.getCells()[x][y], expected);
+			});
+		}
+        
+		for (let i=0; i< width; i++){
+			for (let j=0; j< height; j++){
+				checkCell(i, j);
+			}
+		}
+	});
+});    

@@ -106,7 +106,7 @@ export default function () {
 		},
 
 		updateCellStatus:function (x,y) {
-			cells[y][x] === 0 ? cells[y][x] = 1 : cells[y][x] = 0;
+			cells[x][y] === 0 ? cells[x][y] = 1 : cells[x][y] = 0;
 
 			$("body").trigger("updateField");
 		},

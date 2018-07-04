@@ -124,7 +124,7 @@ export default function () {
 		for (let i=0; i< width; i++){
 			for (let j=0; j< height; j++){
 				if (cells[i][j]===1){
-					c.fillRect(j*10, i*10, 10, 10);
+					c.fillRect(i*10, j*10, 10, 10);
 				} 
 			}
 		}
