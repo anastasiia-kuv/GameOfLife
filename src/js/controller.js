@@ -4,8 +4,8 @@ export default function (view, model) {
 
 	$("body").bind("changeSizeCanvas", function(e) {
 		_model.pause();
-		_model.widthField(e.width);
-		_model.heightField(e.height);
+		_model.setWidth(e.width);
+		_model.setHeight(e.height);
 	});
 
 	$("body").bind("updateSizeCanvas", function() {

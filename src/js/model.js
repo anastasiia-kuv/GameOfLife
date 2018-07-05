@@ -95,7 +95,7 @@ export default function () {
 	};
 	
 	return  {
-		widthField:function (w) {
+		setWidth:function (w) {
 			width = w;
 
 			$("body").trigger("updateSizeCanvas");
@@ -105,7 +105,7 @@ export default function () {
 			return width;
 		},
 
-		heightField:function (h) {
+		setHeight:function (h) {
 			height = h;
 
 			$("body").trigger("updateSizeCanvas");
@@ -159,9 +159,16 @@ export default function () {
 				this.start();
 			}
 		},
-		oneStep:function() {
+
+		oneStep:function () {
 			cells = step();
 			return cells;
+		},
+
+		setCells: function (testCells, w, h){
+			cells = testCells;
+			width = w; 
+			height = h;
 		}
 	};
 }
