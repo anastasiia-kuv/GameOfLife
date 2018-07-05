@@ -158,6 +158,10 @@ export default function () {
 				this.pause();
 				this.start();
 			}
+		},
+		oneStep:function() {
+			cells = step();
+			return cells;
 		}
 	};
 }
