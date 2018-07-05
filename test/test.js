@@ -1,62 +1,144 @@
 import Model from "../src/js/model.js";
-import View from "../src/js/view.js";
-import Controller from "../src/js/controller.js";
 
 let assert = require("chai").assert;
 
 const model = new Model();
-const view = new View();
-const controller = new Controller(view, model);
+const width = 5;
+const height = 5; 
 
-let width = 5;
-let height = 5; 
+let testCells;
+let testCellsStep;
+
+describe("checkActiveShapes", function() {
+
+	describe("Проверка что фигура мигалка изменилась, как и ожидалось", function() {
+
+		function checkFlasher(x) {
+
+			it("Фигура мигалка изменилась как и ожидалось на " + x + " шагу", function() {
+				testCells = [
+					[0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0],
+					[0, 1, 1, 1, 0],
+					[0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0]
+				];
+				model.setCells(testCells, 5, 5);
+				testCellsStep = [
+					[0, 0, 0, 0, 0],
+					[0, 0, 1, 0, 0],
+					[0, 0, 1, 0, 0],
+					[0, 0, 1, 0, 0],
+					[0, 0, 0, 0, 0]
+				];
+				model.oneStep();
+				assert.deepEqual(model.getCells(), testCellsStep);
+				model.oneStep();
+				assert.deepEqual(model.getCells(), testCells);
+			});
+		}
+        
+		for (let x=1; x<= 5; x++){
+			checkFlasher(x);
+		}
+	});
+
+	describe("Проверка что фигура планер изменилась, как и ожидалось", function() {
+
+		it("Фигура планер изменилась как и ожидалось на 1 шагу", function() {
+			testCells = [
+				[0, 0, 1, 0, 0],
+				[0, 0, 0, 1, 0],
+				[0, 1, 1, 1, 0],
+				[0, 0, 0, 0, 0],
+				[0, 0, 0, 0, 0]
+			];
+			model.setCells(testCells, 5, 5);
+			model.oneStep();
+			testCellsStep = [
+				[0, 0, 0, 0, 0],
+				[0, 1, 0, 1, 0],
+				[0, 0, 1, 1, 0],
+				[0, 0, 1, 0, 0],
+				[0, 0, 0, 0, 0]
+			];
+			assert.deepEqual(model.getCells(), testCellsStep);
+		});
+
+		it("Фигура планер изменилась как и ожидалось на 2 шагу", function() {
+			model.oneStep();
+			testCells = [
+				[0, 0, 0, 0, 0],
+				[0, 0, 0, 1, 0],
+				[0, 1, 0, 1, 0],
+				[0, 0, 1, 1, 0],
+				[0, 0, 0, 0, 0]
+			];
+			assert.deepEqual(model.getCells(), testCells);
+		});
+
+		it("Фигура планер изменилась как и ожидалось на 3 шагу", function() {
+			model.oneStep();
+			testCells = [
+				[0, 0, 0, 0, 0],
+				[0, 0, 1, 0, 0],
+				[0, 0, 0, 1, 1],
+				[0, 0, 1, 1, 0],
+				[0, 0, 0, 0, 0]
+			];
+			assert.deepEqual(model.getCells(), testCells);
+		});
+
+	});
+   
+}); 
 
 describe("checkStaticShapes", function() {
 
-	let testCells;
+	describe("Проверка не изменилась ли фигура блок", function() {
 
-	describe("Проверка фигуры блок", function() {
-
-		testCells = [
-			[0, 0, 0, 0, 0],
-			[0, 1, 1, 0, 0],
-			[0, 1, 1, 0, 0],
-			[0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0]
-		];
-		model.setCells(testCells, 5, 5);
-		model.oneStep();
-		it("Проверка не изменилась ли фигура блок", function() {
+		it("Фигура блок не изменилась", function() {
+			testCells = [
+				[0, 0, 0, 0, 0],
+				[0, 1, 1, 0, 0],
+				[0, 1, 1, 0, 0],
+				[0, 0, 0, 0, 0],
+				[0, 0, 0, 0, 0]
+			];
+			model.setCells(testCells, 5, 5);
+			model.oneStep();
 			assert.deepEqual(model.getCells(), testCells);
 		});
 	});
 
-	describe("Проверка фигуры улей", function() {
-		testCells = [
-			[0, 0, 1, 0, 0],
-			[0, 1, 0, 1, 0],
-			[0, 1, 0, 1, 0],
-			[0, 0, 1, 0, 0],
-			[0, 0, 0, 0, 0]
-		];
-		model.setCells(testCells, 5, 5);
-		model.oneStep();
-		it("Проверка не изменилась ли фигура улей", function() {
+	describe("Проверка не изменилась ли фигура улей", function() {
+
+		it("Фигура улей не изменилась", function() {
+			testCells = [
+				[0, 0, 1, 0, 0],
+				[0, 1, 0, 1, 0],
+				[0, 1, 0, 1, 0],
+				[0, 0, 1, 0, 0],
+				[0, 0, 0, 0, 0]
+			];
+			model.setCells(testCells, 5, 5);
+			model.oneStep();
 			assert.deepEqual(model.getCells(), testCells);
 		});
 	});
 
-	describe("Проверка фигуры ящик", function() {
-		testCells = [
-			[0, 0, 1, 0, 0],
-			[0, 1, 0, 1, 0],
-			[0, 0, 1, 0, 0],
-			[0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0]
-		];
-		model.setCells(testCells, 5, 5);
-		model.oneStep();
-		it("Проверка не изменилась ли фигура ящик", function() {
+	describe("Проверка не изменилась ли фигура ящик", function() {
+
+		it("Фигура ящик не изменилась", function() {
+			testCells = [
+				[0, 0, 1, 0, 0],
+				[0, 1, 0, 1, 0],
+				[0, 0, 1, 0, 0],
+				[0, 0, 0, 0, 0],
+				[0, 0, 0, 0, 0]
+			];
+			model.setCells(testCells, 5, 5);
+			model.oneStep();
 			assert.deepEqual(model.getCells(), testCells);
 		});
 	});
@@ -71,7 +153,7 @@ describe("initFieldData", function() {
 	describe("Проверка содержит ли массив cells нули", function() {
     
 		function checkCell(x, y) {
-			let expected = 0;
+			const expected = 0;
 
 			it("ячейка [" + x + "][" + y + "] массива cells содержит " + expected, function() {
 				assert.equal(model.getCells()[x][y], expected);
@@ -101,7 +183,7 @@ describe("checkFieldData", function() {
 	describe("Проверка содержит ли массив cells единицы", function() {
 
 		function checkCell(x, y) {
-			let expected = 1;
+			const expected = 1;
 
 			it("ячейка [" + x + "][" + y + "] массива cells содержит " + expected, function() {
 				assert.equal(model.getCells()[x][y], expected);
