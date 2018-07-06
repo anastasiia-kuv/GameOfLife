@@ -1,5 +1,11 @@
 # GameOfLife
 <a href="https://kuvshinova-am.github.io/GameOfLife/">Посмотреть</a>
+<p> Для запуска тестов необходимо ввести в терминале команду:
+```
+ npm run test 
+```
+Терминал должен быть запущен из корня папки проекта.
+</p>
 ![Image alt](https://github.com/kuvshinova-am/GameOfLife/raw/master/image/UML.png)
 
 <p><strong>Controller</strong> обрабатывает события которые рассылают View и Model. И в зависимости от событий вызывает методы в соответствующих классах. Контроллер знает про View Model. Он служит посредником между View и Model.
