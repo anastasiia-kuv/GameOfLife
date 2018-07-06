@@ -3,6 +3,7 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 const merge = require("webpack-merge");
 const fonts = require("./webpack/fonts");
+const icon = require('./webpack/icon');
 const stylus = require("./webpack/stylus");
 const css = require("./webpack/css");
 const babel = require("./webpack/babel");
@@ -28,6 +29,7 @@ plugins: [
 },
 babel(),
 fonts(),
+icon(),
 stylus(),
 css()
 ]);

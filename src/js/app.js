@@ -1,6 +1,7 @@
 "use strict";
 
 require("../style.styl");
+import '../../favicons/favicons';
 
 import Model from "./model.js";
 import View from "./view.js";
