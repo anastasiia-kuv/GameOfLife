@@ -3,84 +3,92 @@ export default function () {
 	let canvas;
 	
 	const initView = function () {
+		let pageContainer = document.createElement("div");
+		pageContainer.className = "page-container";
+		document.body.insertBefore(pageContainer, document.body.firstChild);
+
 		let nameOfGame = document.createElement("h1");
-		nameOfGame.className = "name-of-game";
+		nameOfGame.className = "title";
 		nameOfGame.innerHTML = "game of life";
-		document.body.insertBefore(nameOfGame, document.body.firstChild);
+		pageContainer.appendChild(nameOfGame);
     
-		let controlElements = document.createElement("form");
+		let controlElements = document.createElement("div");
 		controlElements.className = "control-elements";
-		document.body.appendChild(controlElements);
+		pageContainer.appendChild(controlElements);
 	
-		let width = document.createElement("div");
-		width.className = "width";
-		controlElements.appendChild(width);
+		let widthForm = document.createElement("form");
+		widthForm.className = "form width-form";
+		controlElements.appendChild(widthForm);
 
-		let labelWidth = document.createElement("label");
-		labelWidth.className = "label label-width";
-		labelWidth.innerHTML = "width";
-		width.appendChild(labelWidth);
+		let widthLabel = document.createElement("label");
+		widthLabel.className = "label width-form__label";
+		widthLabel.innerHTML = "width";
+		widthForm.appendChild(widthLabel);
     
-		let widthField = document.createElement("input");
-		widthField.className = "width-field";
-		widthField.setAttribute("type", "number");
-		widthField.setAttribute("value", "40");
-		widthField.setAttribute("tabindex", "1");
-		widthField.onblur = function() {
+		let widthInput = document.createElement("input");
+		widthInput.className = "input width-form__input";
+		widthInput.setAttribute("type", "number");
+		widthInput.setAttribute("value", "40");
+		widthInput.setAttribute("tabindex", "1");
+		widthInput.onblur = function() {
 			let event = jQuery.Event("changeSizeCanvas");
-			event.width = widthField.value;
-			event.height = heightField.value;
+			event.width = widthInput.value;
+			event.height = heightInput.value;
 			$("body").trigger(event);
 		};
-		width.appendChild(widthField);
+		widthForm.appendChild(widthInput);
 
-		let height = document.createElement("div");
-		height.className = "height";
-		controlElements.appendChild(height);
+		let heightForm = document.createElement("form");
+		heightForm.className = "form height-form";
+		controlElements.appendChild(heightForm);
 
-		let labelHeight = document.createElement("label");
-		labelHeight.className = "label label-height";
-		labelHeight.innerHTML = "height";
-		height.appendChild(labelHeight);
+		let heightLabel = document.createElement("label");
+		heightLabel.className = "label height-form__label";
+		heightLabel.innerHTML = "height";
+		heightForm.appendChild(heightLabel);
     
-		let heightField = document.createElement("input");
-		heightField.className = "height-field";
-		heightField.setAttribute("type", "number");
-		heightField.setAttribute("value", "30");
-		heightField.setAttribute("tabindex", "2");
-		heightField.onblur = function() {
+		let heightInput = document.createElement("input");
+		heightInput.className = "input height-form__input";
+		heightInput.setAttribute("type", "number");
+		heightInput.setAttribute("value", "30");
+		heightInput.setAttribute("tabindex", "2");
+		heightInput.onblur = function() {
 			let event = jQuery.Event("changeSizeCanvas");
-			event.width = widthField.value;
-			event.height = heightField.value;
+			event.width = widthInput.value;
+			event.height = heightInput.value;
 			$("body").trigger(event);
 		};
-		height.appendChild(heightField);
+		heightForm.appendChild(heightInput);
 		
-		let speed = document.createElement("div");
-		speed.className = "speed";
-		controlElements.appendChild(speed);
+		let speedForm = document.createElement("form");
+		speedForm.className = "form speed-form";
+		controlElements.appendChild(speedForm);
 		
-		let labelSpeed = document.createElement("label");
-		labelSpeed.className = "label label-speed";
-		labelSpeed.innerHTML = "speed";
-		speed.appendChild(labelSpeed);
+		let speedLabel = document.createElement("label");
+		speedLabel.className = "label speed-form__label";
+		speedLabel.innerHTML = "speed";
+		speedForm.appendChild(speedLabel);
     
-		let rangeSpeed = document.createElement("input");
-		rangeSpeed.className = "range-speed";
-		rangeSpeed.setAttribute("type", "range");
-		rangeSpeed.setAttribute("min", "1");
-		rangeSpeed.setAttribute("max", "10");
-		rangeSpeed.setAttribute("value", "5");
-		rangeSpeed.setAttribute("tabindex", "3");
-		rangeSpeed.onchange = function() {
+		let speedInput = document.createElement("input");
+		speedInput.className = "input speed-form__input";
+		speedInput.setAttribute("type", "range");
+		speedInput.setAttribute("min", "1");
+		speedInput.setAttribute("max", "10");
+		speedInput.setAttribute("value", "5");
+		speedInput.setAttribute("tabindex", "3");
+		speedInput.onchange = function() {
 			let event = jQuery.Event("changeSpeed");
-			event.speed = rangeSpeed.value;
+			event.speed = speedInput.value;
 			$("body").trigger(event);
 		};
-		speed.appendChild(rangeSpeed);
-   
+		speedForm.appendChild(speedInput);
+		
+		let newGameForm = document.createElement("form");
+		newGameForm.className = "form new-game-form";
+		controlElements.appendChild(newGameForm);
+
 		let newGameButton = document.createElement("input");
-		newGameButton.className = "button new-game-button";
+		newGameButton.className = "button new-game-form__button";
 		newGameButton.setAttribute("type", "button");
 		newGameButton.setAttribute("value", "New game");
 		newGameButton.setAttribute("tabindex", "4");
@@ -88,51 +96,55 @@ export default function () {
 			let event = jQuery.Event("newGameButtonPressed");
 			$("body").trigger(event);
 		};
-		controlElements.appendChild(newGameButton);
+		newGameForm.appendChild(newGameButton);
 
-		let startButton = document.createElement("input");
-		startButton.className = "button start-button";
-		startButton.setAttribute("type", "button");
-		startButton.setAttribute("value", "Start");
-		startButton.setAttribute("tabindex", "5");
-		startButton.onclick =  function(){
-			let event = jQuery.Event("startButtonPressed");
+		let startGameForm = document.createElement("form");
+		startGameForm.className = "form start-game-form";
+		controlElements.appendChild(startGameForm);
+
+		let startGameButton = document.createElement("input");
+		startGameButton.className = "button start-game-form__button";
+		startGameButton.setAttribute("type", "button");
+		startGameButton.setAttribute("value", "Start");
+		startGameButton.setAttribute("tabindex", "5");
+		startGameButton.onclick =  function(){
+			let event = jQuery.Event("startGameButtonPressed");
 			$("body").trigger(event);
 		};
-		controlElements.appendChild(startButton);
-    
-		let pauseButton = document.createElement("input");
-		pauseButton.className = "button pause-button";
-		pauseButton.setAttribute("type", "button");
-		pauseButton.setAttribute("value", "Pause");
-		pauseButton.setAttribute("tabindex", "6");
-		pauseButton.onclick =  function(){
-			let event = jQuery.Event("pauseButtonPressed");
+		startGameForm.appendChild(startGameButton);
+	
+		let pauseGameForm = document.createElement("form");
+		pauseGameForm.className = "form pause-game-form";
+		controlElements.appendChild(pauseGameForm);
+
+		let pauseGameButton = document.createElement("input");
+		pauseGameButton.className = "button pause-game-form__button";
+		pauseGameButton.setAttribute("type", "button");
+		pauseGameButton.setAttribute("value", "Pause");
+		pauseGameButton.setAttribute("tabindex", "6");
+		pauseGameButton.onclick =  function(){
+			let event = jQuery.Event("pauseGameButtonPressed");
 			$("body").trigger(event);
 		};
-		controlElements.appendChild(pauseButton);
+		pauseGameForm.appendChild(pauseGameButton);
 		
 		canvas = document.createElement("canvas");
 		canvas.className = "canvas";
-		canvas.setAttribute("width", widthField.value * 10);
-		canvas.setAttribute("height", heightField.value * 10);
-		canvas.style.width = widthField.value * 10 + "px";
-		canvas.style.height = heightField.value * 10 + "px";
+		canvas.setAttribute("width", widthInput.value * 10);
+		canvas.setAttribute("height", heightInput.value * 10);
 		canvas.onclick = function(e){
 			let event = jQuery.Event("cellChangeStatus");
 			event.x = Math.floor(e.offsetX/10); 
 			event.y = Math.floor(e.offsetY/10);
 			$("body").trigger(event);
 		};
-		document.body.appendChild(canvas);  
+		pageContainer.appendChild(canvas);  
 	};
 	initView();
 
 	const updateSizeCanvas = function(width, height) {
 		canvas.width = width * 10;
 		canvas.height = height * 10;
-		canvas.style.width = width * 10 + "px";
-		canvas.style.height = height * 10 + "px";
 		document.body.appendChild(canvas);
 	};
 

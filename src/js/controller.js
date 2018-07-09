@@ -27,11 +27,11 @@ export default function (view, model) {
 		_view.updateField(_model.getCells(), _model.getWidth(), _model.getHeight());
 	});
 
-	$("body").bind("startButtonPressed", function() {
+	$("body").bind("startGameButtonPressed", function() {
 		_model.start();
 	});
 
-	$("body").bind("pauseButtonPressed", function() {
+	$("body").bind("pauseGameButtonPressed", function() {
 		_model.pause();
 	});
 

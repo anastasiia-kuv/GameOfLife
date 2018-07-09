@@ -14,127 +14,143 @@ green-shadow-color = #28A290
 green-text-color = #45AC9D
 
 @media only screen and (max-width: 319px)
-    html
-        font-size: 7px
+  html
+    font-size: 7px
         
 @media only screen and (min-width: 320px) and (max-width: 639px)
-    html
-        font-size: 8px
+  html
+    font-size: 8px
         
 @media only screen and (min-width: 640px) and (max-width: 799px)
-    html
-        font-size: 10px
+  html
+    font-size: 10px
         
 @media only screen and (min-width: 800px) and (max-width: 1023px)
-    html
-        font-size: 11px
+  html
+    font-size: 11px
 
 @media only screen and (min-width: 1024px) and (max-width: 1279px)
-    html
-        font-size: 12px
+  html
+    font-size: 12px
         
 @media only screen and (min-width: 1280px) and (max-width: 1679px)
-    html
-        font-size: 13px
+  html
+    font-size: 13px
 
 @media only screen and (min-width: 1680px) and (max-width: 1919px)
-    html
-        font-size: 14px
+  html
+    font-size: 14px
 
 @media only screen and (min-width: 1920px)
-    html
-        font-size: 15px
+  html
+    font-size: 15px
 
 body
-    font: 1.2rem source-sans-pro
-    background-color: white-color
-    color: title-text-color
-    
-.name-of-game
-    text-align: center
-    text-transform: uppercase
+  font: 1.2rem source-sans-pro
+  background-color: white-color
+  color: title-text-color
 
+.page-container
+  display: grid
+  grid-template-columns: 10% 80% 10%
+  grid-template-rows: auto auto auto
+  grid-template-areas: ". title ." ". control-elements ." ". canvas ."
+
+.title
+  grid-area: title
+  text-align: center
+  text-transform: uppercase
+
+.label
+  text-transform: capitalize
+
+.input 
+  font-size: 1rem
+
+.button
+  height: 100%
+  border-radius: 0.3rem
+  font-size: 1rem  
+  border: solid 0.1rem green-color
+  box-shadow: 0 -0.3rem green-shadow-color inset
+  background-color: white-color
+  color: green-text-color
+  text-transform: uppercase
+  cursor: pointer
+  outline: none
+  &:hover
+    background-color: green-color
+    color: white-color
+    border: none
+        
 .control-elements
+  grid-area: control-elements
+  display: grid
+  grid-template-columns: auto 4rem 1rem 4rem 1rem 8rem 1rem 8rem 1rem 8rem 1rem 8rem auto
+  grid-template-rows: 3rem
+  grid-template-areas: ". width-form . height-form .  speed-form . new-game-form . start-game-form . pause-game-form ."
+  text-align: center
+  align-items: end
+
+  .width-form
+    grid-area: width-form
+
+  .height-form
+    grid-area: height-form
+
+  .width-form
+  .height-form
     display: grid
-    grid-template-columns: 30% 4rem 1rem 4rem 1rem 8rem 1rem 8rem 1rem 8rem 1rem 8rem 25%
-    grid-template-rows: 3rem auto
-    grid-template-areas: ". width . height .  speed . new-game-button . start-button . pause-button ."
-    text-align: center
-    align-items: end
+    grid-template-columns: 4rem
+    grid-template-rows: 1rem 2rem
+    grid-row-gap: 1rem
+    grid-template-areas: "__label" "__input"
 
-    .width
-        grid-area: width
-        display: grid
-        grid-template-columns: 4rem
-        grid-template-rows: 1rem 2rem
-        grid-row-gap: 1rem
-        grid-template-areas: "label-width" "width-field"
+    &__label
+      grid-area: __label
 
-        .label-width
-            grid-area: label-width
+    &__input
+      grid-area: __input
 
-        .width-field
-            grid-area: width-field
+  .speed-form
+    grid-area: speed-form
+    display: grid
+    grid-template-columns: 8rem
+    grid-template-rows: 1rem 2rem
+    grid-row-gap: 1rem
+    grid-template-areas: "__label" "__input"
 
-    .height
-        grid-area: height
-        display: grid
-        grid-template-columns: 4rem
-        grid-template-rows: 1rem 2rem
-        grid-row-gap: 1rem
-        grid-template-areas: "label-height" "height-field"
+    &__label
+      grid-area: __label
 
-        .label-height
-            grid-area: label-height
+    &__input
+      grid-area: __input
 
-        .height-field
-            grid-area: height-field
+  .new-game-form
+    grid-area: new-game-form
 
-    .speed
-        grid-area: speed
-        display: grid
-        grid-template-columns: 8rem
-        grid-template-rows: 1rem 2rem
-        grid-row-gap: 1rem
-        grid-template-areas: "label-speed" "range-speed"
+  .start-game-form
+    grid-area: start-game-form
 
-        .label-speed
-            grid-area: label-speed
+  .pause-game-form
+    grid-area: pause-game-form
 
-        .range-speed
-            grid-area: range-speed
-
-    .label
-        text-transform: capitalize
-
-    .new-game-button
-        grid-area: new-game-button
-
-    .start-button
-        grid-area: start-button
-
-    .pause-button
-        grid-area: pause-button
-
-    .button
-        height: 90%
-        border-radius: 0.3rem
-        font-size: 1rem  
-        border: solid 0.1rem green-color
-        box-shadow: 0 -0.3rem green-shadow-color inset
-        background-color: white-color
-        color: green-text-color
-        text-transform: uppercase
-        cursor: pointer
-        outline: none
-        &:hover
-            background-color: green-color
-            color: white-color
-            border: none
+  .new-game-form
+  .start-game-form
+  .pause-game-form
+    display: grid
+    grid-template-columns: 8rem
+    grid-template-rows: 2rem
+    grid-template-areas: "__button"
+        
+    &__button
+      grid-area: __button
 
 .canvas
-    border: solid 0.3rem green-color
-    margin-top: 5%
-    margin-left: auto
-    margin-right: auto
-    display: block
+  grid-area: canvas
+  border: solid 0.3rem green-color
+  margin-top: 5%
+  margin-left: auto
+  margin-right: auto
+  display: block
+  max-width: 100%
