@@ -12,13 +12,13 @@ export default function () {
 		nameOfGame.innerHTML = "game of life";
 		pageContainer.appendChild(nameOfGame);
     
-		let controlElements = document.createElement("div");
-		controlElements.className = "control-elements";
-		pageContainer.appendChild(controlElements);
+		let controlElementsContainer = document.createElement("div");
+		controlElementsContainer.className = "control-elements-container";
+		pageContainer.appendChild(controlElementsContainer);
 	
 		let widthForm = document.createElement("form");
 		widthForm.className = "form width-form";
-		controlElements.appendChild(widthForm);
+		controlElementsContainer.appendChild(widthForm);
 
 		let widthLabel = document.createElement("label");
 		widthLabel.className = "label width-form__label";
@@ -40,7 +40,7 @@ export default function () {
 
 		let heightForm = document.createElement("form");
 		heightForm.className = "form height-form";
-		controlElements.appendChild(heightForm);
+		controlElementsContainer.appendChild(heightForm);
 
 		let heightLabel = document.createElement("label");
 		heightLabel.className = "label height-form__label";
@@ -62,7 +62,7 @@ export default function () {
 		
 		let speedForm = document.createElement("form");
 		speedForm.className = "form speed-form";
-		controlElements.appendChild(speedForm);
+		controlElementsContainer.appendChild(speedForm);
 		
 		let speedLabel = document.createElement("label");
 		speedLabel.className = "label speed-form__label";
@@ -85,7 +85,7 @@ export default function () {
 		
 		let newGameForm = document.createElement("form");
 		newGameForm.className = "form new-game-form";
-		controlElements.appendChild(newGameForm);
+		controlElementsContainer.appendChild(newGameForm);
 
 		let newGameButton = document.createElement("input");
 		newGameButton.className = "button new-game-form__button";
@@ -100,7 +100,7 @@ export default function () {
 
 		let startGameForm = document.createElement("form");
 		startGameForm.className = "form start-game-form";
-		controlElements.appendChild(startGameForm);
+		controlElementsContainer.appendChild(startGameForm);
 
 		let startGameButton = document.createElement("input");
 		startGameButton.className = "button start-game-form__button";
@@ -115,7 +115,7 @@ export default function () {
 	
 		let pauseGameForm = document.createElement("form");
 		pauseGameForm.className = "form pause-game-form";
-		controlElements.appendChild(pauseGameForm);
+		controlElementsContainer.appendChild(pauseGameForm);
 
 		let pauseGameButton = document.createElement("input");
 		pauseGameButton.className = "button pause-game-form__button";
