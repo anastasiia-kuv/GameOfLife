@@ -9,6 +9,7 @@
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
+    "chai": "^4.1.2",
     "css-loader": "^0.28.11",
     "eslint": "^5.1.0",
     "file-loader": "^1.1.11",
@@ -36,7 +37,8 @@
   "scripts": {
     "test": "./node_modules/karma/bin/karma start",
     "start": "webpack-dev-server --env development --mode=development --open",
-    "build": "webpack --env production --mode=production"
+    "build": "webpack --env production --mode=production",
+    "lint": "./node_modules/.bin/eslint -c .eslintrc.js src test webpack karma.conf.js webpack.config.js"
   },
   "repository": {
     "type": "git",

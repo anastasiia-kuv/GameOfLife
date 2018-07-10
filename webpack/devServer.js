@@ -1,8 +1,10 @@
-module.exports = function()  {
-	return {
-		devtool: "inline-source-map",
-		devServer: {
-			port: 9000
-		}
-	};
+module.exports = function () {
+
+  return {
+    'devtool': 'inline-source-map',
+    'devServer': {
+      'port': 9000
+    }
+  };
+
 };
