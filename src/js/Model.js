@@ -6,8 +6,9 @@ export default function () {
   let timer = {};
   let isRun = false;
   let speedGame = 500;
+  const $body = $('body');
 
-  function initFieldData(width, height) {
+  function _initFieldData(width, height) {
     cells.length = 0;
     for (let i = 0; i < width; i++) {
       cells.push([]);
@@ -15,71 +16,76 @@ export default function () {
         cells[i].push(0);
       }
     }
-    const $body = $('body');
     $body.trigger('updateField');
-
   }
 
-  initFieldData(width, height);
+  _initFieldData(width, height);
 
-  function checkTop(j) {
+  function _checkTopCell(j) {
     if (!j) {
       return height;
     }
     return j;
   }
 
-  function checkBottom(j) {
+  function _checkBottomCell(j) {
     if (j === height - 1) {
       return -1;
     }
     return j;
   }
 
-  function checkLeft(i) {
+  function _checkLeftCell(i) {
     if (!i) {
       return width;
     }
     return i;
   }
 
-  function checkRight(i) {
+  function _checkRightCell(i) {
     if (i === width - 1) {
       return -1;
     }
     return i;
   }
 
-  function countNeighbors(i, j) {
+  function _countNeighbors(i, j) {
     let neighbors = 0;
-    if (cells[checkLeft(i) - 1][j]) {
+    if (cells[_checkLeftCell(i) - 1][j]) {
       neighbors += 1;
     }
-    if (cells[i][checkBottom(j) + 1]) {
+    if (cells[i][_checkBottomCell(j) + 1]) {
       neighbors += 1;
     }
-    if (cells[checkRight(i) + 1][j]) {
+    if (cells[_checkRightCell(i) + 1][j]) {
       neighbors += 1;
     }
-    if (cells[i][checkTop(j) - 1]) {
+    if (cells[i][_checkTopCell(j) - 1]) {
       neighbors += 1;
     }
-    if (cells[checkLeft(i) - 1][checkBottom(j) + 1]) {
+    if (cells[_checkLeftCell(i) - 1][_checkBottomCell(j) + 1]) {
       neighbors += 1;
     }
-    if (cells[checkRight(i) + 1][checkBottom(j) + 1]) {
+    if (cells[_checkRightCell(i) + 1][_checkBottomCell(j) + 1]) {
       neighbors += 1;
     }
-    if (cells[checkRight(i) + 1][checkTop(j) - 1]) {
+    if (cells[_checkRightCell(i) + 1][_checkTopCell(j) - 1]) {
       neighbors += 1;
     }
-    if (cells[checkLeft(i) - 1][checkTop(j) - 1]) {
+    if (cells[_checkLeftCell(i) - 1][_checkTopCell(j) - 1]) {
       neighbors += 1;
     }
-    return !cells[i][j] && neighbors === 3 || cells[i][j] && (neighbors === 2 || neighbors === 3) ? 1 : 0;
+    if (!cells[i][j] && neighbors === 3) {
+      return 1;
+    }
+    if (cells[i][j]) {
+      if (neighbors === 2 || neighbors === 3) {
+        return 1;
+      }
+    }
   }
 
-  function step() {
+  function _step() {
     const tempCells = [];
     for (let i = 0; i < width; i++) {
       tempCells.push([]);
@@ -89,15 +95,14 @@ export default function () {
     }
     for (let i = 0; i < width; i++) {
       for (let j = 0; j < height; j++) {
-        tempCells[i][j] = countNeighbors(i, j);
+        tempCells[i][j] = _countNeighbors(i, j);
       }
     }
     return tempCells;
   }
 
-  function updateCells() {
-    cells = step();
-    const $body = $('body');
+  function _updateCells() {
+    cells = _step();
     $body.trigger('updateField');
   }
 
@@ -119,12 +124,12 @@ export default function () {
     },
 
     initFieldData (width, height) {
-      initFieldData(width, height);
+      _initFieldData(width, height);
     },
 
-    newGame () {
+    initNewGame () {
       isRun = false;
-      initFieldData(width, height);
+      _initFieldData(width, height);
     },
 
     pause () {
@@ -135,7 +140,7 @@ export default function () {
     start () {
       if (!isRun) {
         timer = setInterval(() => {
-          updateCells();
+          _updateCells();
         }, speedGame);
         isRun = true;
       }
@@ -143,19 +148,16 @@ export default function () {
 
     setHeight (h) {
       height = h;
-      const $body = $('body');
       $body.trigger('updateSizeCanvas');
     },
 
     setWidth (w) {
       width = w;
-      const $body = $('body');
       $body.trigger('updateSizeCanvas');
     },
 
     updateCellStatus (x, y) {
       !cells[x][y] ? cells[x][y] = 1 : cells[x][y] = 0;
-      const $body = $('body');
       $body.trigger('updateField');
     },
 
@@ -167,8 +169,8 @@ export default function () {
       }
     },
 
-    oneStep () {
-      cells = step();
+    doOneStep () {
+      cells = _step();
       return cells;
     },
 

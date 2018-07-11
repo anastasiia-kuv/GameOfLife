@@ -13,15 +13,15 @@ export default function (v, m) {
   $body.bind('updateSizeCanvas', () => {
     model.pause();
     view.updateSizeCanvas(model.getWidth(), model.getHeight());
-    model.newGame();
+    model.initNewGame();
   });
 
-  $body.bind('newGameButtonPressed', () => {
+  $body.bind('initNewGame', () => {
     model.pause();
-    model.newGame();
+    model.initNewGame();
   });
 
-  $body.bind('cellChangeStatus', (event) => {
+  $body.bind('сhangeСellStatus', (event) => {
     model.updateCellStatus(event.x, event.y);
   });
 
@@ -29,11 +29,11 @@ export default function (v, m) {
     view.updateField(model.getCells(), model.getWidth(), model.getHeight());
   });
 
-  $body.bind('startGameButtonPressed', () => {
+  $body.bind('startGame', () => {
     model.start();
   });
 
-  $body.bind('pauseGameButtonPressed', () => {
+  $body.bind('pauseGame', () => {
     model.pause();
   });
 

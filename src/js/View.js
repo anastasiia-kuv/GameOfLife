@@ -2,7 +2,9 @@ export default function () {
 
   let canvas = {};
 
-  (function initView () {
+  (function _initView () {
+    const $body = $('body');
+
     const pageContainer = document.createElement('div');
     pageContainer.className = 'page-container';
     document.body.insertBefore(pageContainer, document.body.firstChild);
@@ -30,12 +32,11 @@ export default function () {
     widthInput.setAttribute('type', 'number');
     widthInput.setAttribute('value', '40');
     widthInput.setAttribute('tabindex', '1');
-    widthInput.onblur = function () {
+    widthInput.onblur = function onBlurWidthInput () {
       const event = jQuery.Event('changeSizeCanvas', { 
         'width': widthInput.value,
         'height': heightInput.value 
       });
-      const $body = $('body');
       $body.trigger(event);
     };
     widthForm.appendChild(widthInput);
@@ -54,12 +55,11 @@ export default function () {
     heightInput.setAttribute('type', 'number');
     heightInput.setAttribute('value', '30');
     heightInput.setAttribute('tabindex', '2');
-    heightInput.onblur = function () {
+    heightInput.onblur = function onBlurHeightInput () {
       const event = jQuery.Event('changeSizeCanvas', { 
         'width': widthInput.value, 
         'height': heightInput.value 
       });
-      const $body = $('body');
       $body.trigger(event);
     };
     heightForm.appendChild(heightInput);
@@ -80,11 +80,10 @@ export default function () {
     speedInput.setAttribute('max', '10');
     speedInput.setAttribute('value', '5');
     speedInput.setAttribute('tabindex', '3');
-    speedInput.onchange = function () {
+    speedInput.onchange = function onChangeSpeed() {
       const event = jQuery.Event('changeSpeed', { 
         'speed': speedInput.value 
       });
-      const $body = $('body');
       $body.trigger(event);
     };
     speedForm.appendChild(speedInput);
@@ -98,9 +97,8 @@ export default function () {
     newGameButton.setAttribute('type', 'button');
     newGameButton.setAttribute('value', 'New game');
     newGameButton.setAttribute('tabindex', '4');
-    newGameButton.onclick = function () {
-      const event = jQuery.Event('newGameButtonPressed');
-      const $body = $('body');
+    newGameButton.onclick = function onClickNewGameButton() {
+      const event = jQuery.Event('initNewGame');
       $body.trigger(event);
     };
     newGameForm.appendChild(newGameButton);
@@ -114,9 +112,8 @@ export default function () {
     startGameButton.setAttribute('type', 'button');
     startGameButton.setAttribute('value', 'Start');
     startGameButton.setAttribute('tabindex', '5');
-    startGameButton.onclick = function () {
-      const event = jQuery.Event('startGameButtonPressed');
-      const $body = $('body');
+    startGameButton.onclick = function onClickStartGameButton() {
+      const event = jQuery.Event('startGame');
       $body.trigger(event);
     };
     startGameForm.appendChild(startGameButton);
@@ -130,9 +127,8 @@ export default function () {
     pauseGameButton.setAttribute('type', 'button');
     pauseGameButton.setAttribute('value', 'Pause');
     pauseGameButton.setAttribute('tabindex', '6');
-    pauseGameButton.onclick = function () {
-      const event = jQuery.Event('pauseGameButtonPressed');
-      const $body = $('body');
+    pauseGameButton.onclick = function onClickPauseGameButton() {
+      const event = jQuery.Event('pauseGame');
       $body.trigger(event);
     };
     pauseGameForm.appendChild(pauseGameButton);
@@ -141,25 +137,24 @@ export default function () {
     canvas.className = 'canvas';
     canvas.setAttribute('width', widthInput.value * 10);
     canvas.setAttribute('height', heightInput.value * 10);
-    canvas.onclick = function (e) {
-      const event = jQuery.Event('cellChangeStatus', { 
+    canvas.onclick = function onClickCanvas(e) {
+      const event = jQuery.Event('сhangeСellStatus', { 
         'x': Math.floor(e.offsetX / 10), 
         'y': Math.floor(e.offsetY / 10) 
       });
-      const $body = $('body');
       $body.trigger(event);
     };
     pageContainer.insertBefore(canvas, document.body.nextSibling);
 
   }());
 
-  function updateSizeCanvas(width, height) {
+  function _updateSizeCanvas(width, height) {
     canvas.width = width * 10;
     canvas.height = height * 10;
     document.body.appendChild(canvas);
   }
 
-  function updateField(cells, width, height) {
+  function _updateField(cells, width, height) {
     const c = canvas.getContext('2d');
     c.clearRect(0, 0, width * 10, height * 10);
     for (let i = 0; i < width; i++) {
@@ -173,11 +168,11 @@ export default function () {
 
   return {
     updateField (cells, width, height) {
-      updateField(cells, width, height);
+      _updateField(cells, width, height);
     },
 
     updateSizeCanvas (width, height) {
-      updateSizeCanvas(width, height);
+      _updateSizeCanvas(width, height);
     }
   };
 

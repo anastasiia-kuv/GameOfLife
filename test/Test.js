@@ -12,7 +12,7 @@ let testCellsStep = [];
 describe('checkActiveShapes', () => {
   describe('Проверка что фигура мигалка изменилась, как и ожидалось', () => {
     function checkFlasher (x) {
-      it(`Фигура мигалка изменилась как и ожидалось на ${x} шагу`, () => {
+      it('Фигура мигалка изменилась как и ожидалось на ' + x + ' шагу', () => {
         testCells = [
           [0, 0, 0, 0, 0],
           [0, 0, 0, 0, 0],
@@ -28,9 +28,9 @@ describe('checkActiveShapes', () => {
           [0, 0, 1, 0, 0],
           [0, 0, 0, 0, 0]
         ];  
-        model.oneStep();
+        model.doOneStep();
         assert.deepEqual(model.getCells(), testCellsStep);
-        model.oneStep();
+        model.doOneStep();
         assert.deepEqual(model.getCells(), testCells);
       });
     }
@@ -49,7 +49,7 @@ describe('checkActiveShapes', () => {
         [0, 0, 0, 0, 0]
       ];
       model.setCells(testCells, 5, 5);
-      model.oneStep();
+      model.doOneStep();
       testCellsStep = [
         [0, 0, 0, 0, 0],
         [0, 1, 0, 1, 0],
@@ -62,7 +62,7 @@ describe('checkActiveShapes', () => {
 
     it('Фигура планер изменилась как и ожидалось на 2 шагу', () => {
 
-      model.oneStep();
+      model.doOneStep();
       testCells = [
         [0, 0, 0, 0, 0],
         [0, 0, 0, 1, 0],
@@ -74,7 +74,7 @@ describe('checkActiveShapes', () => {
     });
 
     it('Фигура планер изменилась как и ожидалось на 3 шагу', () => {
-      model.oneStep();
+      model.doOneStep();
       testCells = [
         [0, 0, 0, 0, 0],
         [0, 0, 1, 0, 0],
@@ -98,7 +98,7 @@ describe('checkStaticShapes', () => {
         [0, 0, 0, 0, 0]
       ];
       model.setCells(testCells, 5, 5);
-      model.oneStep();
+      model.doOneStep();
       assert.deepEqual(model.getCells(), testCells);
     });
   });
@@ -113,7 +113,7 @@ describe('checkStaticShapes', () => {
         [0, 0, 0, 0, 0]
       ];
       model.setCells(testCells, 5, 5);
-      model.oneStep();
+      model.doOneStep();
       assert.deepEqual(model.getCells(), testCells);
     });
   });
@@ -128,7 +128,7 @@ describe('checkStaticShapes', () => {
         [0, 0, 0, 0, 0]
       ];
       model.setCells(testCells, 5, 5);
-      model.oneStep();
+      model.doOneStep();
       assert.deepEqual(model.getCells(), testCells);
     });
   });
@@ -141,7 +141,7 @@ describe('initFieldData', () => {
   describe('Проверка содержит ли массив cells нули', () => {
     function checkCell (x, y) {
       const expected = 0;
-      it('ячейка [${x}][${y}] массива cells содержит ${expected}', () => {
+      it('ячейка ['+ x + '][' + y + '] массива cells содержит ' + expected, () => {
         assert.equal(model.getCells()[x][y], expected);
       });
     }
@@ -165,7 +165,7 @@ describe('checkFieldData', () => {
   describe('Проверка содержит ли массив cells единицы', () => {
     function checkCell (x, y) {
       const expected = 1;
-      it('ячейка [${x}][${y}] массива cells содержит ${expected}', () => {
+      it('ячейка ['+ x + '][' + y + '] массива cells содержит ' + expected, () => {
         assert.equal(model.getCells()[x][y], expected);
       });
     }
