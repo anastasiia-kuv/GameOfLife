@@ -3,17 +3,18 @@
   "version": "1.0.0",
   "description": "",
   "private": true,
-  "dependencies": {
-    "hard-source-webpack-plugin": "^0.9.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.4",
+    "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
+    "chai": "^4.1.2",
     "css-loader": "^0.28.11",
-    "eslint": "^5.0.1",
+    "eslint": "^5.1.0",
     "file-loader": "^1.1.11",
+    "hard-source-webpack-plugin": "^0.9.0",
+    "jquery": "^3.3.1",
     "karma": "^2.0.4",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^2.2.0",
@@ -28,7 +29,7 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "uglifyjs-webpack-plugin": "^1.2.7",
-    "webpack": "^4.12.1",
+    "webpack": "^4.15.1",
     "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.4",
     "webpack-merge": "^4.1.3"
@@ -36,7 +37,8 @@
   "scripts": {
     "test": "./node_modules/karma/bin/karma start",
     "start": "webpack-dev-server --env development --mode=development --open",
-    "build": "webpack --env production --mode=production"
+    "build": "webpack --env production --mode=production",
+    "lint": "./node_modules/.bin/eslint -c .eslintrc.js src test webpack karma.conf.js webpack.config.js"
   },
   "repository": {
     "type": "git",

@@ -1,9 +1,9 @@
 @font-face 
-  font-family: 'SourceSansPro'
-  src: url('./fonts/SourceSansPro.woff2') format('woff2')
-  url('./fonts/SourceSansPro.woff') format('woff')
-  url('./fonts/SourceSansPro.ttf') format('truetype') 
-  url('./fonts/SourceSansPro.svg') format('svg')
+  font-family: "Source Sans Pro"
+  src: url("./fonts/source-sans-pro.woff2") format("woff2")
+  url("./fonts/source-sans-pro.woff") format("woff")
+  url("./fonts/source-sans-pro.ttf") format("truetype") 
+  url("./fonts/source-sans-pro.svg") format("svg")
   font-weight: normal
   font-style: normal
 
@@ -14,98 +14,150 @@ green-shadow-color = #28A290
 green-text-color = #45AC9D
 
 @media only screen and (max-width: 319px)
-    html
-        font-size: 7px
+  html
+    font-size: 7px
         
 @media only screen and (min-width: 320px) and (max-width: 639px)
-    html
-        font-size: 8px
+  html
+    font-size: 8px
         
 @media only screen and (min-width: 640px) and (max-width: 799px)
-    html
-        font-size: 10px
+  html
+    font-size: 10px
         
 @media only screen and (min-width: 800px) and (max-width: 1023px)
-    html
-        font-size: 11px
+  html
+    font-size: 11px
 
 @media only screen and (min-width: 1024px) and (max-width: 1279px)
-    html
-        font-size: 12px
+  html
+    font-size: 12px
         
 @media only screen and (min-width: 1280px) and (max-width: 1679px)
-    html
-        font-size: 13px
+  html
+    font-size: 13px
 
 @media only screen and (min-width: 1680px) and (max-width: 1919px)
-    html
-        font-size: 14px
+  html
+    font-size: 14px
 
 @media only screen and (min-width: 1920px)
-    html
-        font-size: 15px
+  html
+    font-size: 15px
 
-body
-    font: 1.2rem SourceSansPro
-    background-color: white-color
-    color: title-text-color
-    
-.name-of-game
-    text-align: center
-
-.buttons-container
-    display: grid
-    grid-template-columns: 30% 4rem 1rem 4rem 1rem 8rem 1rem 8rem 1rem 8rem 1rem 8rem 25%
-    grid-template-rows: 3rem 2.5rem auto
-    grid-template-areas: ". label-width . label-height .  label-speed . . . . . . ." ". width-field . height-field . range-speed . new-game-button . start-button . pause-button ."
-    text-align: center
-
-.label-width
-    grid-area: label-width
-
-.width-field
-    grid-area: width-field
-
-.label-height
-    grid-area: label-height
-
-.height-field
-    grid-area: height-field
-
-.label-speed
-    grid-area: label-speed
-
-.range-speed
-    grid-area: range-speed
-
-.new-game-button
-    grid-area: new-game-button
-
-.start-button
-    grid-area: start-button
-
-.pause-button
-    grid-area: pause-button
-
-.button
-  height: 100%
-  border-radius: 0.3rem
-  font-size: 1rem  
-  border: solid 0.1rem green-color
-  box-shadow: 0 -0.3rem green-shadow-color inset
+html
+  font: 0.8rem "Source Sans Pro", Arial, sans-serif
   background-color: white-color
-  color: green-text-color
+  color: title-text-color
+
+.page-container
+  display: grid
+  grid-template-columns: 10% 80% 10%
+  grid-template-rows: 4rem 5rem auto
+  grid-row-gap: 1.5rem
+  grid-template-areas: ". title ." ". control-elements-container ." ". canvas ."
+  @media all and (max-width: 420px)
+    grid-template-rows: 4rem 10rem auto
+
+.title
+  grid-area: title
+  text-align: center
   text-transform: uppercase
-  cursor: pointer
-  outline: none
-  &:hover
-    background-color: green-color
-    color: white-color
-    border: none
+        
+.control-elements-container
+  grid-area: control-elements-container
+  display: grid
+  grid-template-columns: auto 4rem 1rem 4rem 1rem 8rem 1rem 8rem 1rem 8rem 1rem 8rem auto
+  grid-template-rows: 3rem
+  grid-template-areas: ". width-form . height-form .  speed-form . new-game-form . start-game-form . pause-game-form ."
+  text-align: center
+  align-items: end
+  @media all and (max-width: 420px)
+    grid-template-columns: auto 8rem 1rem 8rem 1rem 8rem auto
+    grid-template-rows: 3rem 3rem
+    grid-row-gap: 1rem
+    grid-template-areas: ". width-form . height-form .  speed-form ." ". new-game-form . start-game-form . pause-game-form ." 
+  
+  .width-form
+    grid-area: width-form
+
+  .height-form
+    grid-area: height-form
+
+  .width-form
+  .height-form
+    display: grid
+    grid-template-columns: 4rem
+    grid-template-rows: 1rem 2rem
+    grid-row-gap: 1rem
+    grid-template-areas: "__label" "__input"
+
+    &__label
+      grid-area: __label
+
+    &__input
+      grid-area: __input
+
+  .speed-form
+    grid-area: speed-form
+    display: grid
+    grid-template-columns: 8rem
+    grid-template-rows: 1rem 2rem
+    grid-row-gap: 1rem
+    grid-template-areas: "__label" "__input"
+
+    &__label
+      grid-area: __label
+
+    &__input
+      grid-area: __input
+
+  .label
+    text-transform: capitalize
+
+  .input 
+    font-size: 1rem
+    cursor: pointer    
+
+  .new-game-form
+    grid-area: new-game-form
+
+  .start-game-form
+    grid-area: start-game-form
+
+  .pause-game-form
+    grid-area: pause-game-form
+
+  .new-game-form
+  .start-game-form
+  .pause-game-form
+    display: grid
+    grid-template-columns: 8rem
+    grid-template-rows: 2rem
+    grid-template-areas: "__button"
+        
+    &__button
+      grid-area: __button
+
+  .button
+    border-radius: 0.3rem
+    font-size: 0.9rem  
+    border: solid 0.1rem green-color
+    box-shadow: 0 -0.3rem green-shadow-color inset
+    background-color: white-color
+    color: green-text-color
+    text-transform: uppercase
+    cursor: pointer
+    &:hover
+      background-color: green-color
+      color: white-color
+      border: none    
 
 .canvas
-    border: solid 0.3rem green-color
-    margin-top: 5%
-    margin-left: auto
-    margin-right: auto
-    display: block
+  grid-area: canvas
+  border: solid 0.3rem green-color
+  margin-left: auto
+  margin-right: auto
+  display: block
+  max-width: 100%
+  cursor: pointer
