@@ -16,7 +16,7 @@ const PATHS = {
 },
 
 common = merge([{
-  'entry': `${PATHS.source}/js/App.js`,
+  'entry': `${PATHS.source}/index.js`,
   'output': {
   'filename': 'bundle.js',
   'path': `${PATHS.build}/`

@@ -1,8 +1,10 @@
-export default function () {
-
-  let canvas = {};
-
-  (function _initView () {
+class View {
+  constructor() {
+    this.canvas = {};
+    this.initView();
+  }
+    
+  initView () {
     const $body = $('body');
 
     const pageContainer = document.createElement('main');
@@ -133,29 +135,29 @@ export default function () {
     };
     pauseGameForm.appendChild(pauseGameButton);
 
-    canvas = document.createElement('canvas');
-    canvas.className = 'page-container__canvas';
-    canvas.setAttribute('width', widthInput.value * 10);
-    canvas.setAttribute('height', heightInput.value * 10);
-    canvas.onclick = function onClickCanvas(e) {
+    this.canvas = document.createElement('canvas');
+    this.canvas.className = 'page-container__canvas';
+    this.canvas.setAttribute('width', widthInput.value * 10);
+    this.canvas.setAttribute('height', heightInput.value * 10);
+    this.canvas.onclick = function onClickCanvas(e) {
       const event = jQuery.Event('сhangeСellStatus', { 
         'x': Math.floor(e.offsetX / 10), 
         'y': Math.floor(e.offsetY / 10) 
       });
       $body.trigger(event);
     };
-    pageContainer.insertBefore(canvas, document.body.nextSibling);
+    pageContainer.insertBefore(this.canvas, document.body.nextSibling);
 
-  }());
-
-  function _updateSizeCanvas(width, height) {
-    canvas.width = width * 10;
-    canvas.height = height * 10;
-    document.body.appendChild(canvas);
   }
-
-  function _updateField(cells, width, height) {
-    const c = canvas.getContext('2d');
+  
+  updateSizeCanvas(width, height) {
+    this.canvas.width = width * 10;
+    this.canvas.height = height * 10;
+    document.body.appendChild(this.canvas);
+  }
+  
+  updateField(cells, width, height) {
+    const c = this.canvas.getContext('2d');
     c.clearRect(0, 0, width * 10, height * 10);
     for (let i = 0; i < width; i++) {
       for (let j = 0; j < height; j++) {
@@ -164,16 +166,7 @@ export default function () {
         }
       }
     }
-  }
-
-  return {
-    updateField (cells, width, height) {
-      _updateField(cells, width, height);
-    },
-
-    updateSizeCanvas (width, height) {
-      _updateSizeCanvas(width, height);
-    }
-  };
-
+  } 
 }
+
+export default View;

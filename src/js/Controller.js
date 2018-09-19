@@ -1,44 +1,49 @@
-export default function (v, m) {
-
-  const view = v;
-  const model = m;
-  const $body = $('body');
-    
-  $body.bind('changeSizeCanvas', (event) => {
-    model.pause();
-    model.setWidth(event.width);
-    model.setHeight(event.height);
-  });
-
-  $body.bind('updateSizeCanvas', () => {
-    model.pause();
-    view.updateSizeCanvas(model.getWidth(), model.getHeight());
-    model.initNewGame();
-  });
-
-  $body.bind('initNewGame', () => {
-    model.pause();
-    model.initNewGame();
-  });
-
-  $body.bind('сhangeСellStatus', (event) => {
-    model.updateCellStatus(event.x, event.y);
-  });
-
-  $body.bind('updateField', () => {
-    view.updateField(model.getCells(), model.getWidth(), model.getHeight());
-  });
-
-  $body.bind('startGame', () => {
-    model.start();
-  });
-
-  $body.bind('pauseGame', () => {
-    model.pause();
-  });
-
-  $body.bind('changeSpeed', (event) => {
-    model.updateSpeedGame(event.speed);
-  });
-
+class Controller {
+  constructor(view, model){
+    this.view = view;
+    this.model = model;
+    this.$body = $('body');
+    this.initEvent();
+  }
+  
+  initEvent(){
+    this.$body.bind('changeSizeCanvas', (event) => {
+      this.model.pause();
+      this.model.setWidth(event.width);
+      this.model.setHeight(event.height);
+    });
+  
+    this.$body.bind('updateSizeCanvas', () => {
+      this.model.pause();
+      this.view.updateSizeCanvas(this.model.getWidth(), this.model.getHeight());
+      this.model.initNewGame();
+    });
+  
+    this.$body.bind('initNewGame', () => {
+      this.model.pause();
+      this.model.initNewGame();
+    });
+  
+    this.$body.bind('сhangeСellStatus', (event) => {
+      this.model.updateCellStatus(event.x, event.y);
+    });
+  
+    this.$body.bind('updateField', () => {
+      this.view.updateField(this.model.getCells(), this.model.getWidth(), this.model.getHeight());
+    });
+  
+    this.$body.bind('startGame', () => {
+      this.model.start();
+    });
+  
+    this.$body.bind('pauseGame', () => {
+      this.model.pause();
+    });
+  
+    this.$body.bind('changeSpeed', (event) => {
+      this.model.updateSpeedGame(event.speed);
+    });
+  }
 }
+
+export default Controller;
