@@ -79,8 +79,8 @@ class View {
     speedInput.className = 'speed-form__input';
     speedInput.setAttribute('type', 'range');
     speedInput.setAttribute('min', '1');
-    speedInput.setAttribute('max', '10');
-    speedInput.setAttribute('value', '5');
+    speedInput.setAttribute('max', '5');
+    speedInput.setAttribute('value', '2');
     speedInput.setAttribute('tabindex', '3');
     speedInput.onchange = function onChangeSpeed() {
       const event = jQuery.Event('changeSpeed', { 
@@ -89,6 +89,20 @@ class View {
       $body.trigger(event);
     };
     speedForm.appendChild(speedInput);
+
+    const speedRangeLabel = document.createElement('label');
+    speedRangeLabel.className = 'speed-form__range-label';
+    speedForm.appendChild(speedRangeLabel);
+
+    const speedRangeLabelMin = document.createElement('label');
+    speedRangeLabelMin.className = 'speed-form__range-label_min';
+    speedRangeLabelMin.innerHTML = 'min';
+    speedRangeLabel.appendChild(speedRangeLabelMin);
+
+    const speedRangeLabelMax = document.createElement('label');
+    speedRangeLabelMax.className = 'speed-form__range-label_max';
+    speedRangeLabelMax.innerHTML = 'max';
+    speedRangeLabel.appendChild(speedRangeLabelMax);
 
     const newGameForm = document.createElement('form');
     newGameForm.className = 'new-game-form';

@@ -61,11 +61,17 @@ body
       font-size 1rem
       cursor pointer 
 
+  .speed-form
+
+    &__range-label
+      display flex
+      justify-content space-between
+
   .new-game-form
   .start-game-form
   .pause-game-form
     display flex
-    align-items flex-end 
+    align-items center
   
     &__button
       height 2rem
@@ -78,7 +84,7 @@ body
       color green-text-color
       text-transform uppercase
       cursor pointer
-      margin 0 0.5rem
+      margin 0.5rem 0.5rem 0 0.5rem
       
       &:hover
         background-color green-color

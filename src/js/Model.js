@@ -5,7 +5,7 @@ class Model {
     this.cells = [];
     this.timer = {};
     this.isRun = false;
-    this.speedGame = 500;
+    this.speedGame = 600;
     this.$body = $('body');
     this.initFieldData(this.width,this.height);
   }
@@ -157,7 +157,25 @@ class Model {
   }
 
   updateSpeedGame (speed) {
-    this.speedGame = speed * 100;
+    switch (speed) {
+      case '1':
+        this.speedGame = 1000;
+        break;
+      case '2':
+        this.speedGame = 800;
+        break;
+      case '3':
+        this.speedGame = 600;
+        break;
+      case '4':
+        this.speedGame = 400;
+        break;
+      case '5':
+        this.speedGame = 200;
+        break;
+      default:
+        this.speedGame = 600;
+    }
     if (this.isRun) {
       this.pause();
       this.start();
