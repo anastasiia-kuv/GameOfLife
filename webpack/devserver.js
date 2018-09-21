@@ -3,7 +3,7 @@ module.exports = function () {
   return {
     'devtool': 'inline-source-map',
     'devServer': {
-      'port': 9000
+      'port': 9001
     }
   };
 

@@ -6,10 +6,13 @@ class Model {
     this.timer = {};
     this.isRun = false;
     this.speedGame = 600;
-    this.$body = $('body');
+  }
+
+  setObserver(observer) {
+    this.observer = observer;
     this.initFieldData(this.width,this.height);
   }
-  
+
   initFieldData(width, height) {
     this.cells.length = 0;
     for (let i = 0; i < width; i++) {
@@ -18,7 +21,7 @@ class Model {
         this.cells[i].push(0);
       }
     }
-    this.$body.trigger('updateField');
+    this.observer.notify({nameEvent: 'updateField'});
   }
 
   checkTopCell(j) {
@@ -103,7 +106,7 @@ class Model {
 
   updateCells() {
     this.cells = this.step();
-    this.$body.trigger('updateField');
+    this.observer.notify({nameEvent: 'updateField'});
   }
 
   getCells () {
@@ -143,17 +146,17 @@ class Model {
 
   setHeight (h) {
     this.height = h;
-    this.$body.trigger('updateSizeCanvas');
+    this.observer.notify({nameEvent: 'updateSizeCanvas', width: this.width, height: this.height});
   }
 
   setWidth (w) {
     this.width = w;
-    this.$body.trigger('updateSizeCanvas');
+    this.observer.notify({nameEvent: 'updateSizeCanvas', width: this.width, height: this.height});
   }
 
   updateCellStatus (x, y) {
     !this.cells[x][y] ? this.cells[x][y] = 1 : this.cells[x][y] = 0;
-    this.$body.trigger('updateField');
+    this.observer.notify({nameEvent: 'updateField'});
   }
 
   updateSpeedGame (speed) {

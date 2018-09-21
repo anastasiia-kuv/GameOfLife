@@ -1,12 +1,9 @@
 class View {
   constructor() {
     this.canvas = {};
-    this.initView();
   }
-    
-  initView () {
-    const $body = $('body');
 
+  initView() {
     const pageContainer = document.createElement('main');
     pageContainer.className = 'page-container';
     document.body.insertBefore(pageContainer, document.body.firstChild);
@@ -34,13 +31,9 @@ class View {
     widthInput.setAttribute('type', 'number');
     widthInput.setAttribute('value', '40');
     widthInput.setAttribute('tabindex', '1');
-    widthInput.onblur = function onBlurWidthInput () {
-      const event = jQuery.Event('changeSizeCanvas', { 
-        'width': widthInput.value,
-        'height': heightInput.value 
-      });
-      $body.trigger(event);
-    };
+    widthInput.addEventListener('blur', () => {
+      this.observer.notify({nameEvent: 'changeSizeCanvas', width: widthInput.value, height: heightInput.value});
+    });
     widthForm.appendChild(widthInput);
 
     const heightForm = document.createElement('form');
@@ -57,13 +50,9 @@ class View {
     heightInput.setAttribute('type', 'number');
     heightInput.setAttribute('value', '30');
     heightInput.setAttribute('tabindex', '2');
-    heightInput.onblur = function onBlurHeightInput () {
-      const event = jQuery.Event('changeSizeCanvas', { 
-        'width': widthInput.value, 
-        'height': heightInput.value 
-      });
-      $body.trigger(event);
-    };
+    heightInput.addEventListener('blur', () => {
+      this.observer.notify({nameEvent: 'changeSizeCanvas', width: widthInput.value, height: heightInput.value});
+    });
     heightForm.appendChild(heightInput);
 
     const speedForm = document.createElement('form');
@@ -82,12 +71,9 @@ class View {
     speedInput.setAttribute('max', '5');
     speedInput.setAttribute('value', '2');
     speedInput.setAttribute('tabindex', '3');
-    speedInput.onchange = function onChangeSpeed() {
-      const event = jQuery.Event('changeSpeed', { 
-        'speed': speedInput.value 
-      });
-      $body.trigger(event);
-    };
+    speedInput.addEventListener('change', () => {
+      this.observer.notify({nameEvent: 'changeSpeed', speed: speedInput.value});
+    });
     speedForm.appendChild(speedInput);
 
     const speedRangeLabel = document.createElement('label');
@@ -113,10 +99,9 @@ class View {
     newGameButton.setAttribute('type', 'button');
     newGameButton.setAttribute('value', 'New game');
     newGameButton.setAttribute('tabindex', '4');
-    newGameButton.onclick = function onClickNewGameButton() {
-      const event = jQuery.Event('initNewGame');
-      $body.trigger(event);
-    };
+    newGameButton.addEventListener('click', () => {
+      this.observer.notify({nameEvent: 'initNewGame'});
+    });
     newGameForm.appendChild(newGameButton);
 
     const startGameForm = document.createElement('form');
@@ -128,10 +113,9 @@ class View {
     startGameButton.setAttribute('type', 'button');
     startGameButton.setAttribute('value', 'Start');
     startGameButton.setAttribute('tabindex', '5');
-    startGameButton.onclick = function onClickStartGameButton() {
-      const event = jQuery.Event('startGame');
-      $body.trigger(event);
-    };
+    startGameButton.addEventListener('click', () => {
+      this.observer.notify({nameEvent: 'startGame'});
+    });
     startGameForm.appendChild(startGameButton);
 
     const pauseGameForm = document.createElement('form');
@@ -143,27 +127,28 @@ class View {
     pauseGameButton.setAttribute('type', 'button');
     pauseGameButton.setAttribute('value', 'Pause');
     pauseGameButton.setAttribute('tabindex', '6');
-    pauseGameButton.onclick = function onClickPauseGameButton() {
-      const event = jQuery.Event('pauseGame');
-      $body.trigger(event);
-    };
+    pauseGameButton.addEventListener('click', () => {
+      this.observer.notify({nameEvent: 'pauseGame'});
+    });
     pauseGameForm.appendChild(pauseGameButton);
 
     this.canvas = document.createElement('canvas');
     this.canvas.className = 'page-container__canvas';
     this.canvas.setAttribute('width', widthInput.value * 10);
     this.canvas.setAttribute('height', heightInput.value * 10);
-    this.canvas.onclick = function onClickCanvas(e) {
-      const event = jQuery.Event('сhangeСellStatus', { 
-        'x': Math.floor(e.offsetX / 10), 
-        'y': Math.floor(e.offsetY / 10) 
-      });
-      $body.trigger(event);
-    };
+    this.canvas.addEventListener('click', (event) => {
+      const x = Math.floor(event.offsetX / 10);
+      const y = Math.floor(event.offsetY / 10);
+      this.observer.notify({nameEvent: 'сhangeСellStatus', x: x, y: y});
+    });
     pageContainer.insertBefore(this.canvas, document.body.nextSibling);
-
   }
-  
+
+  setObserver(observer) {
+    this.observer = observer;
+    this.initView();
+  }
+
   updateSizeCanvas(width, height) {
     this.canvas.width = width * 10;
     this.canvas.height = height * 10;
