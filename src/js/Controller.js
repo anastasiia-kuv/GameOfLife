@@ -1,54 +1,20 @@
 import EventObserver from './EventObserver.js';
-class Controller {
-  constructor(view, model){
+class Controller extends EventObserver {
+  constructor(view, model) {
+    super();
     this.view = view;
     this.model = model;
-    this.observer = new EventObserver();
-    this.model.setObserver(this.observer);
-    this.view.setObserver(this.observer);
-    this.initEvent();
   }
-  
-  initEvent(){
-    this.observer.subscribe(data => {
-      switch (data.nameEvent) {
-        case 'changeSizeCanvas':
-          this.changeSizeCanvas(data.width, data.height);
-          break;
-        case 'updateSizeCanvas':
-          this.updateSizeCanvas(data.width, data.height);
-          break;
-        case 'initNewGame':
-          this.initNewGame();
-          break;
-        case 'сhangeСellStatus':
-          this.сhangeСellStatus(data.x, data.y);
-          break;
-        case 'updateField':
-          this.updateField();
-          break;
-        case 'startGame':
-          this.startGame();
-          break;
-        case 'pauseGame':
-          this.pauseGame();
-          break;
-        case 'changeSpeed':
-          this.changeSpeed(data.speed);
-          break;
-      }
-    });
+ 
+  changeSizeCanvas(data){
+    this.model.pause();
+    this.model.setWidth(data.width);
+    this.model.setHeight(data.height);
   }
 
-  changeSizeCanvas(width, height){
+  updateSizeCanvas(data) {
     this.model.pause();
-    this.model.setWidth(width);
-    this.model.setHeight(height);
-  }
-
-  updateSizeCanvas(width, height) {
-    this.model.pause();
-    this.view.updateSizeCanvas(width, height);
+    this.view.updateSizeCanvas(data.width, data.height);
     this.model.initNewGame();
   }
 
@@ -57,12 +23,12 @@ class Controller {
     this.model.initNewGame();
   }
 
-  сhangeСellStatus(x, y) {
-    this.model.updateCellStatus(x, y);
+  сhangeСellStatus(data) {
+    this.model.updateCellStatus(data.x, data.y);
   }
 
-  updateField() {
-    this.view.updateField(this.model.getCells(), this.model.getWidth(), this.model.getHeight());
+  updateField(data) {
+    this.view.updateField(data.cells,  data.width, data.height);
   }
 
   startGame(){
@@ -73,8 +39,8 @@ class Controller {
     this.model.pause();
   }
 
-  changeSpeed(speed){
-    this.model.updateSpeedGame(speed);
+  changeSpeed(data){
+    this.model.updateSpeedGame(data.speed);
   }
 }
 

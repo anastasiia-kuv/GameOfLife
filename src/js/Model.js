@@ -1,15 +1,13 @@
-class Model {
+import EventObserver from './EventObserver.js';
+class Model extends EventObserver {
   constructor(){
+    super();
     this.width = 40;
     this.height = 30;
     this.cells = [];
     this.timer = {};
     this.isRun = false;
     this.speedGame = 600;
-  }
-
-  setObserver(observer) {
-    this.observer = observer;
     this.initFieldData(this.width,this.height);
   }
 
@@ -17,11 +15,11 @@ class Model {
     this.cells.length = 0;
     for (let i = 0; i < width; i++) {
       this.cells.push([]);
-      for (let j = 0; j < height; j++) {
+      for (let j = 0; j < height; j++){
         this.cells[i].push(0);
       }
     }
-    this.observer.notify({nameEvent: 'updateField'});
+    this.notify('updateField', {cells: this.cells, width: width, height: height});
   }
 
   checkTopCell(j) {
@@ -106,7 +104,7 @@ class Model {
 
   updateCells() {
     this.cells = this.step();
-    this.observer.notify({nameEvent: 'updateField'});
+    this.notify('updateField', {cells: this.cells, width: this.width, height: this.height});
   }
 
   getCells () {
@@ -146,17 +144,17 @@ class Model {
 
   setHeight (h) {
     this.height = h;
-    this.observer.notify({nameEvent: 'updateSizeCanvas', width: this.width, height: this.height});
+    this.notify('updateSizeCanvas', {width: this.width, height: this.height});
   }
 
   setWidth (w) {
     this.width = w;
-    this.observer.notify({nameEvent: 'updateSizeCanvas', width: this.width, height: this.height});
+    this.notify('updateSizeCanvas', {width: this.width, height: this.height});
   }
 
   updateCellStatus (x, y) {
     !this.cells[x][y] ? this.cells[x][y] = 1 : this.cells[x][y] = 0;
-    this.observer.notify({nameEvent: 'updateField'});
+    this.notify('updateField', {cells: this.cells, width: this.width, height: this.height});
   }
 
   updateSpeedGame (speed) {

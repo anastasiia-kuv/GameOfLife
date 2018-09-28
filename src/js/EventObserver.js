@@ -8,11 +8,13 @@ class EventObserver {
   }
 
   unsubscribe(fn) {
-    this.observers = this.observers.filter(subscriber => subscriber !== fn);
+    this.observers.slice(this.observers.indexOf(fn), 1);
   }
 
-  notify(...data){
-    this.observers.forEach(subscriber => subscriber(...data));
+  notify(name, ...data){
+    if(name.hasOwnProperty) {
+      this.observers.forEach(subscriber => subscriber[`${name}`](...data));
+    }
   }
 }
 

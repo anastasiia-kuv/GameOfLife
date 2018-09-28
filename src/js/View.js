@@ -1,9 +1,14 @@
-class View {
+import EventObserver from './EventObserver.js';
+class View extends EventObserver {
   constructor() {
+    super();
     this.canvas = {};
+    this.initView();
   }
 
   initView() {
+    const that = this;
+
     const pageContainer = document.createElement('main');
     pageContainer.className = 'page-container';
     document.body.insertBefore(pageContainer, document.body.firstChild);
@@ -31,9 +36,9 @@ class View {
     widthInput.setAttribute('type', 'number');
     widthInput.setAttribute('value', '40');
     widthInput.setAttribute('tabindex', '1');
-    widthInput.addEventListener('blur', () => {
-      this.observer.notify({nameEvent: 'changeSizeCanvas', width: widthInput.value, height: heightInput.value});
-    });
+    widthInput.onblur = function() {
+      that.notify('changeSizeCanvas', {width: widthInput.value, height: heightInput.value});
+    };
     widthForm.appendChild(widthInput);
 
     const heightForm = document.createElement('form');
@@ -50,9 +55,9 @@ class View {
     heightInput.setAttribute('type', 'number');
     heightInput.setAttribute('value', '30');
     heightInput.setAttribute('tabindex', '2');
-    heightInput.addEventListener('blur', () => {
-      this.observer.notify({nameEvent: 'changeSizeCanvas', width: widthInput.value, height: heightInput.value});
-    });
+    heightInput.onblur = function() {
+      that.notify('changeSizeCanvas', {width: widthInput.value, height: heightInput.value});
+    };
     heightForm.appendChild(heightInput);
 
     const speedForm = document.createElement('form');
@@ -71,9 +76,9 @@ class View {
     speedInput.setAttribute('max', '5');
     speedInput.setAttribute('value', '2');
     speedInput.setAttribute('tabindex', '3');
-    speedInput.addEventListener('change', () => {
-      this.observer.notify({nameEvent: 'changeSpeed', speed: speedInput.value});
-    });
+    speedInput.onchange = function() {
+      that.notify('changeSpeed', {speed: speedInput.value});
+    };
     speedForm.appendChild(speedInput);
 
     const speedRangeLabel = document.createElement('label');
@@ -99,9 +104,9 @@ class View {
     newGameButton.setAttribute('type', 'button');
     newGameButton.setAttribute('value', 'New game');
     newGameButton.setAttribute('tabindex', '4');
-    newGameButton.addEventListener('click', () => {
-      this.observer.notify({nameEvent: 'initNewGame'});
-    });
+    newGameButton.onclick = function() {
+      that.notify('initNewGame');
+    };
     newGameForm.appendChild(newGameButton);
 
     const startGameForm = document.createElement('form');
@@ -113,9 +118,9 @@ class View {
     startGameButton.setAttribute('type', 'button');
     startGameButton.setAttribute('value', 'Start');
     startGameButton.setAttribute('tabindex', '5');
-    startGameButton.addEventListener('click', () => {
-      this.observer.notify({nameEvent: 'startGame'});
-    });
+    startGameButton.onclick = function() {
+      that.notify('startGame');
+    };
     startGameForm.appendChild(startGameButton);
 
     const pauseGameForm = document.createElement('form');
@@ -127,26 +132,21 @@ class View {
     pauseGameButton.setAttribute('type', 'button');
     pauseGameButton.setAttribute('value', 'Pause');
     pauseGameButton.setAttribute('tabindex', '6');
-    pauseGameButton.addEventListener('click', () => {
-      this.observer.notify({nameEvent: 'pauseGame'});
-    });
+    pauseGameButton.onclick = function() {
+      that.notify('pauseGame');
+    };
     pauseGameForm.appendChild(pauseGameButton);
 
     this.canvas = document.createElement('canvas');
     this.canvas.className = 'page-container__canvas';
     this.canvas.setAttribute('width', widthInput.value * 10);
     this.canvas.setAttribute('height', heightInput.value * 10);
-    this.canvas.addEventListener('click', (event) => {
+    this.canvas.onclick = function(event) {
       const x = Math.floor(event.offsetX / 10);
       const y = Math.floor(event.offsetY / 10);
-      this.observer.notify({nameEvent: 'сhangeСellStatus', x: x, y: y});
-    });
-    pageContainer.insertBefore(this.canvas, document.body.nextSibling);
-  }
-
-  setObserver(observer) {
-    this.observer = observer;
-    this.initView();
+      that.notify('сhangeСellStatus', {x: x, y: y});
+    };
+    pageContainer.insertBefore(this.canvas, document.body.nextSibling);    
   }
 
   updateSizeCanvas(width, height) {
