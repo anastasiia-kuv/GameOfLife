@@ -3,18 +3,16 @@ class EventObserver {
     this.observers = [];
   }
 
-  subscribe(fn) {
-    this.observers.push(fn);
+  subscribe(subscriber) {
+    this.observers.push(subscriber);
   }
 
-  unsubscribe(fn) {
-    this.observers.slice(this.observers.indexOf(fn), 1);
+  unsubscribe(subscriber) {
+    this.observers.slice(this.observers.indexOf(subscriber), 1);
   }
 
   notify(name, ...data){
-    if(name.hasOwnProperty) {
-      this.observers.forEach(subscriber => subscriber[`${name}`](...data));
-    }
+    this.observers.forEach(subscriber => subscriber[name] && subscriber[name](data[0]));
   }
 }
 

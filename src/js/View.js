@@ -1,4 +1,5 @@
-import EventObserver from './EventObserver.js';
+import EventObserver from './eventObserver.js';
+import constants from './constants.js';
 class View extends EventObserver {
   constructor() {
     super();
@@ -7,8 +8,6 @@ class View extends EventObserver {
   }
 
   initView() {
-    const that = this;
-
     const pageContainer = document.createElement('main');
     pageContainer.className = 'page-container';
     document.body.insertBefore(pageContainer, document.body.firstChild);
@@ -34,10 +33,10 @@ class View extends EventObserver {
     const widthInput = document.createElement('input');
     widthInput.className = 'width-form__input';
     widthInput.setAttribute('type', 'number');
-    widthInput.setAttribute('value', '40');
+    widthInput.setAttribute('value', constants.DEFAULT_WIDTH);
     widthInput.setAttribute('tabindex', '1');
-    widthInput.onblur = function() {
-      that.notify('changeSizeCanvas', {width: widthInput.value, height: heightInput.value});
+    widthInput.onblur = () => {
+      this.notify('changeSizeCanvas', {width: widthInput.value, height: heightInput.value});
     };
     widthForm.appendChild(widthInput);
 
@@ -53,10 +52,10 @@ class View extends EventObserver {
     const heightInput = document.createElement('input');
     heightInput.className = 'height-form__input';
     heightInput.setAttribute('type', 'number');
-    heightInput.setAttribute('value', '30');
+    heightInput.setAttribute('value', constants.DEFAULT_HEIGHT);
     heightInput.setAttribute('tabindex', '2');
-    heightInput.onblur = function() {
-      that.notify('changeSizeCanvas', {width: widthInput.value, height: heightInput.value});
+    heightInput.onblur = () => {
+      this.notify('changeSizeCanvas', {width: widthInput.value, height: heightInput.value});
     };
     heightForm.appendChild(heightInput);
 
@@ -74,10 +73,10 @@ class View extends EventObserver {
     speedInput.setAttribute('type', 'range');
     speedInput.setAttribute('min', '1');
     speedInput.setAttribute('max', '5');
-    speedInput.setAttribute('value', '2');
+    speedInput.setAttribute('value', '3');
     speedInput.setAttribute('tabindex', '3');
-    speedInput.onchange = function() {
-      that.notify('changeSpeed', {speed: speedInput.value});
+    speedInput.onchange = () => {
+      this.notify('changeSpeed', {speed: speedInput.value});
     };
     speedForm.appendChild(speedInput);
 
@@ -104,8 +103,8 @@ class View extends EventObserver {
     newGameButton.setAttribute('type', 'button');
     newGameButton.setAttribute('value', 'New game');
     newGameButton.setAttribute('tabindex', '4');
-    newGameButton.onclick = function() {
-      that.notify('initNewGame');
+    newGameButton.onclick = () => {
+      this.notify('initGame');
     };
     newGameForm.appendChild(newGameButton);
 
@@ -118,8 +117,8 @@ class View extends EventObserver {
     startGameButton.setAttribute('type', 'button');
     startGameButton.setAttribute('value', 'Start');
     startGameButton.setAttribute('tabindex', '5');
-    startGameButton.onclick = function() {
-      that.notify('startGame');
+    startGameButton.onclick = () => {
+      this.notify('startGame');
     };
     startGameForm.appendChild(startGameButton);
 
@@ -132,36 +131,36 @@ class View extends EventObserver {
     pauseGameButton.setAttribute('type', 'button');
     pauseGameButton.setAttribute('value', 'Pause');
     pauseGameButton.setAttribute('tabindex', '6');
-    pauseGameButton.onclick = function() {
-      that.notify('pauseGame');
+    pauseGameButton.onclick = () => {
+      this.notify('pauseGame');
     };
     pauseGameForm.appendChild(pauseGameButton);
 
     this.canvas = document.createElement('canvas');
     this.canvas.className = 'page-container__canvas';
-    this.canvas.setAttribute('width', widthInput.value * 10);
-    this.canvas.setAttribute('height', heightInput.value * 10);
-    this.canvas.onclick = function(event) {
-      const x = Math.floor(event.offsetX / 10);
-      const y = Math.floor(event.offsetY / 10);
-      that.notify('сhangeСellStatus', {x: x, y: y});
+    this.canvas.setAttribute('width', widthInput.value * constants.CELL_SIZE);
+    this.canvas.setAttribute('height', heightInput.value * constants.CELL_SIZE);
+    this.canvas.onclick = (event) => {
+      const x = Math.floor(event.offsetX / constants.CELL_SIZE);
+      const y = Math.floor(event.offsetY / constants.CELL_SIZE);
+      this.notify('сhangeСellStatus', {x: x, y: y});
     };
     pageContainer.insertBefore(this.canvas, document.body.nextSibling);    
   }
 
-  updateSizeCanvas(width, height) {
-    this.canvas.width = width * 10;
-    this.canvas.height = height * 10;
+  updateSizeCanvas(data) {
+    this.canvas.width = data.width * constants.CELL_SIZE;
+    this.canvas.height = data.height * constants.CELL_SIZE;
     document.body.appendChild(this.canvas);
   }
   
-  updateField(cells, width, height) {
+  updateField(data) {
     const c = this.canvas.getContext('2d');
-    c.clearRect(0, 0, width * 10, height * 10);
-    for (let i = 0; i < width; i++) {
-      for (let j = 0; j < height; j++) {
-        if (cells[i][j]) {
-          c.fillRect(i * 10, j * 10, 10, 10);
+    c.clearRect(0, 0, data.width * constants.CELL_SIZE, data.height * constants.CELL_SIZE);
+    for (let i = 0; i < data.width; i++) {
+      for (let j = 0; j < data.height; j++) {
+        if (data.cells[i][j]) {
+          c.fillRect(i * constants.CELL_SIZE, j * constants.CELL_SIZE, constants.CELL_SIZE, constants.CELL_SIZE);
         }
       }
     }

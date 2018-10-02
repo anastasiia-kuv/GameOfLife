@@ -1,46 +1,39 @@
-import EventObserver from './EventObserver.js';
+import EventObserver from './eventObserver.js';
 class Controller extends EventObserver {
-  constructor(view, model) {
+  constructor() {
     super();
-    this.view = view;
-    this.model = model;
   }
  
   changeSizeCanvas(data){
-    this.model.pause();
-    this.model.setWidth(data.width);
-    this.model.setHeight(data.height);
+    this.notify('pause');
+    this.notify('setSizeCanvas', {width: data.width, height: data.height});
+    this.notify('updateSizeCanvas', {width: data.width, height: data.height});
+    this.notify('initNewGame');
   }
 
-  updateSizeCanvas(data) {
-    this.model.pause();
-    this.view.updateSizeCanvas(data.width, data.height);
-    this.model.initNewGame();
-  }
-
-  initNewGame() {
-    this.model.pause();
-    this.model.initNewGame();
+  initGame() {
+    this.notify('pause');
+    this.notify('initNewGame');
   }
 
   сhangeСellStatus(data) {
-    this.model.updateCellStatus(data.x, data.y);
+    this.notify('updateCellStatus', {x: data.x, y: data.y});
   }
 
-  updateField(data) {
-    this.view.updateField(data.cells,  data.width, data.height);
+  сhangeField(data) {
+    this.notify('updateField', {cells: data.cells, width: data.width, height: data.height});
   }
 
   startGame(){
-    this.model.start();
+    this.notify('start');
   }
 
   pauseGame() {
-    this.model.pause();
+    this.notify('pause');
   }
 
   changeSpeed(data){
-    this.model.updateSpeedGame(data.speed);
+    this.notify('updateSpeedGame', {speed: data.speed});
   }
 }
 

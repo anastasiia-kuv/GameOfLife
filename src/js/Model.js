@@ -1,13 +1,14 @@
-import EventObserver from './EventObserver.js';
+import EventObserver from './eventObserver.js';
+import constants from './constants.js';
 class Model extends EventObserver {
   constructor(){
     super();
-    this.width = 40;
-    this.height = 30;
+    this.width = constants.DEFAULT_WIDTH;
+    this.height =  constants.DEFAULT_HEIGHT;
+    this.speedGame = constants.DEFAULT_DELAY;
     this.cells = [];
     this.timer = {};
     this.isRun = false;
-    this.speedGame = 600;
     this.initFieldData(this.width,this.height);
   }
 
@@ -16,10 +17,10 @@ class Model extends EventObserver {
     for (let i = 0; i < width; i++) {
       this.cells.push([]);
       for (let j = 0; j < height; j++){
-        this.cells[i].push(0);
+        this.cells[i].push(constants.DEAD_CELL);
       }
     }
-    this.notify('updateField', {cells: this.cells, width: width, height: height});
+    this.notify('сhangeField', {cells: this.cells, width: width, height: height});
   }
 
   checkTopCell(j) {
@@ -76,12 +77,12 @@ class Model extends EventObserver {
     if (this.cells[this.checkLeftCell(i) - 1][this.checkTopCell(j) - 1]) {
       neighbors += 1;
     }
-    if (!this.cells[i][j] && neighbors === 3) {
-      return 1;
+    if (!this.cells[i][j] && neighbors === constants.MAXIMUM_ALIVE_NEIGHBORS) {
+      return constants.ALIVE_CELL;
     }
     if (this.cells[i][j]) {
-      if (neighbors === 2 || neighbors === 3) {
-        return 1;
+      if (neighbors === constants.MINIMUM_ALIVE_NEIGHBORS || neighbors === constants.MAXIMUM_ALIVE_NEIGHBORS) {
+        return constants.ALIVE_CELL;
       }
     }
   }
@@ -91,7 +92,7 @@ class Model extends EventObserver {
     for (let i = 0; i < this.width; i++) {
       tempCells.push([]);
       for (let j = 0; j < this.height; j++) {
-        tempCells[i].push(0);
+        tempCells[i].push(constants.DEAD_CELL);
       }
     }
     for (let i = 0; i < this.width; i++) {
@@ -104,7 +105,7 @@ class Model extends EventObserver {
 
   updateCells() {
     this.cells = this.step();
-    this.notify('updateField', {cells: this.cells, width: this.width, height: this.height});
+    this.notify('сhangeField', {cells: this.cells, width: this.width, height: this.height});
   }
 
   getCells () {
@@ -142,41 +143,18 @@ class Model extends EventObserver {
     }
   }
 
-  setHeight (h) {
-    this.height = h;
-    this.notify('updateSizeCanvas', {width: this.width, height: this.height});
+  setSizeCanvas (data) {
+    this.height = data.height;
+    this.width = data.width;
   }
 
-  setWidth (w) {
-    this.width = w;
-    this.notify('updateSizeCanvas', {width: this.width, height: this.height});
+  updateCellStatus (data) {
+    !this.cells[data.x][data.y] ? this.cells[data.x][data.y] = constants.ALIVE_CELL : this.cells[data.x][data.y] = constants.DEAD_CELL;
+    this.notify('сhangeField', {cells: this.cells, width: this.width, height: this.height});
   }
 
-  updateCellStatus (x, y) {
-    !this.cells[x][y] ? this.cells[x][y] = 1 : this.cells[x][y] = 0;
-    this.notify('updateField', {cells: this.cells, width: this.width, height: this.height});
-  }
-
-  updateSpeedGame (speed) {
-    switch (speed) {
-      case '1':
-        this.speedGame = 1000;
-        break;
-      case '2':
-        this.speedGame = 800;
-        break;
-      case '3':
-        this.speedGame = 600;
-        break;
-      case '4':
-        this.speedGame = 400;
-        break;
-      case '5':
-        this.speedGame = 200;
-        break;
-      default:
-        this.speedGame = 600;
-    }
+  updateSpeedGame (data) {
+    this.speedGame = constants.MAX_DELAY - (constants.STEP_DELAY * (data.speed - 1));
     if (this.isRun) {
       this.pause();
       this.start();
@@ -188,10 +166,10 @@ class Model extends EventObserver {
     return this.cells;
   }
 
-  setCells (testCells, w, h) {
+  setCells (testCells, width, height) {
     this.cells = [...testCells];
-    this.width = w;
-    this.height = h;
+    this.width = width;
+    this.height = height;
   }
 }
 
