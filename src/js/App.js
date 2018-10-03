@@ -1,6 +1,6 @@
-import Controller from './controller.js';
-import Model from './model.js';
-import View from './view.js';
+import Controller from './Controller.js';
+import Model from './Model.js';
+import View from './View.js';
 class App {
   constructor(){
     this.model = new Model();

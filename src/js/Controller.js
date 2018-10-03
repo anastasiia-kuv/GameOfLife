@@ -1,4 +1,4 @@
-import EventObserver from './eventObserver.js';
+import EventObserver from './EventObserver.js';
 class Controller extends EventObserver {
   constructor() {
     super();

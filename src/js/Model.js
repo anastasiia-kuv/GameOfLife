@@ -1,4 +1,4 @@
-import EventObserver from './eventObserver.js';
+import EventObserver from './EventObserver.js';
 import constants from './constants.js';
 class Model extends EventObserver {
   constructor(){
@@ -13,42 +13,24 @@ class Model extends EventObserver {
   }
 
   initFieldData(width, height) {
-    this.cells.length = 0;
-    for (let i = 0; i < width; i++) {
-      this.cells.push([]);
-      for (let j = 0; j < height; j++){
-        this.cells[i].push(constants.DEAD_CELL);
-      }
-    }
+    this.cells = Array.from({ length: width }, () => Array.from({ length: height }, () => constants.DEAD_CELL));
     this.notify('сhangeField', {cells: this.cells, width: width, height: height});
   }
 
   checkTopCell(j) {
-    if (!j) {
-      return this.height;
-    }
-    return j;
+    return (!j) ? this.height : j;
   }
 
   checkBottomCell(j) {
-    if (j === this.height - 1) {
-      return -1;
-    }
-    return j;
+    return (j === this.height - 1) ? -1 : j;
   }
 
   checkLeftCell(i) {
-    if (!i) {
-      return this.width;
-    }
-    return i;
+    return (!i) ? this.width : i;
   }
 
   checkRightCell(i) {
-    if (i === this.width - 1) {
-      return -1;
-    }
-    return i;
+    return (i === this.width - 1) ? -1 : i;
   }
 
   countNeighbors(i, j) {
@@ -88,19 +70,7 @@ class Model extends EventObserver {
   }
 
   step() {
-    const tempCells = [];
-    for (let i = 0; i < this.width; i++) {
-      tempCells.push([]);
-      for (let j = 0; j < this.height; j++) {
-        tempCells[i].push(constants.DEAD_CELL);
-      }
-    }
-    for (let i = 0; i < this.width; i++) {
-      for (let j = 0; j < this.height; j++) {
-        tempCells[i][j] = this.countNeighbors(i, j);
-      }
-    }
-    return tempCells;
+    return Array.from({ length: this.width }, (_, i) => Array.from({ length: this.height }, (_, j) => this.countNeighbors(i, j)));
   }
 
   updateCells() {
@@ -135,10 +105,8 @@ class Model extends EventObserver {
   }
 
   start () {
-    if (!this.isRun) {
-      this.timer = setInterval(() => {
-        this.updateCells();
-      }, this.speedGame);
+    if(!this.isRun) {
+      this.timer = setInterval(() => this.updateCells(), this.speedGame);
       this.isRun = true;
     }
   }
@@ -155,15 +123,14 @@ class Model extends EventObserver {
 
   updateSpeedGame (data) {
     this.speedGame = constants.MAX_DELAY - (constants.STEP_DELAY * (data.speed - 1));
-    if (this.isRun) {
+    if(this.isRun) {
       this.pause();
       this.start();
     }
   }
 
   doOneStep () {
-    this.cells = this.step();
-    return this.cells;
+    return this.cells = this.step();
   }
 
   setCells (testCells, width, height) {
