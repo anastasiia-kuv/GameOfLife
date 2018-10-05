@@ -1,11 +1,10 @@
 @font-face 
-  font-family: 'SourceSansPro'
-  src: url('./fonts/SourceSansPro.woff2') format('woff2')
-  url('./fonts/SourceSansPro.woff') format('woff')
-  url('./fonts/SourceSansPro.ttf') format('truetype') 
-  url('./fonts/SourceSansPro.svg') format('svg')
-  font-weight: normal
-  font-style: normal
+  font-family "Source Sans Pro"
+  src url("./fonts/source-sans-pro.woff") format("woff")
+  url("./fonts/source-sans-pro.ttf") format("truetype") 
+  url("./fonts/source-sans-pro.svg") format("svg")
+  font-weight normal
+  font-style normal
 
 white-color = #FFFFFF
 title-text-color = #4F4F4F
@@ -13,99 +12,81 @@ green-color = #4EB7A8
 green-shadow-color = #28A290
 green-text-color = #45AC9D
 
-@media only screen and (max-width: 319px)
-    html
-        font-size: 7px
-        
-@media only screen and (min-width: 320px) and (max-width: 639px)
-    html
-        font-size: 8px
-        
-@media only screen and (min-width: 640px) and (max-width: 799px)
-    html
-        font-size: 10px
-        
-@media only screen and (min-width: 800px) and (max-width: 1023px)
-    html
-        font-size: 11px
-
-@media only screen and (min-width: 1024px) and (max-width: 1279px)
-    html
-        font-size: 12px
-        
-@media only screen and (min-width: 1280px) and (max-width: 1679px)
-    html
-        font-size: 13px
-
-@media only screen and (min-width: 1680px) and (max-width: 1919px)
-    html
-        font-size: 14px
-
-@media only screen and (min-width: 1920px)
-    html
-        font-size: 15px
+html
+  font 14px "Source Sans Pro", Arial, sans-serif
+  background-color white-color
+  color title-text-color
 
 body
-    font: 1.2rem SourceSansPro
-    background-color: white-color
-    color: title-text-color
+  margin 0
+  padding 0
+  min-width 410px
+
+.page-container
+  display flex
+  flex-direction column
+  
+  &__title
+    margin 2rem auto
+    text-transform uppercase
+        
+  &__canvas
+    border solid 0.3rem green-color
+    margin 1rem auto
+    display block
+    max-width 100%
+    cursor pointer
+
+.control-elements-container
+  display flex
+  justify-content center
+  flex-wrap wrap
+
+  .width-form
+  .height-form
+  .speed-form
+    display flex
+    flex-direction column
+    margin 0 0.5rem
     
-.name-of-game
-    text-align: center
+    &__label
+    &__input
+      margin 0.5rem auto
+      max-width 8rem
+    
+    &__label
+      text-transform capitalize
+    
+    &__input 
+      font-size 1rem
+      cursor pointer 
 
-.buttons-container
-    display: grid
-    grid-template-columns: 30% 4rem 1rem 4rem 1rem 8rem 1rem 8rem 1rem 8rem 1rem 8rem 25%
-    grid-template-rows: 3rem 2.5rem auto
-    grid-template-areas: ". label-width . label-height .  label-speed . . . . . . ." ". width-field . height-field . range-speed . new-game-button . start-button . pause-button ."
-    text-align: center
+  .speed-form
 
-.label-width
-    grid-area: label-width
+    &__range-label
+      display flex
+      justify-content space-between
 
-.width-field
-    grid-area: width-field
-
-.label-height
-    grid-area: label-height
-
-.height-field
-    grid-area: height-field
-
-.label-speed
-    grid-area: label-speed
-
-.range-speed
-    grid-area: range-speed
-
-.new-game-button
-    grid-area: new-game-button
-
-.start-button
-    grid-area: start-button
-
-.pause-button
-    grid-area: pause-button
-
-.button
-  height: 100%
-  border-radius: 0.3rem
-  font-size: 1rem  
-  border: solid 0.1rem green-color
-  box-shadow: 0 -0.3rem green-shadow-color inset
-  background-color: white-color
-  color: green-text-color
-  text-transform: uppercase
-  cursor: pointer
-  outline: none
-  &:hover
-    background-color: green-color
-    color: white-color
-    border: none
-
-.canvas
-    border: solid 0.3rem green-color
-    margin-top: 5%
-    margin-left: auto
-    margin-right: auto
-    display: block
+  .new-game-form
+  .start-game-form
+  .pause-game-form
+    display flex
+    align-items center
+  
+    &__button
+      height 2rem
+      width 8rem
+      border-radius 0.3rem
+      font-size 0.9rem  
+      border solid 0.1rem green-color
+      box-shadow 0 -0.3rem green-shadow-color inset
+      background-color white-color
+      color green-text-color
+      text-transform uppercase
+      cursor pointer
+      margin 0.5rem 0.5rem 0 0.5rem
+      
+      &:hover
+        background-color green-color
+        color white-color
+        border none

@@ -4,10 +4,10 @@ module.exports = function () {
     'module': {
       'rules': [
         {
-          'test': /\.(woff|woff2|eot|ttf|otf)$/,
-          'loader': 'file-loader',
+          'test': /\.pug$/,
+          'loader': 'pug-loader',
           'options': {
-            'name': 'fonts/[name].[ext]'
+            'pretty': true
           }
         }
       ]
