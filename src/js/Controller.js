@@ -32,6 +32,10 @@ class Controller extends EventObserver {
     this.notify('pause');
   }
 
+  endGame() {
+    this.notify('end');
+  }
+
   changeSpeed(data){
     this.notify('updateSpeedGame', {speed: data.speed});
   }
