@@ -9,73 +9,50 @@ class Model extends EventObserver {
     this.cells = [];
     this.timer = {};
     this.isRun = false;
-    this.initFieldData(this.width,this.height);
+    this.initFieldData(this.height, this.width);
   }
 
-  initFieldData(width, height) {
-    this.cells = Array.from({ length: width }, () => Array.from({ length: height }, () => constants.DEAD_CELL));
+  initFieldData(height, width) {
+    this.cells = Array.from({ length: height }, () => Array.from({ length: width }, () => constants.DEAD_CELL));
     this.notify('сhangeField', {cells: this.cells, width: width, height: height});
   }
 
-  checkTopCell(j) {
-    return (!j) ? this.height : j;
+  step() {
+    return Array.from({ length: this.height }, (_, i) => Array.from({ length: this.width }, (_, j) => this.getNextCellStatus(i, j)));
   }
 
-  checkBottomCell(j) {
-    return (j === this.height - 1) ? -1 : j;
-  }
-
-  checkLeftCell(i) {
-    return (!i) ? this.width : i;
-  }
-
-  checkRightCell(i) {
-    return (i === this.width - 1) ? -1 : i;
-  }
-
-  countNeighbors(i, j) {
-    let neighbors = 0;
-    if (this.cells[this.checkLeftCell(i) - 1][j]) {
-      neighbors += 1;
-    }
-    if (this.cells[i][this.checkBottomCell(j) + 1]) {
-      neighbors += 1;
-    }
-    if (this.cells[this.checkRightCell(i) + 1][j]) {
-      neighbors += 1;
-    }
-    if (this.cells[i][this.checkTopCell(j) - 1]) {
-      neighbors += 1;
-    }
-    if (this.cells[this.checkLeftCell(i) - 1][this.checkBottomCell(j) + 1]) {
-      neighbors += 1;
-    }
-    if (this.cells[this.checkRightCell(i) + 1][this.checkBottomCell(j) + 1]) {
-      neighbors += 1;
-    }
-    if (this.cells[this.checkRightCell(i) + 1][this.checkTopCell(j) - 1]) {
-      neighbors += 1;
-    }
-    if (this.cells[this.checkLeftCell(i) - 1][this.checkTopCell(j) - 1]) {
-      neighbors += 1;
-    }
-    if (!this.cells[i][j] && neighbors === constants.MAXIMUM_ALIVE_NEIGHBORS) {
+  getNextCellStatus(row, column){
+    const countAliveNeighbours = this.getCountAliveNeighbours(row, column, this.cells);
+    if (!this.cells[row][column] && countAliveNeighbours === constants.MAXIMUM_ALIVE_NEIGHBORS) {
       return constants.ALIVE_CELL;
     }
-    if (this.cells[i][j]) {
-      if (neighbors === constants.MINIMUM_ALIVE_NEIGHBORS || neighbors === constants.MAXIMUM_ALIVE_NEIGHBORS) {
+    if (this.cells[row][column]) {
+      if (countAliveNeighbours === constants.MINIMUM_ALIVE_NEIGHBORS || countAliveNeighbours === constants.MAXIMUM_ALIVE_NEIGHBORS) {
         return constants.ALIVE_CELL;
       }
     }
   }
 
-  step() {
-    return Array.from({ length: this.width }, (_, i) => Array.from({ length: this.height }, (_, j) => this.countNeighbors(i, j)));
+  getCountAliveNeighbours(row, column, cells) {
+    const indexes = [-1, 0, 1];
+    return indexes.reduce((count, i) => {
+        let indexRow = row + i;
+        if (!cells[indexRow]) {
+            return count;
+        }
+        return count + indexes.reduce((countInRow, j) => {
+            let indexCell = column + j;
+            if (!cells[indexRow][indexCell] || (i === 0 && j === 0)) {
+                return countInRow;
+            }
+            return countInRow + 1;
+        }, 0);
+    }, 0);
   }
 
   updateCells() {
     this.cells = this.step();
-    this.notify('сhangeField', {cells: this.cells, width: this.width, height: this.height});
+    this.notify('сhangeField', {cells: this.cells, height: this.height, width: this.width});
   }
 
   getCells () {
@@ -96,12 +73,7 @@ class Model extends EventObserver {
 
   initNewGame () {
     this.isRun = false;
-    this.initFieldData(this.width, this.height);
-  }
-
-  pause () {
-    clearInterval(this.timer);
-    this.isRun = false;
+    this.initFieldData(this.height, this.width);
   }
 
   start () {
@@ -111,6 +83,11 @@ class Model extends EventObserver {
     }
   }
 
+  pause () {
+    clearInterval(this.timer);
+    this.isRun = false;
+  }
+
   setSizeCanvas (data) {
     this.height = data.height;
     this.width = data.width;
@@ -118,7 +95,7 @@ class Model extends EventObserver {
 
   updateCellStatus (data) {
     !this.cells[data.x][data.y] ? this.cells[data.x][data.y] = constants.ALIVE_CELL : this.cells[data.x][data.y] = constants.DEAD_CELL;
-    this.notify('сhangeField', {cells: this.cells, width: this.width, height: this.height});
+    this.notify('сhangeField', {cells: this.cells, height: this.height, width: this.width});
   }
 
   updateSpeedGame (data) {
@@ -133,7 +110,7 @@ class Model extends EventObserver {
     return this.cells = this.step();
   }
 
-  setCells (testCells, width, height) {
+  setCells (testCells, height, width) {
     this.cells = [...testCells];
     this.width = width;
     this.height = height;
