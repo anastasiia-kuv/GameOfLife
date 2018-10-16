@@ -10,24 +10,26 @@ class Model extends EventObserver {
     this.pastMatrixStates = [];
     this.timer = {};
     this.isRuning = false;
-    this.initMatrix(this.height, this.width);
+    this.initMatrix(this.width, this.height);
   }
 
-  initMatrix(height, width) {
-    this.matrix = Array.from({ length: height }, () => Array.from({ length: width }, () => constants.DEAD_CELL));
+  initMatrix(width, height) {
+    this.matrix = Array.from({ length: width }, () => Array.from({ length: height }, () => constants.DEAD_CELL));
     this.pastMatrixStates = [];
     this.notify('сhangeField', {matrix: this.matrix, width: width, height: height});
   }
 
   updateCell (data) {
-    this.matrix[data.x][data.y] = this.matrix[data.x][data.y] ? constants.DEAD_CELL : constants.ALIVE_CELL;
-    this.notify('сhangeField', {matrix: this.matrix, height: this.height, width: this.width});
+    let x = data.x === this.width ? data.x - 1 : data.x;
+    let y = data.y === this.height ? data.y - 1 : data.y;
+    this.matrix[x][y] = this.matrix[x][y] ? constants.DEAD_CELL : constants.ALIVE_CELL;
+    this.notify('сhangeField', {matrix: this.matrix, width: this.width, height: this.height});
   }
 
   updateMatrix() {
     this.isMatrixRepeated() ? this.notify('endGame') : 0;
     this.matrix = this.step();
-    this.notify('сhangeField', {matrix: this.matrix, height: this.height, width: this.width});
+    this.notify('сhangeField', {matrix: this.matrix, width: this.width, height: this.height});
   }
 
   isMatrixRepeated() {
@@ -37,7 +39,7 @@ class Model extends EventObserver {
   }
 
   step() {
-    return Array.from({ length: this.height }, (_, i) => Array.from({ length: this.width }, (_, j) => this.getNextMatrixState(i, j)));
+    return Array.from({ length: this.width }, (_, i) => Array.from({ length: this.height }, (_, j) => this.getNextMatrixState(i, j)));
   }
 
   getNextMatrixState(row, column){
@@ -76,7 +78,7 @@ class Model extends EventObserver {
 
   initNewGame () {
     this.isRuning = false;
-    this.initMatrix(this.height, this.width);
+    this.initMatrix(this.width, this.height);
   }
 
   start () {
