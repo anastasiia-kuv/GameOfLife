@@ -16,7 +16,7 @@ let context = {
 
 Handlebars.registerHelper('h1', function() {
   return new Handlebars.SafeString(
-    "<h1 class=\"page-container__title\">" 
+    "<h1 class=\"page-container__title\">"
     + this.title
     +"</h1>"
   );
@@ -66,7 +66,7 @@ Handlebars.registerHelper('canvas', function(field) {
   );
 });
 
-  
   let templateScript = Handlebars.templates.view(context);
-  
+
   document.write(templateScript);
+  

@@ -54,12 +54,12 @@ class View extends EventObserver {
     this.canvas.get(0).height = data.height * constants.CELL_SIZE;
     document.body.appendChild(this.canvas.get(0));
   }
-  
+
   updateField(data) {
     const c = this.canvas.get(0).getContext('2d');
     c.clearRect(0, 0, data.height * constants.CELL_SIZE, data.width * constants.CELL_SIZE);
     Array.from({ length: data.height }, (_, i) => Array.from({ length: data.width }, (_, j) => data.cells[i][j] ? c.fillRect(i * constants.CELL_SIZE, j * constants.CELL_SIZE, constants.CELL_SIZE, constants.CELL_SIZE) : 0)); 
-  } 
+  }
 }
 
 export default View;
