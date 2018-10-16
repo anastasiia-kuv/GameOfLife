@@ -1,0 +1,13 @@
+<main class="page-container">
+	{{#h1}}{{/h1}}
+	<section class="control-elements-container">
+		{{#each inputs}}
+			{{game_input}}
+		{{/each}}
+		{{#slider speedSlider}}{{/slider}}
+		{{#each buttons}}
+			{{game_button}}
+		{{/each}}
+	</section>
+	{{#canvas field}}{{/canvas}}
+</main>
