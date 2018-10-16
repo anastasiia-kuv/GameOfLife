@@ -20,7 +20,7 @@ class Model extends EventObserver {
   }
 
   updateCellStatus (data) {
-    !this.cells[data.x][data.y] ? this.cells[data.x][data.y] = constants.ALIVE_CELL : this.cells[data.x][data.y] = constants.DEAD_CELL;
+    this.cells[data.x][data.y] = this.cells[data.x][data.y] ? constants.DEAD_CELL : constants.ALIVE_CELL;
     this.notify('сhangeField', {cells: this.cells, height: this.height, width: this.width});
   }
   
