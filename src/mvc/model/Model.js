@@ -1,5 +1,5 @@
-import EventObserver from './EventObserver.js';
-import constants from './constants.js';
+import EventObserver from '../event-observer/EventObserver.js';
+import constants from '../constants.js';
 class Model extends EventObserver {
   constructor(){
     super();

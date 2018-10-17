@@ -16,10 +16,13 @@ const PATHS = {
 },
 
 common = merge([{
-  'entry': `${PATHS.source}/index.js`,
+  'entry': {
+    'viewTemplate': `${PATHS.source}/viewTemplate.js`,
+    'bundle': `${PATHS.source}/index.js`
+  },
   'output': {
-  'filename': 'bundle.js',
-  'path': `${PATHS.build}/`
+    'filename': '[name].bundle.js',
+    'path': `${PATHS.build}/`
   },
   'plugins': [
     new HtmlWebpackPlugin({
