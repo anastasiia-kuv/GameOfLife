@@ -1,4 +1,4 @@
-import EventObserver from './eventObserver.js';
+import EventObserver from './EventObserver.js';
 import constants from './constants.js';
 class View extends EventObserver {
   constructor() {
@@ -36,7 +36,7 @@ class View extends EventObserver {
     widthInput.setAttribute('value', constants.DEFAULT_WIDTH);
     widthInput.setAttribute('tabindex', '1');
     widthInput.onblur = () => {
-      this.notify('changeSizeCanvas', {width: widthInput.value, height: heightInput.value});
+      this.notify('changeSizeCanvas', {height: heightInput.value, width: widthInput.value});
     };
     widthForm.appendChild(widthInput);
 
@@ -55,7 +55,7 @@ class View extends EventObserver {
     heightInput.setAttribute('value', constants.DEFAULT_HEIGHT);
     heightInput.setAttribute('tabindex', '2');
     heightInput.onblur = () => {
-      this.notify('changeSizeCanvas', {width: widthInput.value, height: heightInput.value});
+      this.notify('changeSizeCanvas', {height: heightInput.value, width: widthInput.value});
     };
     heightForm.appendChild(heightInput);
 
@@ -156,14 +156,8 @@ class View extends EventObserver {
   
   updateField(data) {
     const c = this.canvas.getContext('2d');
-    c.clearRect(0, 0, data.width * constants.CELL_SIZE, data.height * constants.CELL_SIZE);
-    for (let i = 0; i < data.width; i++) {
-      for (let j = 0; j < data.height; j++) {
-        if (data.cells[i][j]) {
-          c.fillRect(i * constants.CELL_SIZE, j * constants.CELL_SIZE, constants.CELL_SIZE, constants.CELL_SIZE);
-        }
-      }
-    }
+    c.clearRect(0, 0, data.height * constants.CELL_SIZE, data.width * constants.CELL_SIZE);
+    Array.from({ length: data.height }, (_, i) => Array.from({ length: data.width }, (_, j) => data.cells[i][j] ? c.fillRect(i * constants.CELL_SIZE, j * constants.CELL_SIZE, constants.CELL_SIZE, constants.CELL_SIZE) : 0)); 
   } 
 }
 
