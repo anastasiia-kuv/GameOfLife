@@ -47,7 +47,7 @@
     "test": "./node_modules/karma/.bin/karma start",
     "start": "./node_modules/.bin/webpack-dev-server --env development --mode=development --open",
     "build": "./node_modules/.bin/webpack --env production --mode=production",
-    "lint": "./node_modules/.bin/eslint -c .eslintrc.js src test webpack karma.conf.js webpack.config.js",
+    "lint": "./node_modules/.bin/eslint -c .eslintrc.js src test",
     "handlebars": "./node_modules/.bin/handlebars src/mvc/templates/view.handlebars -f src/viewTemplate.js"
   },
   "repository": {

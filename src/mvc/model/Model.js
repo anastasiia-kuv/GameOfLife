@@ -7,9 +7,6 @@ class Model extends EventObserver {
     this.width = constants.DEFAULT_WIDTH;
     this.height = constants.DEFAULT_HEIGHT;
     this.gameSpeed = constants.DEFAULT_DELAY;
-    this.matrix = [];
-    this.pastMatrixStates = [];
-    this.timer = {};
     this.isRuning = false;
     this.initMatrix(this.width, this.height);
   }
@@ -45,29 +42,33 @@ class Model extends EventObserver {
         (cell, j) => (cell === this.matrix[i][j]),
       ),
     ));
-    result ? this.pastMatrixStates = [] : this.pastMatrixStates.push(this.matrix);
+    if (result) {
+      this.pastMatrixStates = [];
+    } else {
+      this.pastMatrixStates.push(this.matrix);
+    }
     return result;
   }
 
   step() {
     return Array.from(
       { length: this.width }, (row, i) => Array.from(
-        { length: this.height }, (col, j) => this.getNextMatrixState(i, j),
+        { length: this.height }, (col, j) => this.getCellState(i, j),
       ),
     );
   }
 
-  getNextMatrixState(row, column) {
-    const countAliveNeighbours = this.getCountAliveNeighbours(row, column, this.matrix);
-    if (!this.matrix[row][column] && countAliveNeighbours === constants.MAXIMUM_ALIVE_NEIGHBORS) {
-      return constants.ALIVE_CELL;
-    } if (!this.matrix[row][column]
-      && (countAliveNeighbours < constants.MAXIMUM_ALIVE_NEIGHBORS
-        || countAliveNeighbours > constants.MAXIMUM_ALIVE_NEIGHBORS)) {
-      return constants.DEAD_CELL;
-    }
-
-    if (this.matrix[row][column]) {
+  getCellState(row, column) {
+    const countAliveNeighbours = this.getCountAliveNeighbours(row, column);
+    if (!this.matrix[row][column]) {
+      if (countAliveNeighbours === constants.MAXIMUM_ALIVE_NEIGHBORS) {
+        return constants.ALIVE_CELL;
+      }
+      if (countAliveNeighbours < constants.MAXIMUM_ALIVE_NEIGHBORS
+        || countAliveNeighbours > constants.MAXIMUM_ALIVE_NEIGHBORS) {
+        return constants.DEAD_CELL;
+      }
+    } else {
       if (countAliveNeighbours === constants.MINIMUM_ALIVE_NEIGHBORS
         || countAliveNeighbours === constants.MAXIMUM_ALIVE_NEIGHBORS) {
         return constants.ALIVE_CELL;
@@ -76,16 +77,16 @@ class Model extends EventObserver {
     }
   }
 
-  getCountAliveNeighbours(row, column, matrix) {
+  getCountAliveNeighbours(row, column) {
     const indexes = [-1, 0, 1];
     return indexes.reduce((count, i) => {
       const indexRow = row + i;
-      if (!matrix[indexRow]) {
+      if (!this.matrix[indexRow]) {
         return count;
       }
       return count + indexes.reduce((countInRow, j) => {
         const indexCell = column + j;
-        if (!matrix[indexRow][indexCell] || (i === 0 && j === 0)) {
+        if (!this.matrix[indexRow][indexCell] || (i === 0 && j === 0)) {
           return countInRow;
         }
         return countInRow + 1;

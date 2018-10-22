@@ -1,3 +1,4 @@
+/* eslint-disable */
 (function () {
   const template = Handlebars.template; const
     templates = Handlebars.templates = Handlebars.templates || {};
