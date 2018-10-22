@@ -1,17 +1,15 @@
 module.exports = function () {
-
   return {
-    'module': {
-      'rules': [
+    module: {
+      rules: [
         {
-          'test': /\.(woff|woff2|eot|ttf|otf)$/,
-          'loader': 'file-loader',
-          'options': {
-            'name': 'fonts/[name].[ext]'
-          }
-        }
-      ]
-    }
+          test: /\.(woff|woff2|eot|ttf|otf)$/,
+          loader: 'file-loader',
+          options: {
+            name: 'fonts/[name].[ext]',
+          },
+        },
+      ],
+    },
   };
-
 };

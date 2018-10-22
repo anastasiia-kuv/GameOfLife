@@ -11,38 +11,40 @@ const babel = require('./webpack/babel');
 const devserver = require('./webpack/devserver');
 
 const PATHS = {
-  'source': path.join(__dirname, './src'),
-  'build': path.join(__dirname, './build')
-},
+  source: path.join(__dirname, './src'),
+  build: path.join(__dirname, './build'),
+};
 
-common = merge([{
-  'entry': {
-    'viewTemplate': `${PATHS.source}/viewTemplate.js`,
-    'bundle': `${PATHS.source}/index.js`
+
+const common = merge([{
+  entry: {
+    viewTemplate: `${PATHS.source}/viewTemplate.js`,
+    bundle: `${PATHS.source}/index.js`,
   },
-  'output': {
-    'filename': '[name].bundle.js',
-    'path': `${PATHS.build}/`
+  output: {
+    filename: '[name].bundle.js',
+    path: `${PATHS.build}/`,
   },
-  'plugins': [
+  plugins: [
     new HtmlWebpackPlugin({
-      'filename': 'index.html',
-      'title': 'Game of Life',
-      'template': `${PATHS.source}/index.pug`
+      filename: 'index.html',
+      title: 'Game of Life',
+      template: `${PATHS.source}/index.pug`,
     }),
     new webpack.ProvidePlugin({
-      '$': 'jquery',
-      'jQuery': 'jquery',
-      'window.jQuery': 'jquery'
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
     }),
-    new webpack.IgnorePlugin(/\.\/locale$/)
-  ]},
-  babel(),
-  fonts(),
-  icon(),
-  stylus(),
-  css(),
-  pug()
+    new webpack.IgnorePlugin(/\.\/locale$/),
+  ],
+},
+babel(),
+fonts(),
+icon(),
+stylus(),
+css(),
+pug(),
 ]);
 
 module.exports = function (env) {
@@ -52,7 +54,7 @@ module.exports = function (env) {
   if (env === 'development') {
     return merge([
       common,
-      devserver()
+      devserver(),
     ]);
   }
 };
