@@ -1,94 +1,100 @@
 const webpack = require('webpack');
-module.exports = function (config) {
+const karmaWebpack = require('karma-webpack');
+const karmaMocha = require('karma-mocha');
+const karmaChai = require('karma-chai');
+const karmaMochaReporter = require('karma-mocha-reporter');
+const karmaChromeLauncher = require('karma-chrome-launcher');
+const karmaPhantomjsLauncher = require('karma-phantomjs-launcher');
+const karmaSourcemapLoader = require('karma-sourcemap-loader');
 
+module.exports = function (config) {
   config.set({
 
-    'basePath': '',
+    basePath: '',
 
-    'frameworks': [
+    frameworks: [
       'mocha',
-      'chai'
+      'chai',
     ],
 
-    'files': [
+    files: [
       'src/**/*.js',
-      'test/**/*.js'
+      'test/**/*.js',
     ],
 
-    'preprocessors': {
+    preprocessors: {
       'src/**/*.js': [
         'webpack',
-        'sourcemap'
+        'sourcemap',
       ],
       'test/**/*.js': [
         'webpack',
-        'sourcemap'
-      ]
+        'sourcemap',
+      ],
     },
 
-    'reporters': ['mocha'],
+    reporters: ['mocha'],
 
-    'webpack': {
-      'module': {
-        'rules': [
+    webpack: {
+      module: {
+        rules: [
           {
-            'test': /\.js$/,
-            'exclude': /node_modules/,
-            'loader': 'babel-loader'
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader',
           },
           {
-            'test': /\.styl$/,
-            'use': [
+            test: /\.styl$/,
+            use: [
               'style-loader',
               'css-loader',
-              'stylus-loader'
-            ]
+              'stylus-loader',
+            ],
           },
           {
-            'test': /\.(woff|woff2|eot|ttf|otf)$/,
-            'loader': 'file-loader',
-            'options': {
-              'name': '/fonts/[name].[ext]'
-            }
+            test: /\.(woff|woff2|eot|ttf|otf)$/,
+            loader: 'file-loader',
+            options: {
+              name: '/fonts/[name].[ext]',
+            },
           },
           {
-            'test': /\.css$/,
-            'use': [
+            test: /\.css$/,
+            use: [
               'style-loader',
-              'css-loader'
-            ]
-          }
-        ]
+              'css-loader',
+            ],
+          },
+        ],
       },
-      'plugins': [
+      plugins: [
         new webpack.ProvidePlugin({
-          '$': 'jquery',
-          'jQuery': 'jquery',
-          'window.jQuery': 'jquery'
+          $: 'jquery',
+          jQuery: 'jquery',
+          'window.jQuery': 'jquery',
         }),
-        new webpack.IgnorePlugin(/\.\/locale$/)
-      ]
+        new webpack.IgnorePlugin(/\.\/locale$/),
+      ],
     },
 
-    'plugins': [
-      require('karma-webpack'),
-      require('karma-mocha'),
-      require('karma-chai'),
-      require('karma-mocha-reporter'),
-      require('karma-chrome-launcher'),
-      require('karma-phantomjs-launcher'),
-      require('karma-sourcemap-loader')
+    plugins: [
+      karmaWebpack(),
+      karmaMocha(),
+      karmaChai(),
+      karmaMochaReporter(),
+      karmaChromeLauncher(),
+      karmaPhantomjsLauncher(),
+      karmaSourcemapLoader(),
     ],
 
-    'autoWatch': true,
+    autoWatch: true,
 
-    'browsers': ['PhantomJS'],
+    browsers: ['PhantomJS'],
 
-    'singleRun': false,
+    singleRun: false,
 
-    'webpackServer': {
-      'noInfo': true
-    }
+    webpackServer: {
+      noInfo: true,
+    },
   });
-
 };

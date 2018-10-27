@@ -1,6 +1,6 @@
-import Model from '../src/js/Model.js';
+import { assert } from 'chai';
+import Model from '../src/mvc/model/Model';
 
-import {assert} from 'chai';
 
 const model = new Model();
 const width = 5;
@@ -11,14 +11,14 @@ let testmatrixStep = [];
 
 describe('checkActiveShapes', () => {
   describe('Проверка что фигура мигалка изменилась, как и ожидалось', () => {
-    function checkFlasher (x) {
-      it('Фигура мигалка изменилась как и ожидалось на ' + x + ' шагу', () => {
+    function checkFlasher(x) {
+      it(`Фигура мигалка изменилась как и ожидалось на ${x} шагу`, () => {
         testmatrix = [
           [0, 0, 0, 0, 0],
           [0, 0, 0, 0, 0],
           [0, 1, 1, 1, 0],
           [0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0]
+          [0, 0, 0, 0, 0],
         ];
         model.setmatrix(testmatrix, 5, 5);
         testmatrixStep = [
@@ -26,8 +26,8 @@ describe('checkActiveShapes', () => {
           [0, 0, 1, 0, 0],
           [0, 0, 1, 0, 0],
           [0, 0, 1, 0, 0],
-          [0, 0, 0, 0, 0]
-        ];  
+          [0, 0, 0, 0, 0],
+        ];
         model.doOneStep();
         assert.deepEqual(model.getmatrix(), testmatrixStep);
         model.doOneStep();
@@ -46,7 +46,7 @@ describe('checkActiveShapes', () => {
         [0, 0, 0, 1, 0],
         [0, 1, 1, 1, 0],
         [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0]
+        [0, 0, 0, 0, 0],
       ];
       model.setmatrix(testmatrix, 5, 5);
       model.doOneStep();
@@ -55,20 +55,19 @@ describe('checkActiveShapes', () => {
         [0, 1, 0, 1, 0],
         [0, 0, 1, 1, 0],
         [0, 0, 1, 0, 0],
-        [0, 0, 0, 0, 0]
+        [0, 0, 0, 0, 0],
       ];
       assert.deepEqual(model.getmatrix(), testmatrixStep);
     });
 
     it('Фигура планер изменилась как и ожидалось на 2 шагу', () => {
-
       model.doOneStep();
       testmatrix = [
         [0, 0, 0, 0, 0],
         [0, 0, 0, 1, 0],
         [0, 1, 0, 1, 0],
         [0, 0, 1, 1, 0],
-        [0, 0, 0, 0, 0]
+        [0, 0, 0, 0, 0],
       ];
       assert.deepEqual(model.getmatrix(), testmatrix);
     });
@@ -80,7 +79,7 @@ describe('checkActiveShapes', () => {
         [0, 0, 1, 0, 0],
         [0, 0, 0, 1, 1],
         [0, 0, 1, 1, 0],
-        [0, 0, 0, 0, 0]
+        [0, 0, 0, 0, 0],
       ];
       assert.deepEqual(model.getmatrix(), testmatrix);
     });
@@ -95,7 +94,7 @@ describe('checkStaticShapes', () => {
         [0, 1, 1, 0, 0],
         [0, 1, 1, 0, 0],
         [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0]
+        [0, 0, 0, 0, 0],
       ];
       model.setmatrix(testmatrix, 5, 5);
       model.doOneStep();
@@ -110,7 +109,7 @@ describe('checkStaticShapes', () => {
         [0, 1, 0, 1, 0],
         [0, 1, 0, 1, 0],
         [0, 0, 1, 0, 0],
-        [0, 0, 0, 0, 0]
+        [0, 0, 0, 0, 0],
       ];
       model.setmatrix(testmatrix, 5, 5);
       model.doOneStep();
@@ -125,7 +124,7 @@ describe('checkStaticShapes', () => {
         [0, 1, 0, 1, 0],
         [0, 0, 1, 0, 0],
         [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0]
+        [0, 0, 0, 0, 0],
       ];
       model.setmatrix(testmatrix, 5, 5);
       model.doOneStep();
@@ -139,9 +138,9 @@ describe('initMatrix', () => {
     model.initMatrix(width, height);
   });
   describe('Проверка содержит ли массив matrix нули', () => {
-    function checkCell (x, y) {
+    function checkCell(x, y) {
       const expected = 0;
-      it('ячейка ['+ x + '][' + y + '] массива matrix содержит ' + expected, () => {
+      it(`ячейка [${x}][${y}] массива matrix содержит ${expected}`, () => {
         assert.equal(model.getmatrix()[x][y], expected);
       });
     }
@@ -163,9 +162,9 @@ describe('checkFieldData', () => {
   });
 
   describe('Проверка содержит ли массив matrix единицы', () => {
-    function checkCell (x, y) {
+    function checkCell(x, y) {
       const expected = 1;
-      it('ячейка ['+ x + '][' + y + '] массива matrix содержит ' + expected, () => {
+      it(`ячейка [${x}][${y}] массива matrix содержит ${expected}`, () => {
         assert.equal(model.getmatrix()[x][y], expected);
       });
     }

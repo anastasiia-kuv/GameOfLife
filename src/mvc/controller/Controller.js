@@ -1,13 +1,10 @@
-import EventObserver from '../event-observer/EventObserver.js';
-class Controller extends EventObserver {
-  constructor() {
-    super();
-  }
+import EventObserver from '../event-observer/EventObserver';
 
-  changeCanvasSize(data){
+class Controller extends EventObserver {
+  changeCanvasSize(data) {
     this.notify('pause');
-    this.notify('setFieldSize', {width: data.width, height: data.height});
-    this.notify('updateCanvasSize', {width: data.width, height: data.height});
+    this.notify('setFieldSize', { width: data.width, height: data.height });
+    this.notify('updateCanvasSize', { width: data.width, height: data.height });
     this.notify('initNewGame');
   }
 
@@ -17,14 +14,14 @@ class Controller extends EventObserver {
   }
 
   сhangeСellStatus(data) {
-    this.notify('updateCell', {x: data.x, y: data.y});
+    this.notify('updateCell', { x: data.x, y: data.y });
   }
 
   сhangeField(data) {
-    this.notify('updateField', {matrix: data.matrix, width: data.width, height: data.height});
+    this.notify('updateField', { matrix: data.matrix, width: data.width, height: data.height });
   }
 
-  startGame(){
+  startGame() {
     this.notify('start');
   }
 
@@ -36,8 +33,8 @@ class Controller extends EventObserver {
     this.notify('end');
   }
 
-  changeSpeed(data){
-    this.notify('updateGameSpeed', {speed: data.speed});
+  changeSpeed(data) {
+    this.notify('updateGameSpeed', { speed: data.speed });
   }
 }
 

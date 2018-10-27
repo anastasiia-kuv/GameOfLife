@@ -1,10 +1,12 @@
-import EventObserver from '../event-observer/EventObserver.js';
-import constants from '../constants.js';
+import EventObserver from '../event-observer/EventObserver';
+import constants from '../constants';
+
 class View extends EventObserver {
   constructor() {
     super();
     this.initDOMElements();
     this.initHandlers();
+    this.cellSize = constants.CELL_SIZE;
   }
 
   initDOMElements() {
@@ -19,15 +21,15 @@ class View extends EventObserver {
 
   initHandlers() {
     this.widthInput.on('blur', () => {
-      this.notify('changeCanvasSize', {width: this.widthInput.val(), height: this.heightInput.val()});
+      this.notify('changeCanvasSize', { width: this.widthInput.val(), height: this.heightInput.val() });
     });
 
     this.heightInput.on('blur', () => {
-      this.notify('changeCanvasSize', {width: this.widthInput.val(), height: this.heightInput.val()});
+      this.notify('changeCanvasSize', { width: this.widthInput.val(), height: this.heightInput.val() });
     });
 
     this.speedInput.on('change', () => {
-      this.notify('changeSpeed', {speed: this.speedInput.val()});
+      this.notify('changeSpeed', { speed: this.speedInput.val() });
     });
 
     this.newGameButton.on('click', () => {
@@ -43,22 +45,32 @@ class View extends EventObserver {
     });
 
     this.canvas.on('click', (event) => {
-      const x = (event.offsetX / constants.CELL_SIZE) < 0 ? Math.round(event.offsetX / constants.CELL_SIZE) : Math.floor(event.offsetX / constants.CELL_SIZE);
-      const y = (event.offsetY / constants.CELL_SIZE) < 0 ? Math.round(event.offsetY / constants.CELL_SIZE) : Math.floor(event.offsetY / constants.CELL_SIZE);
-      this.notify('сhangeСellStatus', {x: x, y: y});
+      const x = (event.offsetX / this.cellSize) < 0
+        ? Math.round(event.offsetX / this.cellSize)
+        : Math.floor(event.offsetX / this.cellSize);
+      const y = (event.offsetY / this.cellSize) < 0
+        ? Math.round(event.offsetY / this.cellSize)
+        : Math.floor(event.offsetY / this.cellSize);
+      this.notify('сhangeСellStatus', { x, y });
     });
   }
 
   updateCanvasSize(data) {
-    this.canvas.get(0).width = data.width * constants.CELL_SIZE;
-    this.canvas.get(0).height = data.height * constants.CELL_SIZE;
+    this.canvas.get(0).width = data.width * this.cellSize;
+    this.canvas.get(0).height = data.height * this.cellSize;
     document.body.appendChild(this.canvas.get(0));
   }
 
   updateField(data) {
     const c = this.canvas.get(0).getContext('2d');
-    c.clearRect(0, 0, data.width * constants.CELL_SIZE, data.height * constants.CELL_SIZE);
-    Array.from({ length: data.width}, (_, i) => Array.from({ length: data.height}, (_, j) => data.matrix[i][j] ? c.fillRect(i * constants.CELL_SIZE, j * constants.CELL_SIZE, constants.CELL_SIZE, constants.CELL_SIZE) : 0)); 
+    c.clearRect(0, 0, data.width * this.cellSize, data.height * this.cellSize);
+    Array.from(
+      { length: data.width }, (row, i) => Array.from(
+        { length: data.height }, (col, j) => (data.matrix[i][j]
+          ? c.fillRect(i * this.cellSize, j * this.cellSize, this.cellSize, this.cellSize)
+          : 0),
+      ),
+    );
   }
 }
 

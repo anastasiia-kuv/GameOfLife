@@ -1,5 +1,5 @@
 class EventObserver {
-  constructor(){
+  constructor() {
     this.observers = [];
   }
 
@@ -11,7 +11,7 @@ class EventObserver {
     this.observers.slice(this.observers.indexOf(subscriber), 1);
   }
 
-  notify(name, ...data){
+  notify(name, ...data) {
     this.observers.forEach(subscriber => subscriber[name] && subscriber[name](data[0]));
   }
 }
