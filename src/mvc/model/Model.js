@@ -23,10 +23,10 @@ class Model extends EventObserver {
     this.cells[data.x][data.y] = this.cells[data.x][data.y] ? constants.DEAD_CELL : constants.ALIVE_CELL;
     this.notify('сhangeField', {cells: this.cells, height: this.height, width: this.width});
   }
-  
+
   updateCells() {
     this.isCellsRepeated() ? this.notify('endGame') : 0;
-    this.cells = this.step(); 
+    this.cells = this.step();
     this.notify('сhangeField', {cells: this.cells, height: this.height, width: this.width});
   }
 

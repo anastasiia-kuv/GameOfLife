@@ -3,7 +3,7 @@ class Controller extends EventObserver {
   constructor() {
     super();
   }
- 
+
   changeSizeCanvas(data){
     this.notify('pause');
     this.notify('setSizeCanvas', {width: data.width, height: data.height});
