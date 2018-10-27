@@ -110,32 +110,6 @@ class Model extends EventObserver {
       this.notify('startGame')
     }
   }
-
-  getCells () {
-    return this.cells;
-  }
-
-  getHeight () {
-    return this.height;
-  }
-
-  getSpeedGame () {
-    return this.speedGame;
-  }
-
-  getWidth () {
-    return this.width;
-  }
-
-  doOneStep () {
-    return this.cells = this.step();
-  }
-
-  setCells (testCells, height, width) {
-    this.cells = [...testCells];
-    this.width = width;
-    this.height = height;
-  }
 }
 
 export default Model;
