@@ -5,50 +5,50 @@ class Model extends EventObserver {
     super();
     this.width = constants.DEFAULT_WIDTH;
     this.height =  constants.DEFAULT_HEIGHT;
-    this.speedGame = constants.DEFAULT_DELAY;
-    this.cells = [];
-    this.pastCellsStates = [];
+    this.gameSpeed = constants.DEFAULT_DELAY;
+    this.matrix = [];
+    this.pastMatrixStates = [];
     this.timer = {};
-    this.isRun = false;
-    this.initFieldData(this.height, this.width);
+    this.isRuning = false;
+    this.initMatrix(this.height, this.width);
   }
 
-  initFieldData(height, width) {
-    this.cells = Array.from({ length: height }, () => Array.from({ length: width }, () => constants.DEAD_CELL));
-    this.pastCellsStates = [];
-    this.notify('сhangeField', {cells: this.cells, width: width, height: height});
+  initMatrix(height, width) {
+    this.matrix = Array.from({ length: height }, () => Array.from({ length: width }, () => constants.DEAD_CELL));
+    this.pastMatrixStates = [];
+    this.notify('сhangeField', {matrix: this.matrix, width: width, height: height});
   }
 
-  updateCellStatus (data) {
-    this.cells[data.x][data.y] = this.cells[data.x][data.y] ? constants.DEAD_CELL : constants.ALIVE_CELL;
-    this.notify('сhangeField', {cells: this.cells, height: this.height, width: this.width});
+  updateCell (data) {
+    this.matrix[data.x][data.y] = this.matrix[data.x][data.y] ? constants.DEAD_CELL : constants.ALIVE_CELL;
+    this.notify('сhangeField', {matrix: this.matrix, height: this.height, width: this.width});
   }
 
-  updateCells() {
-    this.isCellsRepeated() ? this.notify('endGame') : 0;
-    this.cells = this.step();
-    this.notify('сhangeField', {cells: this.cells, height: this.height, width: this.width});
+  updateMatrix() {
+    this.isMatrixRepeated() ? this.notify('endGame') : 0;
+    this.matrix = this.step();
+    this.notify('сhangeField', {matrix: this.matrix, height: this.height, width: this.width});
   }
 
-  isCellsRepeated() {
-    let result = this.pastCellsStates.some((cells) => cells.every((row, i) => row.every((cell, j) => (cell === this.cells[i][j]))));
-    result ? this.pastCellsStates = [] : this.pastCellsStates.push(this.cells);
+  isMatrixRepeated() {
+    let result = this.pastMatrixStates.some((matrix) => matrix.every((row, i) => row.every((cell, j) => (cell === this.matrix[i][j]))));
+    result ? this.pastMatrixStates = [] : this.pastMatrixStates.push(this.matrix);
     return result;
   }
 
   step() {
-    return Array.from({ length: this.height }, (_, i) => Array.from({ length: this.width }, (_, j) => this.getNextCellStatus(i, j)));
+    return Array.from({ length: this.height }, (_, i) => Array.from({ length: this.width }, (_, j) => this.getNextMatrixState(i, j)));
   }
 
-  getNextCellStatus(row, column){
-    const countAliveNeighbours = this.getCountAliveNeighbours(row, column, this.cells);
-    if (!this.cells[row][column] && countAliveNeighbours === constants.MAXIMUM_ALIVE_NEIGHBORS) {
+  getNextMatrixState(row, column){
+    const countAliveNeighbours = this.getCountAliveNeighbours(row, column, this.matrix);
+    if (!this.matrix[row][column] && countAliveNeighbours === constants.MAXIMUM_ALIVE_NEIGHBORS) {
       return constants.ALIVE_CELL;
-    } else if(!this.cells[row][column] && countAliveNeighbours < constants.MAXIMUM_ALIVE_NEIGHBORS || countAliveNeighbours > constants.MAXIMUM_ALIVE_NEIGHBORS) {
+    } else if(!this.matrix[row][column] && countAliveNeighbours < constants.MAXIMUM_ALIVE_NEIGHBORS || countAliveNeighbours > constants.MAXIMUM_ALIVE_NEIGHBORS) {
       return constants.DEAD_CELL;
     }
 
-    if (this.cells[row][column]) {
+    if (this.matrix[row][column]) {
       if (countAliveNeighbours === constants.MINIMUM_ALIVE_NEIGHBORS || countAliveNeighbours === constants.MAXIMUM_ALIVE_NEIGHBORS) {
         return constants.ALIVE_CELL;
       } else {
@@ -57,16 +57,16 @@ class Model extends EventObserver {
     }
   }
 
-  getCountAliveNeighbours(row, column, cells) {
+  getCountAliveNeighbours(row, column, matrix) {
     const indexes = [-1, 0, 1];
     return indexes.reduce((count, i) => {
         let indexRow = row + i;
-        if (!cells[indexRow]) {
+        if (!matrix[indexRow]) {
             return count;
         }
         return count + indexes.reduce((countInRow, j) => {
             let indexCell = column + j;
-            if (!cells[indexRow][indexCell] || (i === 0 && j === 0)) {
+            if (!matrix[indexRow][indexCell] || (i === 0 && j === 0)) {
                 return countInRow;
             }
             return countInRow + 1;
@@ -75,37 +75,37 @@ class Model extends EventObserver {
   }
 
   initNewGame () {
-    this.isRun = false;
-    this.initFieldData(this.height, this.width);
+    this.isRuning = false;
+    this.initMatrix(this.height, this.width);
   }
 
   start () {
-    if(!this.isRun) {
-      this.timer = setInterval(() => this.updateCells(), this.speedGame);
-      this.isRun = true;
+    if(!this.isRuning) {
+      this.timer = setInterval(() => this.updateMatrix(), this.gameSpeed);
+      this.isRuning = true;
     }
   }
 
   pause () {
     clearInterval(this.timer);
-    this.isRun = false;
+    this.isRuning = false;
   }
 
   end () {
     clearInterval(this.timer);
-    this.isRun = false;
+    this.isRuning = false;
     this.notify('initGame')
     alert('The End');
   }
 
-  setSizeCanvas (data) {
+  setFieldSize (data) {
     this.height = data.height;
     this.width = data.width;
   }
 
-  updateSpeedGame (data) {
-    this.speedGame = constants.MAX_DELAY - (constants.STEP_DELAY * (data.speed - 1));
-    if(this.isRun) {
+  updateGameSpeed (data) {
+    this.gameSpeed = constants.MAX_DELAY - (constants.STEP_DELAY * (data.speed - 1));
+    if(this.isRuning) {
       this.notify('pauseGame')
       this.notify('startGame')
     }
