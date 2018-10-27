@@ -19,11 +19,11 @@ class View extends EventObserver {
 
   initHandlers() {
     this.widthInput.on('blur', () => {
-      this.notify('changeCanvasSize', {height: this.heightInput.val(), width: this.widthInput.val()});
+      this.notify('changeCanvasSize', {width: this.widthInput.val(), height: this.heightInput.val()});
     });
 
     this.heightInput.on('blur', () => {
-      this.notify('changeCanvasSize', {height: this.heightInput.val(), width: this.widthInput.val()});
+      this.notify('changeCanvasSize', {width: this.widthInput.val(), height: this.heightInput.val()});
     });
 
     this.speedInput.on('change', () => {
@@ -43,8 +43,8 @@ class View extends EventObserver {
     });
 
     this.canvas.on('click', (event) => {
-      const x = Math.floor(event.offsetX / constants.CELL_SIZE);
-      const y = Math.floor(event.offsetY / constants.CELL_SIZE);
+      const x = (event.offsetX / constants.CELL_SIZE) < 0 ? Math.round(event.offsetX / constants.CELL_SIZE) : Math.floor(event.offsetX / constants.CELL_SIZE);
+      const y = (event.offsetY / constants.CELL_SIZE) < 0 ? Math.round(event.offsetY / constants.CELL_SIZE) : Math.floor(event.offsetY / constants.CELL_SIZE);
       this.notify('сhangeСellStatus', {x: x, y: y});
     });
   }
@@ -57,8 +57,8 @@ class View extends EventObserver {
 
   updateField(data) {
     const c = this.canvas.get(0).getContext('2d');
-    c.clearRect(0, 0, data.height * constants.CELL_SIZE, data.width * constants.CELL_SIZE);
-    Array.from({ length: data.height }, (_, i) => Array.from({ length: data.width }, (_, j) => data.matrix[i][j] ? c.fillRect(i * constants.CELL_SIZE, j * constants.CELL_SIZE, constants.CELL_SIZE, constants.CELL_SIZE) : 0)); 
+    c.clearRect(0, 0, data.width * constants.CELL_SIZE, data.height * constants.CELL_SIZE);
+    Array.from({ length: data.width}, (_, i) => Array.from({ length: data.height}, (_, j) => data.matrix[i][j] ? c.fillRect(i * constants.CELL_SIZE, j * constants.CELL_SIZE, constants.CELL_SIZE, constants.CELL_SIZE) : 0)); 
   }
 }
 
