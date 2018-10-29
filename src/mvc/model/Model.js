@@ -1,9 +1,10 @@
-import EventObserver from '../event-observer/EventObserver';
+import EventObserver from '../utils/EventObserver';
 import constants from '../constants';
 
 class Model extends EventObserver {
   constructor() {
     super();
+    super.addEmitter(this.constructor.name);
     this.width = constants.DEFAULT_WIDTH;
     this.height = constants.DEFAULT_HEIGHT;
     this.gameSpeed = constants.DEFAULT_DELAY;
@@ -129,6 +130,10 @@ class Model extends EventObserver {
       this.notify('pauseGame');
       this.notify('startGame');
     }
+  }
+
+  getClassName() {
+    return this.constructor.name;
   }
 }
 

@@ -1,6 +1,11 @@
-import EventObserver from '../event-observer/EventObserver';
+import EventObserver from '../utils/EventObserver';
 
 class Controller extends EventObserver {
+  constructor() {
+    super();
+    super.addEmitter(this.constructor.name);
+  }
+
   changeCanvasSize(data) {
     this.notify('pause');
     this.notify('setFieldSize', { width: data.width, height: data.height });
@@ -35,6 +40,10 @@ class Controller extends EventObserver {
 
   changeSpeed(data) {
     this.notify('updateGameSpeed', { speed: data.speed });
+  }
+
+  getClassName() {
+    return this.constructor.name;
   }
 }
 

@@ -1,9 +1,10 @@
-import EventObserver from '../event-observer/EventObserver';
+import EventObserver from '../utils/EventObserver';
 import constants from '../constants';
 
 class View extends EventObserver {
   constructor() {
     super();
+    super.addEmitter(this.constructor.name);
     this.initDOMElements();
     this.initHandlers();
     this.cellSize = constants.CELL_SIZE;
@@ -71,6 +72,10 @@ class View extends EventObserver {
           : 0),
       ),
     );
+  }
+
+  getClassName() {
+    return this.constructor.name;
   }
 }
 
