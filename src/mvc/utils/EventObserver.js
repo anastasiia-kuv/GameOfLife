@@ -19,10 +19,10 @@ class EventObserver extends Checkers {
     this.emitter = name;
   }
 
-  notify(name, ...data) {
+  notify(name, data) {
     this.observers.forEach(subscriber => super.hasAvailable(
       this.emitter, subscriber.getClassName(), name,
-    ) && subscriber[name](data[0]));
+    ) && subscriber[name](data));
   }
 }
 
