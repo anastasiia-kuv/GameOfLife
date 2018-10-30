@@ -1,8 +1,10 @@
-import Controller from './controller/Controller.js';
-import Model from './model/Model.js';
-import View from './view/View.js';
+/* eslint-disable no-new */
+import Controller from './controller/Controller';
+import Model from './model/Model';
+import View from './view/View';
+
 class App {
-  constructor(){
+  constructor() {
     this.model = new Model();
     this.view = new View();
     this.controller = new Controller();

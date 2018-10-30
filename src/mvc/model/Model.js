@@ -1,140 +1,139 @@
-import EventObserver from '../event-observer/EventObserver.js';
-import constants from '../constants.js';
+import EventObserver from '../utils/EventObserver';
+import constants from '../constants';
+
 class Model extends EventObserver {
-  constructor(){
+  constructor() {
     super();
+    super.addEmitter(this.constructor.name);
     this.width = constants.DEFAULT_WIDTH;
-    this.height =  constants.DEFAULT_HEIGHT;
-    this.speedGame = constants.DEFAULT_DELAY;
-    this.cells = [];
-    this.pastCellsStates = [];
-    this.timer = {};
-    this.isRun = false;
-    this.initFieldData(this.height, this.width);
+    this.height = constants.DEFAULT_HEIGHT;
+    this.gameSpeed = constants.DEFAULT_DELAY;
+    this.isRuning = false;
+    this.initMatrix(this.width, this.height);
   }
 
-  initFieldData(height, width) {
-    this.cells = Array.from({ length: height }, () => Array.from({ length: width }, () => constants.DEAD_CELL));
-    this.pastCellsStates = [];
-    this.notify('сhangeField', {cells: this.cells, width: width, height: height});
+  initMatrix(width, height) {
+    this.matrix = Array.from(
+      { length: width }, () => Array.from(
+        { length: height }, () => constants.DEAD_CELL,
+      ),
+    );
+    this.pastMatrixStates = [];
+    this.notify('сhangeField', { matrix: this.matrix, width, height });
   }
 
-  updateCellStatus (data) {
-    !this.cells[data.x][data.y] ? this.cells[data.x][data.y] = constants.ALIVE_CELL : this.cells[data.x][data.y] = constants.DEAD_CELL;
-    this.notify('сhangeField', {cells: this.cells, height: this.height, width: this.width});
-  }
-  
-  updateCells() {
-    this.isCellsRepeated() ? this.notify('endGame') : 0;
-    this.cells = this.step(); 
-    this.notify('сhangeField', {cells: this.cells, height: this.height, width: this.width});
+  updateCell(data) {
+    const x = data.x === this.width ? data.x - 1 : data.x;
+    const y = data.y === this.height ? data.y - 1 : data.y;
+    this.matrix[x][y] = this.matrix[x][y] ? constants.DEAD_CELL : constants.ALIVE_CELL;
+    this.notify('сhangeField', { matrix: this.matrix, width: this.width, height: this.height });
   }
 
-  isCellsRepeated() {
-    let result = this.pastCellsStates.some((cells) => cells.every((row, i) => row.every((cell, j) => (cell === this.cells[i][j]))));
-    result ? this.pastCellsStates = [] : this.pastCellsStates.push(this.cells);
+  updateMatrix() {
+    if (this.isMatrixRepeated()) {
+      this.notify('endGame');
+    }
+    this.matrix = this.step();
+    this.notify('сhangeField', { matrix: this.matrix, width: this.width, height: this.height });
+  }
+
+  isMatrixRepeated() {
+    const result = this.pastMatrixStates.some(matrix => matrix.every(
+      (row, i) => row.every(
+        (cell, j) => (cell === this.matrix[i][j]),
+      ),
+    ));
+    if (result) {
+      this.pastMatrixStates = [];
+    } else {
+      this.pastMatrixStates.push(this.matrix);
+    }
     return result;
   }
 
   step() {
-    return Array.from({ length: this.height }, (_, i) => Array.from({ length: this.width }, (_, j) => this.getNextCellStatus(i, j)));
+    return Array.from(
+      { length: this.width }, (row, i) => Array.from(
+        { length: this.height }, (col, j) => this.getCellState(i, j),
+      ),
+    );
   }
 
-  getNextCellStatus(row, column){
-    const countAliveNeighbours = this.getCountAliveNeighbours(row, column, this.cells);
-    if (!this.cells[row][column] && countAliveNeighbours === constants.MAXIMUM_ALIVE_NEIGHBORS) {
-      return constants.ALIVE_CELL;
-    } else if(!this.cells[row][column] && countAliveNeighbours < constants.MAXIMUM_ALIVE_NEIGHBORS || countAliveNeighbours > constants.MAXIMUM_ALIVE_NEIGHBORS) {
-      return constants.DEAD_CELL;
-    }
-
-    if (this.cells[row][column]) {
-      if (countAliveNeighbours === constants.MINIMUM_ALIVE_NEIGHBORS || countAliveNeighbours === constants.MAXIMUM_ALIVE_NEIGHBORS) {
+  getCellState(row, column) {
+    const countAliveNeighbours = this.getCountAliveNeighbours(row, column);
+    if (!this.matrix[row][column]) {
+      if (countAliveNeighbours === constants.MAXIMUM_ALIVE_NEIGHBORS) {
         return constants.ALIVE_CELL;
-      } else {
+      }
+      if (countAliveNeighbours < constants.MAXIMUM_ALIVE_NEIGHBORS
+        || countAliveNeighbours > constants.MAXIMUM_ALIVE_NEIGHBORS) {
         return constants.DEAD_CELL;
       }
+    } else {
+      if (countAliveNeighbours === constants.MINIMUM_ALIVE_NEIGHBORS
+        || countAliveNeighbours === constants.MAXIMUM_ALIVE_NEIGHBORS) {
+        return constants.ALIVE_CELL;
+      }
+      return constants.DEAD_CELL;
     }
   }
 
-  getCountAliveNeighbours(row, column, cells) {
+  getCountAliveNeighbours(row, column) {
     const indexes = [-1, 0, 1];
     return indexes.reduce((count, i) => {
-        let indexRow = row + i;
-        if (!cells[indexRow]) {
-            return count;
+      const indexRow = row + i;
+      if (!this.matrix[indexRow]) {
+        return count;
+      }
+      return count + indexes.reduce((countInRow, j) => {
+        const indexCell = column + j;
+        if (!this.matrix[indexRow][indexCell] || (i === 0 && j === 0)) {
+          return countInRow;
         }
-        return count + indexes.reduce((countInRow, j) => {
-            let indexCell = column + j;
-            if (!cells[indexRow][indexCell] || (i === 0 && j === 0)) {
-                return countInRow;
-            }
-            return countInRow + 1;
-        }, 0);
+        return countInRow + 1;
+      }, 0);
     }, 0);
   }
 
-  initNewGame () {
-    this.isRun = false;
-    this.initFieldData(this.height, this.width);
+  initNewGame() {
+    this.isRuning = false;
+    this.initMatrix(this.width, this.height);
   }
 
-  start () {
-    if(!this.isRun) {
-      this.timer = setInterval(() => this.updateCells(), this.speedGame);
-      this.isRun = true;
+  start() {
+    if (!this.isRuning) {
+      this.timer = setInterval(() => this.updateMatrix(), this.gameSpeed);
+      this.isRuning = true;
     }
   }
 
-  pause () {
+  pause() {
     clearInterval(this.timer);
-    this.isRun = false;
+    this.isRuning = false;
   }
 
-  end () {
+  end() {
     clearInterval(this.timer);
-    this.isRun = false;
-    this.notify('initGame')
+    this.isRuning = false;
+    this.notify('initGame');
     alert('The End');
   }
 
-  setSizeCanvas (data) {
+  setFieldSize(data) {
     this.height = data.height;
     this.width = data.width;
   }
 
-  updateSpeedGame (data) {
-    this.speedGame = constants.MAX_DELAY - (constants.STEP_DELAY * (data.speed - 1));
-    if(this.isRun) {
-      this.notify('pauseGame')
-      this.notify('startGame')
+  updateGameSpeed(data) {
+    this.gameSpeed = constants.MAX_DELAY - (constants.STEP_DELAY * (data.speed - 1));
+    if (this.isRuning) {
+      this.notify('pauseGame');
+      this.notify('startGame');
     }
   }
 
-  getCells () {
-    return this.cells;
-  }
-
-  getHeight () {
-    return this.height;
-  }
-
-  getSpeedGame () {
-    return this.speedGame;
-  }
-
-  getWidth () {
-    return this.width;
-  }
-
-  doOneStep () {
-    return this.cells = this.step();
-  }
-
-  setCells (testCells, height, width) {
-    this.cells = [...testCells];
-    this.width = width;
-    this.height = height;
+  getClassName() {
+    return this.constructor.name;
   }
 }
 

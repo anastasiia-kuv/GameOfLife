@@ -1,13 +1,15 @@
-import EventObserver from '../event-observer/EventObserver.js';
+import EventObserver from '../utils/EventObserver';
+
 class Controller extends EventObserver {
   constructor() {
     super();
+    super.addEmitter(this.constructor.name);
   }
- 
-  changeSizeCanvas(data){
+
+  changeCanvasSize(data) {
     this.notify('pause');
-    this.notify('setSizeCanvas', {width: data.width, height: data.height});
-    this.notify('updateSizeCanvas', {width: data.width, height: data.height});
+    this.notify('setFieldSize', { width: data.width, height: data.height });
+    this.notify('updateCanvasSize', { width: data.width, height: data.height });
     this.notify('initNewGame');
   }
 
@@ -17,14 +19,14 @@ class Controller extends EventObserver {
   }
 
   сhangeСellStatus(data) {
-    this.notify('updateCellStatus', {x: data.x, y: data.y});
+    this.notify('updateCell', { x: data.x, y: data.y });
   }
 
   сhangeField(data) {
-    this.notify('updateField', {cells: data.cells, width: data.width, height: data.height});
+    this.notify('updateField', { matrix: data.matrix, width: data.width, height: data.height });
   }
 
-  startGame(){
+  startGame() {
     this.notify('start');
   }
 
@@ -36,8 +38,12 @@ class Controller extends EventObserver {
     this.notify('end');
   }
 
-  changeSpeed(data){
-    this.notify('updateSpeedGame', {speed: data.speed});
+  changeSpeed(data) {
+    this.notify('updateGameSpeed', { speed: data.speed });
+  }
+
+  getClassName() {
+    return this.constructor.name;
   }
 }
 
