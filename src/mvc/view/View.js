@@ -21,15 +21,19 @@ class View extends EventObserver {
 
   initHandlers() {
     this.widthInput.on('blur', () => {
-      this.notify('changeCanvasSize', { width: this.widthInput.val(), height: this.heightInput.val() });
+      const width = this.widthInput.val();
+      const height = this.heightInput.val();
+      this.notify('changeCanvasSize', { width, height });
     });
 
     this.heightInput.on('blur', () => {
-      this.notify('changeCanvasSize', { width: this.widthInput.val(), height: this.heightInput.val() });
+      const width = this.widthInput.val();
+      const height = this.heightInput.val();
+      this.notify('changeCanvasSize', { width, height });
     });
 
     this.speedInput.on('change', () => {
-      this.notify('changeSpeed', { speed: this.speedInput.val() });
+      this.notify('changeSpeed', this.speedInput.val());
     });
 
     this.newGameButton.on('click', () => {
@@ -55,19 +59,22 @@ class View extends EventObserver {
     });
   }
 
-  updateCanvasSize(data) {
-    this.canvas.get(0).width = data.width * this.cellSize;
-    this.canvas.get(0).height = data.height * this.cellSize;
+  updateCanvasSize(size) {
+    const { width, height } = size;
+    this.canvas.get(0).width = width * this.cellSize;
+    this.canvas.get(0).height = height * this.cellSize;
     document.body.appendChild(this.canvas.get(0));
   }
 
-  updateField(data) {
-    const c = this.canvas.get(0).getContext('2d');
-    c.clearRect(0, 0, data.width * this.cellSize, data.height * this.cellSize);
+  updateField(updatedMatrix) {
+    const width = updatedMatrix.length;
+    const height = updatedMatrix[0].length;
+    const field = this.canvas.get(0).getContext('2d');
+    field.clearRect(0, 0, width * this.cellSize, height * this.cellSize);
     Array.from(
-      { length: data.width }, (row, i) => Array.from(
-        { length: data.height }, (col, j) => (data.matrix[i][j]
-          ? c.fillRect(i * this.cellSize, j * this.cellSize, this.cellSize, this.cellSize)
+      { length: width }, (row, i) => Array.from(
+        { length: height }, (col, j) => (updatedMatrix[i][j]
+          ? field.fillRect(i * this.cellSize, j * this.cellSize, this.cellSize, this.cellSize)
           : 0),
       ),
     );

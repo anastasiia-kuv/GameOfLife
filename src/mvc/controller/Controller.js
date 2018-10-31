@@ -1,10 +1,11 @@
 import EventObserver from '../event-observer/EventObserver';
 
 class Controller extends EventObserver {
-  changeCanvasSize(data) {
+  changeCanvasSize(size) {
+    const { width, height } = size;
     this.notify('pause');
-    this.notify('setFieldSize', { width: data.width, height: data.height });
-    this.notify('updateCanvasSize', { width: data.width, height: data.height });
+    this.notify('setFieldSize', { width, height });
+    this.notify('updateCanvasSize', { width, height });
     this.notify('initNewGame');
   }
 
@@ -13,12 +14,13 @@ class Controller extends EventObserver {
     this.notify('initNewGame');
   }
 
-  сhangeСellStatus(data) {
-    this.notify('updateCell', { x: data.x, y: data.y });
+  сhangeСellStatus(position) {
+    const { x, y } = position;
+    this.notify('updateMatrixElementValue', { x, y });
   }
 
-  сhangeField(data) {
-    this.notify('updateField', { matrix: data.matrix, width: data.width, height: data.height });
+  сhangeField(updatedMatrix) {
+    this.notify('updateField', updatedMatrix);
   }
 
   startGame() {
@@ -33,8 +35,8 @@ class Controller extends EventObserver {
     this.notify('end');
   }
 
-  changeSpeed(data) {
-    this.notify('updateGameSpeed', { speed: data.speed });
+  changeSpeed(speed) {
+    this.notify('updateGameSpeed', speed);
   }
 }
 
