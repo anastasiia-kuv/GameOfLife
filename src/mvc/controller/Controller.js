@@ -2,10 +2,9 @@ import EventObserver from '../event-observer/EventObserver';
 
 class Controller extends EventObserver {
   changeCanvasSize(size) {
-    const { width, height } = size;
     this.notify('pause');
-    this.notify('setFieldSize', { width, height });
-    this.notify('updateCanvasSize', { width, height });
+    this.notify('setFieldSize', size);
+    this.notify('updateCanvasSize', size);
     this.notify('initNewGame');
   }
 
@@ -15,8 +14,7 @@ class Controller extends EventObserver {
   }
 
   сhangeСellStatus(position) {
-    const { x, y } = position;
-    this.notify('updateMatrixElementValue', { x, y });
+    this.notify('updateMatrixElementValue', position);
   }
 
   сhangeField(updatedMatrix) {
