@@ -8,47 +8,46 @@ class Model extends EventObserver {
     this.width = constants.DEFAULT_WIDTH;
     this.height = constants.DEFAULT_HEIGHT;
     this.gameSpeed = constants.DEFAULT_DELAY;
-    this.isRuning = false;
+    this.isRunning = false;
     this.initMatrix(this.width, this.height);
   }
 
   initMatrix(width, height) {
     this.matrix = Array.from(
       { length: width }, () => Array.from(
-        { length: height }, () => constants.DEAD_CELL,
+        { length: height }, () => constants.ZEROED,
       ),
     );
     this.pastMatrixStates = [];
-    this.notify('сhangeField', { matrix: this.matrix, width, height });
+    this.notify('сhangeField', this.matrix);
   }
 
-  updateCell(data) {
-    const x = data.x === this.width ? data.x - 1 : data.x;
-    const y = data.y === this.height ? data.y - 1 : data.y;
-    this.matrix[x][y] = this.matrix[x][y] ? constants.DEAD_CELL : constants.ALIVE_CELL;
-    this.notify('сhangeField', { matrix: this.matrix, width: this.width, height: this.height });
+  updateMatrixElementValue(position) {
+    const { x, y } = position;
+    const i = x === this.width ? x - 1 : x;
+    const j = y === this.height ? y - 1 : y;
+    this.matrix[i][j] = this.matrix[i][j] ? constants.ZEROED : constants.ASSIGNED;
+    const updatedMatrix = this.matrix;
+    this.notify('сhangeField', updatedMatrix);
   }
 
   updateMatrix() {
     if (this.isMatrixRepeated()) {
+      this.pastMatrixStates = [];
       this.notify('endGame');
+    } else {
+      this.pastMatrixStates.push(this.matrix);
+      this.matrix = this.step();
+      this.notify('сhangeField', this.matrix);
     }
-    this.matrix = this.step();
-    this.notify('сhangeField', { matrix: this.matrix, width: this.width, height: this.height });
   }
 
   isMatrixRepeated() {
-    const result = this.pastMatrixStates.some(matrix => matrix.every(
+    return this.pastMatrixStates.some(matrix => matrix.every(
       (row, i) => row.every(
         (cell, j) => (cell === this.matrix[i][j]),
       ),
     ));
-    if (result) {
-      this.pastMatrixStates = [];
-    } else {
-      this.pastMatrixStates.push(this.matrix);
-    }
-    return result;
   }
 
   step() {
@@ -63,18 +62,18 @@ class Model extends EventObserver {
     const countAliveNeighbours = this.getCountAliveNeighbours(row, column);
     if (!this.matrix[row][column]) {
       if (countAliveNeighbours === constants.MAXIMUM_ALIVE_NEIGHBORS) {
-        return constants.ALIVE_CELL;
+        return constants.ASSIGNED;
       }
       if (countAliveNeighbours < constants.MAXIMUM_ALIVE_NEIGHBORS
         || countAliveNeighbours > constants.MAXIMUM_ALIVE_NEIGHBORS) {
-        return constants.DEAD_CELL;
+        return constants.ZEROED;
       }
     } else {
       if (countAliveNeighbours === constants.MINIMUM_ALIVE_NEIGHBORS
         || countAliveNeighbours === constants.MAXIMUM_ALIVE_NEIGHBORS) {
-        return constants.ALIVE_CELL;
+        return constants.ASSIGNED;
       }
-      return constants.DEAD_CELL;
+      return constants.ZEROED;
     }
   }
 
@@ -96,37 +95,38 @@ class Model extends EventObserver {
   }
 
   initNewGame() {
-    this.isRuning = false;
+    this.isRunning = false;
     this.initMatrix(this.width, this.height);
   }
 
   start() {
-    if (!this.isRuning) {
+    if (!this.isRunning) {
       this.timer = setInterval(() => this.updateMatrix(), this.gameSpeed);
-      this.isRuning = true;
+      this.isRunning = true;
     }
   }
 
   pause() {
     clearInterval(this.timer);
-    this.isRuning = false;
+    this.isRunning = false;
   }
 
   end() {
     clearInterval(this.timer);
-    this.isRuning = false;
+    this.isRunning = false;
     this.notify('initGame');
     alert('The End');
   }
 
-  setFieldSize(data) {
-    this.height = data.height;
-    this.width = data.width;
+  setFieldSize(size) {
+    const { width, height } = size;
+    this.height = height;
+    this.width = width;
   }
 
-  updateGameSpeed(data) {
-    this.gameSpeed = constants.MAX_DELAY - (constants.STEP_DELAY * (data.speed - 1));
-    if (this.isRuning) {
+  updateGameSpeed(speed) {
+    this.gameSpeed = constants.MAX_DELAY - (constants.STEP_DELAY * (speed - 1));
+    if (this.isRunning) {
       this.notify('pauseGame');
       this.notify('startGame');
     }

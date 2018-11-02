@@ -6,46 +6,68 @@ class View extends EventObserver {
     super();
     super.addEmitter(this.constructor.name);
     this.initDOMElements();
-    this.initHandlers();
+    this.initHandleWidthFormInput();
+    this.initHandleHeightFormInput();
+    this.initHandleSpeedFormInput();
+    this.initHandleNewGameFormButton();
+    this.initHandleStartGameFormButton();
+    this.initHandlePauseGameFormButton();
+    this.initHandlePageContainerCanvas();
     this.cellSize = constants.CELL_SIZE;
   }
 
   initDOMElements() {
-    this.widthInput = $('.js-width-form__input');
-    this.heightInput = $('.js-height-form__input');
-    this.speedInput = $('.js-speed-form__input');
-    this.newGameButton = $('.js-new-game-form__button');
-    this.startGameButton = $('.js-start-game-form__button');
-    this.pauseGameButton = $('.js-pause-game-form__button');
-    this.canvas = $('.js-page-container__canvas');
+    this.$widthInput = $('.js-width-form__input');
+    this.$heightInput = $('.js-height-form__input');
+    this.$speedInput = $('.js-speed-form__input');
+    this.$newGameButton = $('.js-new-game-form__button');
+    this.$startGameButton = $('.js-start-game-form__button');
+    this.$pauseGameButton = $('.js-pause-game-form__button');
+    this.$canvas = $('.js-page-container__canvas');
   }
 
-  initHandlers() {
-    this.widthInput.on('blur', () => {
-      this.notify('changeCanvasSize', { width: this.widthInput.val(), height: this.heightInput.val() });
+  initHandleWidthFormInput() {
+    this.$widthInput.on('blur', () => {
+      const width = this.$widthInput.val();
+      const height = this.$heightInput.val();
+      this.notify('changeCanvasSize', { width, height });
     });
+  }
 
-    this.heightInput.on('blur', () => {
-      this.notify('changeCanvasSize', { width: this.widthInput.val(), height: this.heightInput.val() });
+  initHandleHeightFormInput() {
+    this.$heightInput.on('blur', () => {
+      const width = this.$widthInput.val();
+      const height = this.$heightInput.val();
+      this.notify('changeCanvasSize', { width, height });
     });
+  }
 
-    this.speedInput.on('change', () => {
-      this.notify('changeSpeed', { speed: this.speedInput.val() });
+  initHandleSpeedFormInput() {
+    this.$speedInput.on('change', () => {
+      this.notify('changeSpeed', this.$speedInput.val());
     });
+  }
 
-    this.newGameButton.on('click', () => {
+  initHandleNewGameFormButton() {
+    this.$newGameButton.on('click', () => {
       this.notify('initGame');
     });
+  }
 
-    this.startGameButton.on('click', () => {
+  initHandleStartGameFormButton() {
+    this.$startGameButton.on('click', () => {
       this.notify('startGame');
     });
+  }
 
-    this.pauseGameButton.on('click', () => {
+  initHandlePauseGameFormButton() {
+    this.$pauseGameButton.on('click', () => {
       this.notify('pauseGame');
     });
+  }
 
-    this.canvas.on('click', (event) => {
+  initHandlePageContainerCanvas() {
+    this.$canvas.on('click', (event) => {
       const x = (event.offsetX / this.cellSize) < 0
         ? Math.round(event.offsetX / this.cellSize)
         : Math.floor(event.offsetX / this.cellSize);
@@ -56,22 +78,25 @@ class View extends EventObserver {
     });
   }
 
-  updateCanvasSize(data) {
-    this.canvas.get(0).width = data.width * this.cellSize;
-    this.canvas.get(0).height = data.height * this.cellSize;
-    document.body.appendChild(this.canvas.get(0));
+  updateCanvasSize(size) {
+    const { width, height } = size;
+    this.$canvas.get(0).width = width * this.cellSize;
+    this.$canvas.get(0).height = height * this.cellSize;
+    document.body.appendChild(this.$canvas.get(0));
   }
 
-  updateField(data) {
-    const c = this.canvas.get(0).getContext('2d');
-    c.clearRect(0, 0, data.width * this.cellSize, data.height * this.cellSize);
-    Array.from(
-      { length: data.width }, (row, i) => Array.from(
-        { length: data.height }, (col, j) => (data.matrix[i][j]
-          ? c.fillRect(i * this.cellSize, j * this.cellSize, this.cellSize, this.cellSize)
-          : 0),
-      ),
-    );
+  updateField(updatedMatrix) {
+    const width = updatedMatrix.length;
+    const height = updatedMatrix[0].length;
+    const field = this.$canvas.get(0).getContext('2d');
+    field.clearRect(0, 0, width * this.cellSize, height * this.cellSize);
+    updatedMatrix.forEach((col, i) => {
+      col.forEach((cell, j) => {
+        if (cell === 1) {
+          field.fillRect(i * this.cellSize, j * this.cellSize, this.cellSize, this.cellSize);
+        }
+      });
+    });
   }
 
   getClassName() {

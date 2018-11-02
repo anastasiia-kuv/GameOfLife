@@ -10,8 +10,8 @@ const constants = {
   STEP_DELAY: 200,
   MINIMUM_ALIVE_NEIGHBORS: 2,
   MAXIMUM_ALIVE_NEIGHBORS: 3,
-  DEAD_CELL: 0,
-  ALIVE_CELL: 1,
+  ZEROED: 0,
+  ASSIGNED: 1,
 };
 
 export default constants;
