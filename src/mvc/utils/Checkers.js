@@ -10,7 +10,7 @@ class Checkers {
         }],
         Controller: [{
           View: ['updateCanvasSize', 'updateField'],
-          Model: ['setFieldSize', 'initNewGame', 'start', 'pause', 'end', 'updateCell', 'updateGameSpeed'],
+          Model: ['setFieldSize', 'initNewGame', 'start', 'pause', 'end', 'updateMatrixElementValue', 'updateGameSpeed'],
         }],
       },
     ];

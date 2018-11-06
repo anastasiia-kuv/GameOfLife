@@ -27,8 +27,7 @@ class Model extends EventObserver {
     const i = x === this.width ? x - 1 : x;
     const j = y === this.height ? y - 1 : y;
     this.matrix[i][j] = this.matrix[i][j] ? constants.ZEROED : constants.ASSIGNED;
-    const updatedMatrix = this.matrix;
-    this.notify('сhangeField', updatedMatrix);
+    this.notify('сhangeField', this.matrix);
   }
 
   updateMatrix() {
