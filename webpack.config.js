@@ -7,7 +7,6 @@ const stylus = require('./webpack/stylus');
 const icon = require('./webpack/icon');
 const css = require('./webpack/css');
 const pug = require('./webpack/pug');
-const babel = require('./webpack/babel');
 const devserver = require('./webpack/devserver');
 
 const PATHS = {
@@ -39,7 +38,6 @@ const common = merge([{
     new webpack.IgnorePlugin(/\.\/locale$/),
   ],
 },
-babel(),
 fonts(),
 icon(),
 stylus(),
