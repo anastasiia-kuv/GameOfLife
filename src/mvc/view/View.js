@@ -1,3 +1,4 @@
+import autobind from 'autobind-decorator';
 import EventObserver from '../event-observer/EventObserver';
 import constants from '../constants';
 
@@ -20,50 +21,57 @@ class View extends EventObserver {
   }
 
   initEventListeners() {
-    this.$widthInput.on('blur', () => this.handleWidthInputBlur());
-    this.$heightInput.on('blur', () => this.handleHeightInputBlur());
-    this.$speedInput.on('change', () => this.handleSpeedInputChange());
-    this.$newGameButton.on('click', () => this.handleNewGameButtonClick());
-    this.$startGameButton.on('click', () => this.handleStartGameButtonClick());
-    this.$pauseGameButton.on('click', () => this.handlePauseGameButtonClick());
-    this.$canvas.on('click', event => this.handleCanvasClick(event));
+    this.$widthInput.on('blur', this.handleWidthInputBlur);
+    this.$heightInput.on('blur', this.handleHeightInputBlur);
+    this.$speedInput.on('change', this.handleSpeedInputChange);
+    this.$newGameButton.on('click', this.handleNewGameButtonClick);
+    this.$startGameButton.on('click', this.handleStartGameButtonClick);
+    this.$pauseGameButton.on('click', this.handlePauseGameButtonClick);
+    this.$canvas.on('click', this.handleCanvasClick);
   }
 
+  @autobind
   handleWidthInputBlur() {
     const width = this.$widthInput.val();
     const height = this.$heightInput.val();
     this.notify('changeCanvasSize', { width, height });
   }
 
+  @autobind
   handleHeightInputBlur() {
     const width = this.$widthInput.val();
     const height = this.$heightInput.val();
     this.notify('changeCanvasSize', { width, height });
   }
 
+  @autobind
   handleSpeedInputChange() {
     this.notify('changeSpeed', this.$speedInput.val());
   }
 
+  @autobind
   handleNewGameButtonClick() {
     this.notify('initGame');
   }
 
+  @autobind
   handleStartGameButtonClick() {
     this.notify('startGame');
   }
 
+  @autobind
   handlePauseGameButtonClick() {
     this.notify('pauseGame');
   }
 
+  @autobind
   handleCanvasClick(event) {
-    const x = (event.offsetX / this.cellSize) < 0
-      ? Math.round(event.offsetX / this.cellSize)
-      : Math.floor(event.offsetX / this.cellSize);
-    const y = (event.offsetY / this.cellSize) < 0
-      ? Math.round(event.offsetY / this.cellSize)
-      : Math.floor(event.offsetY / this.cellSize);
+    const x = (event.originalEvent.offsetX / this.cellSize) < 0
+      ? Math.round(event.originalEvent.offsetX / this.cellSize)
+      : Math.floor(event.originalEvent.offsetX / this.cellSize);
+    const y = (event.originalEvent.offsetY / this.cellSize) < 0
+      ? Math.round(event.originalEvent.offsetY / this.cellSize)
+      : Math.floor(event.originalEvent.offsetY / this.cellSize);
     this.notify('сhangeСellStatus', { x, y });
   }
 
