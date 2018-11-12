@@ -37,53 +37,57 @@ body
     max-width 100%
     cursor pointer
 
-.game__dashboard
-  display flex
-  justify-content center
-  flex-wrap wrap
-
-  &-control_assignment
-
-    &_width
-    &_height
-    &_speed
-      display flex
-      flex-direction column
-      margin 0 0.5rem
-
-      &-label
+  &__label_assignment
+      &_width
+      &_height
+      &_speed
         margin 0.5rem auto
         max-width 8rem
         text-transform capitalize
 
-      &-input
+  &__entry-field_assignment
+      &_width
+      &_height
+      &_speed
         margin 0.5rem auto
         max-width 8rem
         font-size 1rem
-        cursor pointer 
+        cursor pointer
 
-    &_speed
+  &__range-captions
+      display flex
+      justify-content space-between
 
-      &-range-label
+  &__dashboard
+    display flex
+    justify-content center
+    flex-wrap wrap
+
+    &-control_assignment
+
+      &_width
+      &_height
+      &_speed
         display flex
-        justify-content space-between
+        flex-direction column
+        margin 0 0.5rem
 
-    &_new-game
-    &_start
-    &_pause
-      height 2rem
-      width 8rem
-      border-radius 0.3rem
-      font-size 0.9rem  
-      border solid 0.1rem green-color
-      box-shadow 0 -0.3rem green-shadow-color inset
-      background-color white-color
-      color green-text-color
-      text-transform uppercase
-      cursor pointer
-      margin auto 0.5rem auto 0.5rem
+      &_new-game
+      &_start
+      &_pause
+        height 2rem
+        width 8rem
+        border-radius 0.3rem
+        font-size 0.9rem
+        border solid 0.1rem green-color
+        box-shadow 0 -0.3rem green-shadow-color inset
+        background-color white-color
+        color green-text-color
+        text-transform uppercase
+        cursor pointer
+        margin auto 0.5rem auto 0.5rem
 
-      &:hover
-        background-color green-color
-        color white-color
-        border none
+        &:hover
+          background-color green-color
+          color white-color
+          border none

@@ -17,9 +17,9 @@ class View extends EventObserver {
   }
 
   initDOMElements() {
-    this.$widthInput = $('.js-game__dashboard-control_assignment_width-input');
-    this.$heightInput = $('.js-game__dashboard-control_assignment_height-input');
-    this.$speedInput = $('.js-game__dashboard-control_assignment_speed-input');
+    this.$widthInput = $('.js-game__entry-field_assignment_width');
+    this.$heightInput = $('.js-game__entry-field_assignment_height');
+    this.$speedInput = $('.js-game__range-field_assignment_speed');
     this.$newGameButton = $('.js-game__dashboard-control_assignment_new-game');
     this.$startGameButton = $('.js-game__dashboard-control_assignment_start');
     this.$pauseGameButton = $('.js-game__dashboard-control_assignment_pause');
