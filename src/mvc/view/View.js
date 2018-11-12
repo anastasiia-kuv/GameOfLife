@@ -1,3 +1,4 @@
+import autobind from 'autobind-decorator';
 import EventObserver from '../utils/EventObserver';
 import constants from '../constants';
 
@@ -6,13 +7,7 @@ class View extends EventObserver {
     super();
     super.addEmitter(this.constructor.name);
     this.initDOMElements();
-    this.initHandleWidthFormInput();
-    this.initHandleHeightFormInput();
-    this.initHandleSpeedFormInput();
-    this.initHandleNewGameFormButton();
-    this.initHandleStartGameFormButton();
-    this.initHandlePauseGameFormButton();
-    this.initHandlePageContainerCanvas();
+    this.initEventListeners();
     this.cellSize = constants.CELL_SIZE;
   }
 
@@ -26,56 +21,59 @@ class View extends EventObserver {
     this.$canvas = $('.js-page-container__canvas');
   }
 
-  initHandleWidthFormInput() {
-    this.$widthInput.on('blur', () => {
-      const width = this.$widthInput.val();
-      const height = this.$heightInput.val();
-      this.notify('changeCanvasSize', { width, height });
-    });
+  initEventListeners() {
+    this.$widthInput.on('blur', this.handleWidthInputBlur);
+    this.$heightInput.on('blur', this.handleHeightInputBlur);
+    this.$speedInput.on('change', this.handleSpeedInputChange);
+    this.$newGameButton.on('click', this.handleNewGameButtonClick);
+    this.$startGameButton.on('click', this.handleStartGameButtonClick);
+    this.$pauseGameButton.on('click', this.handlePauseGameButtonClick);
+    this.$canvas.on('click', this.handleCanvasClick);
   }
 
-  initHandleHeightFormInput() {
-    this.$heightInput.on('blur', () => {
-      const width = this.$widthInput.val();
-      const height = this.$heightInput.val();
-      this.notify('changeCanvasSize', { width, height });
-    });
+  @autobind
+  handleWidthInputBlur() {
+    const width = this.$widthInput.val();
+    const height = this.$heightInput.val();
+    this.notify('changeCanvasSize', { width, height });
   }
 
-  initHandleSpeedFormInput() {
-    this.$speedInput.on('change', () => {
-      this.notify('changeSpeed', this.$speedInput.val());
-    });
+  @autobind
+  handleHeightInputBlur() {
+    const width = this.$widthInput.val();
+    const height = this.$heightInput.val();
+    this.notify('changeCanvasSize', { width, height });
   }
 
-  initHandleNewGameFormButton() {
-    this.$newGameButton.on('click', () => {
-      this.notify('initGame');
-    });
+  @autobind
+  handleSpeedInputChange() {
+    this.notify('changeSpeed', this.$speedInput.val());
   }
 
-  initHandleStartGameFormButton() {
-    this.$startGameButton.on('click', () => {
-      this.notify('startGame');
-    });
+  @autobind
+  handleNewGameButtonClick() {
+    this.notify('initGame');
   }
 
-  initHandlePauseGameFormButton() {
-    this.$pauseGameButton.on('click', () => {
-      this.notify('pauseGame');
-    });
+  @autobind
+  handleStartGameButtonClick() {
+    this.notify('startGame');
   }
 
-  initHandlePageContainerCanvas() {
-    this.$canvas.on('click', (event) => {
-      const x = (event.offsetX / this.cellSize) < 0
-        ? Math.round(event.offsetX / this.cellSize)
-        : Math.floor(event.offsetX / this.cellSize);
-      const y = (event.offsetY / this.cellSize) < 0
-        ? Math.round(event.offsetY / this.cellSize)
-        : Math.floor(event.offsetY / this.cellSize);
-      this.notify('сhangeСellStatus', { x, y });
-    });
+  @autobind
+  handlePauseGameButtonClick() {
+    this.notify('pauseGame');
+  }
+
+  @autobind
+  handleCanvasClick(event) {
+    const x = (event.originalEvent.offsetX / this.cellSize) < 0
+      ? Math.round(event.originalEvent.offsetX / this.cellSize)
+      : Math.floor(event.originalEvent.offsetX / this.cellSize);
+    const y = (event.originalEvent.offsetY / this.cellSize) < 0
+      ? Math.round(event.originalEvent.offsetY / this.cellSize)
+      : Math.floor(event.originalEvent.offsetY / this.cellSize);
+    this.notify('сhangeСellStatus', { x, y });
   }
 
   updateCanvasSize(size) {
