@@ -22,7 +22,7 @@ body
   padding 0
   min-width 410px
 
-.page-container
+.game
   display flex
   flex-direction column
 
@@ -30,50 +30,47 @@ body
     margin 2rem auto
     text-transform uppercase
         
-  &__canvas
+  &__field
     border solid 0.3rem green-color
     margin 1rem auto
     display block
     max-width 100%
     cursor pointer
 
-.control-elements-container
+.game__dashboard
   display flex
   justify-content center
   flex-wrap wrap
 
-  .width-form
-  .height-form
-  .speed-form
-    display flex
-    flex-direction column
-    margin 0 0.5rem
-    
-    &__label
-    &__input
-      margin 0.5rem auto
-      max-width 8rem
-    
-    &__label
-      text-transform capitalize
-    
-    &__input 
-      font-size 1rem
-      cursor pointer 
+  &-control_assignment
 
-  .speed-form
-
-    &__range-label
+    &_width
+    &_height
+    &_speed
       display flex
-      justify-content space-between
+      flex-direction column
+      margin 0 0.5rem
 
-  .new-game-form
-  .start-game-form
-  .pause-game-form
-    display flex
-    align-items center
-  
-    &__button
+      &-label
+        margin 0.5rem auto
+        max-width 8rem
+        text-transform capitalize
+
+      &-input
+        margin 0.5rem auto
+        max-width 8rem
+        font-size 1rem
+        cursor pointer 
+
+    &_speed
+
+      &-range-label
+        display flex
+        justify-content space-between
+
+    &_new-game
+    &_start
+    &_pause
       height 2rem
       width 8rem
       border-radius 0.3rem
@@ -84,8 +81,8 @@ body
       color green-text-color
       text-transform uppercase
       cursor pointer
-      margin 0.5rem 0.5rem 0 0.5rem
-      
+      margin auto 0.5rem auto 0.5rem
+
       &:hover
         background-color green-color
         color white-color

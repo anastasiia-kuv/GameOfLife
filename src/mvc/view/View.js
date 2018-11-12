@@ -17,13 +17,13 @@ class View extends EventObserver {
   }
 
   initDOMElements() {
-    this.$widthInput = $('.js-width-form__input');
-    this.$heightInput = $('.js-height-form__input');
-    this.$speedInput = $('.js-speed-form__input');
-    this.$newGameButton = $('.js-new-game-form__button');
-    this.$startGameButton = $('.js-start-game-form__button');
-    this.$pauseGameButton = $('.js-pause-game-form__button');
-    this.$canvas = $('.js-page-container__canvas');
+    this.$widthInput = $('.js-game__dashboard-control_assignment_width-input');
+    this.$heightInput = $('.js-game__dashboard-control_assignment_height-input');
+    this.$speedInput = $('.js-game__dashboard-control_assignment_speed-input');
+    this.$newGameButton = $('.js-game__dashboard-control_assignment_new-game');
+    this.$startGameButton = $('.js-game__dashboard-control_assignment_start');
+    this.$pauseGameButton = $('.js-game__dashboard-control_assignment_pause');
+    this.$canvas = $('.js-game__field');
   }
 
   initHandleWidthFormInput() {
