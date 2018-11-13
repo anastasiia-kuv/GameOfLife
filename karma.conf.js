@@ -1,11 +1,4 @@
 const webpack = require('webpack');
-const karmaWebpack = require('karma-webpack');
-const karmaMocha = require('karma-mocha');
-const karmaChai = require('karma-chai');
-const karmaMochaReporter = require('karma-mocha-reporter');
-const karmaChromeLauncher = require('karma-chrome-launcher');
-const karmaPhantomjsLauncher = require('karma-phantomjs-launcher');
-const karmaSourcemapLoader = require('karma-sourcemap-loader');
 
 module.exports = function (config) {
   config.set({
@@ -19,17 +12,15 @@ module.exports = function (config) {
 
     files: [
       'src/**/*.js',
-      'test/**/*.js',
+      'test/Test.js',
     ],
 
     preprocessors: {
       'src/**/*.js': [
         'webpack',
-        'sourcemap',
       ],
-      'test/**/*.js': [
+      'test/Test.js': [
         'webpack',
-        'sourcemap',
       ],
     },
 
@@ -67,6 +58,7 @@ module.exports = function (config) {
           },
         ],
       },
+      externals: ["fs"],
       plugins: [
         new webpack.ProvidePlugin({
           $: 'jquery',
@@ -78,13 +70,13 @@ module.exports = function (config) {
     },
 
     plugins: [
-      karmaWebpack(),
-      karmaMocha(),
-      karmaChai(),
-      karmaMochaReporter(),
-      karmaChromeLauncher(),
-      karmaPhantomjsLauncher(),
-      karmaSourcemapLoader(),
+      require('karma-webpack'),
+      require('karma-mocha'),
+      require('karma-chai'),
+      require('karma-mocha-reporter'),
+      require('karma-chrome-launcher'),
+      require('karma-phantomjs-launcher'),
+      require('karma-sourcemap-loader'),
     ],
 
     autoWatch: true,
