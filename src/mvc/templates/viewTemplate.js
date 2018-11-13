@@ -12,15 +12,15 @@ const context = {
   },
   buttons: [
     { name: 'new-game', value: 'New game', tabindex: '4' },
-    { name: 'start-game', value: 'Start', tabindex: '5' },
-    { name: 'pause-game', value: 'Pause', tabindex: '6' },
+    { name: 'start', value: 'Start', tabindex: '5' },
+    { name: 'pause', value: 'Pause', tabindex: '6' },
   ],
-  field: { nameContainer: 'page-container', width: constants.DEFAULT_WIDTH * constants.CELL_SIZE, height: constants.DEFAULT_HEIGHT * constants.CELL_SIZE },
+  field: { width: constants.DEFAULT_WIDTH * constants.CELL_SIZE, height: constants.DEFAULT_HEIGHT * constants.CELL_SIZE },
 };
 
 Handlebars.registerHelper('h1', function () {
   return new Handlebars.SafeString(
-    `<h1 class="page-container__title">${
+    `<h1 class="game__title">${
       this.title
     }</h1>`,
   );
@@ -32,21 +32,22 @@ Handlebars.registerHelper('game_input', function () {
   const tabindex = Handlebars.escapeExpression(this.tabindex);
 
   return new Handlebars.SafeString(
-    `<form class="${name}-form">`
-    + `<label class="${name}-form__label">${name}</label>`
-    + `<input class="${name}-form__input js-${name}-form__input" type="number" value="${value}" tabindex="${tabindex}">`
-    + '</form>',
+    `<div class="game__dashboard-control_assignment_${name}">`
+      +`<label class="game__label_assignment_${name}">${name}</label>`
+      + `<input class="game__entry-field_assignment_${name} js-game__entry-field_assignment_${name}" type="number" value="${value}" tabindex="${tabindex}">`
+    +`</div>`
   );
 });
 
 Handlebars.registerHelper('slider', speedSlider => new Handlebars.SafeString(
-  `<form class="${speedSlider.name}-form">`
-      + `<label class="${speedSlider.name}-form__label">${speedSlider.name}</label>`
-      + `<input class="${speedSlider.name}-form__input js-${speedSlider.name}-form__input" type="range" min="${speedSlider.minValue}" max="${speedSlider.maxValue}" value="${speedSlider.value}" tabindex="${speedSlider.tabindex}">`
-      + `<label class="${speedSlider.name}-form__range-label">`
-      + `<label class="${speedSlider.name}-form__range-label_min">min</label>`
-      + `<label class="${speedSlider.name}-form__range-label_max">max</label></label>`
-      + '</form>',
+  `<div class="game__dashboard-control_assignment_${speedSlider.name}">`
+    +`<label class="game__label_assignment_${speedSlider.name}">${speedSlider.name}</label>`
+    + `<input class="game__range-field_assignment_${speedSlider.name} js-game__range-field_assignment_${speedSlider.name}" type="range" min="${speedSlider.minValue}" max="${speedSlider.maxValue}" value="${speedSlider.value}" tabindex="${speedSlider.tabindex}">`
+    + `<label class="game__range-captions">`
+      + `<label class="game__range-caption_value_min">min</label>`
+      + `<label class="game__range-caption_value_max">max</label>`
+    +`</label>`
+  +`</div>`
 ));
 
 Handlebars.registerHelper('game_button', function () {
@@ -55,15 +56,13 @@ Handlebars.registerHelper('game_button', function () {
   const tabindex = Handlebars.escapeExpression(this.tabindex);
 
   return new Handlebars.SafeString(
-    `<form class="${name}-form">`
-    + `<input class="${name}-form__button js-${name}-form__button" type="button" value="${value}" tabindex="${tabindex}">`
-    + '</form>',
+    `<input class="game__dashboard-control_assignment_${name} js-game__dashboard-control_assignment_${name}" type="button" value="${value}" tabindex="${tabindex}">`
   );
 });
 
 Handlebars.registerHelper('canvas', field => new Handlebars.SafeString(
-  `<canvas class="${field.nameContainer}__canvas js-${field.nameContainer}__canvas" width="${field.width}" height="${field.height} ">`
-    + '</canvas>',
+  `<canvas class="game__field js-game__field" width="${field.width}" height="${field.height} ">`
+  + '</canvas>',
 ));
 
 const templateScript = Handlebars.templates.view(context);

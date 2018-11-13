@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
 const fonts = require('./webpack/fonts');
@@ -7,8 +8,8 @@ const stylus = require('./webpack/stylus');
 const icon = require('./webpack/icon');
 const css = require('./webpack/css');
 const pug = require('./webpack/pug');
-const babel = require('./webpack/babel');
 const devserver = require('./webpack/devserver');
+const babel = require('./webpack/babel');
 
 const PATHS = {
   source: path.join(__dirname, './src'),
@@ -40,6 +41,17 @@ const common = merge([{
   ],
 },
 babel(),
+module.exports = {
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          keep_fnames: true,
+        },
+      }),
+    ],
+  },
+},
 fonts(),
 icon(),
 stylus(),

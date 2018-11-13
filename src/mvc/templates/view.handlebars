@@ -1,6 +1,6 @@
-<main class="page-container">
+<main class="game">
 	{{#h1}}{{/h1}}
-	<section class="control-elements-container">
+	<form class="game__dashboard">
 		{{#each inputs}}
 			{{game_input}}
 		{{/each}}
@@ -8,6 +8,6 @@
 		{{#each buttons}}
 			{{game_button}}
 		{{/each}}
-	</section>
+	</form>
 	{{#canvas field}}{{/canvas}}
 </main>
