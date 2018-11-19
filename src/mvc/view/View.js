@@ -1,6 +1,5 @@
-import autobind from 'autobind-decorator';
-import EventObserver from '../utils/EventObserver';
 import constants from '../constants';
+import EventObserver from '../utils/EventObserver';
 
 class View extends EventObserver {
   constructor() {
@@ -31,42 +30,35 @@ class View extends EventObserver {
     this.$canvas.on('click', this.handleCanvasClick);
   }
 
-  @autobind
-  handleWidthInputBlur() {
+  handleWidthInputBlur = () => {
     const width = this.$widthInput.val();
     const height = this.$heightInput.val();
     this.notify('changeCanvasSize', { width, height });
   }
 
-  @autobind
-  handleHeightInputBlur() {
+  handleHeightInputBlur = () => {
     const width = this.$widthInput.val();
     const height = this.$heightInput.val();
     this.notify('changeCanvasSize', { width, height });
   }
 
-  @autobind
-  handleSpeedInputChange() {
+  handleSpeedInputChange = () => {
     this.notify('changeSpeed', this.$speedInput.val());
   }
 
-  @autobind
-  handleNewGameButtonClick() {
+  handleNewGameButtonClick = () => {
     this.notify('initGame');
   }
 
-  @autobind
-  handleStartGameButtonClick() {
+  handleStartGameButtonClick = () => {
     this.notify('startGame');
   }
 
-  @autobind
-  handlePauseGameButtonClick() {
+  handlePauseGameButtonClick = () => {
     this.notify('pauseGame');
   }
 
-  @autobind
-  handleCanvasClick(event) {
+  handleCanvasClick = (event) => {
     const x = (event.originalEvent.offsetX / this.cellSize) < 0
       ? Math.round(event.originalEvent.offsetX / this.cellSize)
       : Math.floor(event.originalEvent.offsetX / this.cellSize);
