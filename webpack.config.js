@@ -8,12 +8,12 @@ const icon = require('./webpack/icon');
 const css = require('./webpack/css');
 const pug = require('./webpack/pug');
 const devserver = require('./webpack/devserver');
+const babel = require('./webpack/babel');
 
 const PATHS = {
   source: path.join(__dirname, './src'),
   build: path.join(__dirname, './build'),
 };
-
 
 const common = merge([{
   entry: {
@@ -24,6 +24,7 @@ const common = merge([{
     filename: '[name].bundle.js',
     path: `${PATHS.build}/`,
   },
+  mode: 'development',
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
@@ -43,6 +44,7 @@ icon(),
 stylus(),
 css(),
 pug(),
+babel(),
 ]);
 
 module.exports = function (env) {

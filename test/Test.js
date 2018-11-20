@@ -1,7 +1,28 @@
 import { assert } from 'chai';
-import { it, before } from 'mocha';
 import Model from '../src/mvc/model/Model';
+import View from '../src/mvc/view/View.js';
 
+const view = new View;
+
+describe("pow", () => {
+
+  function makeTest(x) {
+    var expected = x * x * x;
+    it("при возведении " + x + " в степень 3 результат: " + expected, function() {
+      assert.equal(view.pow(x, 3), expected);
+    });
+  }
+
+  for (var x = 1; x <= 5; x++) {
+    makeTest(x);
+  }
+});
+
+describe("pow", () => {
+  it('имя конструктора', () => {
+    assert.equal(view.getClassName(), 'View');
+  });
+});
 
 const model = new Model();
 const width = 5;

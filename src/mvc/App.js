@@ -5,13 +5,13 @@ import View from './view/View';
 
 class App {
   constructor() {
-    this.model = new Model();
-    this.view = new View();
-    this.controller = new Controller();
-    this.model.subscribe(this.controller);
-    this.view.subscribe(this.controller);
-    this.controller.subscribe(this.view);
-    this.controller.subscribe(this.model);
+    const model = new Model();
+    const view = new View();
+    const controller = new Controller();
+    model.subscribe(controller);
+    view.subscribe(controller);
+    controller.subscribe(view);
+    controller.subscribe(model);
   }
 }
 

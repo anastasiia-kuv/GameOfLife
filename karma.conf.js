@@ -1,92 +1,47 @@
-const webpack = require('webpack');
+const webpackConfig = require('./webpack.config');
 
 module.exports = function (config) {
   config.set({
-
     basePath: '',
-
-    frameworks: [
-      'mocha',
-      'chai',
-    ],
-
-    files: [
-      'src/**/*.js',
-      'test/Test.js',
-    ],
-
-    preprocessors: {
-      'src/**/*.js': [
-        'webpack',
-      ],
-      'test/Test.js': [
-        'webpack',
-      ],
-    },
-
-    reporters: ['mocha'],
-
-    webpack: {
-      module: {
-        rules: [
-          {
-            test: /\.js$/,
-            exclude: /node_modules/,
-            loader: 'babel-loader',
-          },
-          {
-            test: /\.styl$/,
-            use: [
-              'style-loader',
-              'css-loader',
-              'stylus-loader',
-            ],
-          },
-          {
-            test: /\.(woff|woff2|eot|ttf|otf)$/,
-            loader: 'file-loader',
-            options: {
-              name: '/fonts/[name].[ext]',
-            },
-          },
-          {
-            test: /\.css$/,
-            use: [
-              'style-loader',
-              'css-loader',
-            ],
-          },
-        ],
-      },
-      externals: ["fs"],
-      plugins: [
-        new webpack.ProvidePlugin({
-          $: 'jquery',
-          jQuery: 'jquery',
-          'window.jQuery': 'jquery',
-        }),
-        new webpack.IgnorePlugin(/\.\/locale$/),
-      ],
-    },
-
-    plugins: [
-      require('karma-webpack'),
-      require('karma-mocha'),
-      require('karma-chai'),
-      require('karma-mocha-reporter'),
-      require('karma-chrome-launcher'),
-      require('karma-phantomjs-launcher'),
-      require('karma-sourcemap-loader'),
-    ],
-
     autoWatch: true,
-
-    browsers: ['PhantomJS'],
-
     singleRun: false,
 
-    webpackServer: {
-      noInfo: true,
+    plugins: [
+      'mocha',
+      'karma-webpack',
+      'karma-mocha',      
+      'karma-phantomjs-launcher',
+      'karma-chrome-launcher',
+      'karma-mocha-reporter',
+    ],
+
+    frameworks: ['mocha'],
+
+    files: [
+      'node_modules/babel-polyfill/browser.js',
+      'test/View.test.js',
+      'test/Model.test.js',
+      'test/Controller.test.js',
+    ],
+
+    node: {
+      fs: 'empty',
+    },
+
+    watch: true,
+
+    reporters: ['mocha'],
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    browsers: ['PhantomJS'],
+    webpack: webpackConfig('development'),
+
+    preprocessors: {
+      'test/Test.js': ['webpack'],
+      'test/View.test.js': ['webpack'],
+      'test/Model.test.js': ['webpack'],
+      'test/Controller.test.js': ['webpack'],
     },
   });
 };
