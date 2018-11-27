@@ -4,7 +4,7 @@ module.exports = function (config) {
   config.set({
     basePath: '',
     autoWatch: true,
-    singleRun: false,
+    singleRun: true,
 
     plugins: [
       'mocha',
@@ -13,9 +13,10 @@ module.exports = function (config) {
       'karma-phantomjs-launcher',
       'karma-chrome-launcher',
       'karma-mocha-reporter',
+      'karma-sinon',
     ],
 
-    frameworks: ['mocha'],
+    frameworks: ['mocha', 'sinon'],
 
     files: [
       'node_modules/babel-polyfill/browser.js',

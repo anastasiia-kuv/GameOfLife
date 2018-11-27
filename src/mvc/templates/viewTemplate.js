@@ -1,5 +1,7 @@
 /* eslint-disable */
 import constants from '../constants';
+import * as Handlebars from 'handlebars';
+import template from './view.handlebars';
 
 const context = {
   title: 'game of life',
@@ -65,6 +67,6 @@ Handlebars.registerHelper('canvas', field => new Handlebars.SafeString(
   + '</canvas>',
 ));
 
-const templateScript = Handlebars.templates.view(context);
+const html = Handlebars.compile(template)(context);
 
-document.write(templateScript);
+document.write(html);

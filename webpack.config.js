@@ -9,6 +9,7 @@ const css = require('./webpack/css');
 const pug = require('./webpack/pug');
 const devserver = require('./webpack/devserver');
 const babel = require('./webpack/babel');
+const handlebars = require('./webpack/handlebars');
 
 const PATHS = {
   source: path.join(__dirname, './src'),
@@ -17,12 +18,14 @@ const PATHS = {
 
 const common = merge([{
   entry: {
-    viewTemplate: `${PATHS.source}/viewTemplate.js`,
     bundle: `${PATHS.source}/index.js`,
   },
   output: {
     filename: '[name].bundle.js',
     path: `${PATHS.build}/`,
+  },
+  node: {
+    fs: 'empty',
   },
   mode: 'development',
   plugins: [
@@ -45,6 +48,7 @@ stylus(),
 css(),
 pug(),
 babel(),
+handlebars(),
 ]);
 
 module.exports = function (env) {

@@ -20,9 +20,11 @@ module.exports = {
     },
     'globals': {
         'describe': true,
+        'it' : true,
         'expect': true,
         'test': true,
         'jest': true,
-        'lodash': true
+        'lodash': true,
+        'sinon': true
 }
 };

@@ -1,8 +1,8 @@
 import { assert } from 'chai';
-import { spy } from 'sinon';
 import Model from '../src/mvc/model/Model';
 import View from '../src/mvc/view/View';
 import Controller from '../src/mvc/controller/Controller';
+import '../src/mvc/templates/viewTemplate';
 
 const model = new Model();
 const view = new View();
@@ -13,42 +13,45 @@ controller.subscribe(view);
 controller.subscribe(model);
 
 describe('updateCanvasSize', () => {
+  const expectedWidth = 15;
+  const expectedHeight = 20;
   it('Изменение размеров поля', () => {
-    const spyCallUpdateCanvasSize = spy(view, 'updateCanvasSize');
-    const size = { width: 15, height: 20 };
+    const size = { width: expectedWidth, height: expectedHeight };
     view.updateCanvasSize(size);
-    assert.isTrue(spyCallUpdateCanvasSize.callWithMatch(size));
+    assert.equal(view.$canvas.get(0).width, expectedWidth * 10);
+    assert.equal(view.$canvas.get(0).height, expectedHeight * 10);
+    assert.isTrue($('canvas').is('.js-game__field'));
   });
 });
 
 describe('updateField', () => {
   it('Изменение поля', () => {
-      const spyCallUpdateField = spy(view, 'updateField');
-      const updatedMatrix = [ 
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      ];
-      view.updateField(updatedMatrix);
-      assert.isTrue(spyCallUpdateField.calledWithMatch(updatedMatrix));
+    const spyCallUpdateField = sinon.spy(view, 'updateField');
+    const updatedMatrix = [ 
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ];
+    view.updateField(updatedMatrix);
+    assert.isTrue(spyCallUpdateField.calledWithMatch(updatedMatrix));
   });
 });
 
 describe('getClassName', () => {
-  const expected = 'View';
-  it(`Имя класса как и ожидалось ${expected}`, () => {
-    assert.equal(view.getClassName(), expected);
+  const expectedName = 'View';
+  it(`Имя класса как и ожидалось ${expectedName}`, () => {
+    assert.equal(view.getClassName(), expectedName);
   });
 });
