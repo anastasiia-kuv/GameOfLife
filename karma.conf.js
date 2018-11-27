@@ -1,100 +1,48 @@
-const webpack = require('webpack');
-const karmaWebpack = require('karma-webpack');
-const karmaMocha = require('karma-mocha');
-const karmaChai = require('karma-chai');
-const karmaMochaReporter = require('karma-mocha-reporter');
-const karmaChromeLauncher = require('karma-chrome-launcher');
-const karmaPhantomjsLauncher = require('karma-phantomjs-launcher');
-const karmaSourcemapLoader = require('karma-sourcemap-loader');
+const webpackConfig = require('./webpack.config');
 
 module.exports = function (config) {
   config.set({
-
     basePath: '',
-
-    frameworks: [
-      'mocha',
-      'chai',
-    ],
-
-    files: [
-      'src/**/*.js',
-      'test/**/*.js',
-    ],
-
-    preprocessors: {
-      'src/**/*.js': [
-        'webpack',
-        'sourcemap',
-      ],
-      'test/**/*.js': [
-        'webpack',
-        'sourcemap',
-      ],
-    },
-
-    reporters: ['mocha'],
-
-    webpack: {
-      module: {
-        rules: [
-          {
-            test: /\.js$/,
-            exclude: /node_modules/,
-            loader: 'babel-loader',
-          },
-          {
-            test: /\.styl$/,
-            use: [
-              'style-loader',
-              'css-loader',
-              'stylus-loader',
-            ],
-          },
-          {
-            test: /\.(woff|woff2|eot|ttf|otf)$/,
-            loader: 'file-loader',
-            options: {
-              name: '/fonts/[name].[ext]',
-            },
-          },
-          {
-            test: /\.css$/,
-            use: [
-              'style-loader',
-              'css-loader',
-            ],
-          },
-        ],
-      },
-      plugins: [
-        new webpack.ProvidePlugin({
-          $: 'jquery',
-          jQuery: 'jquery',
-          'window.jQuery': 'jquery',
-        }),
-        new webpack.IgnorePlugin(/\.\/locale$/),
-      ],
-    },
+    autoWatch: true,
+    singleRun: true,
 
     plugins: [
-      karmaWebpack(),
-      karmaMocha(),
-      karmaChai(),
-      karmaMochaReporter(),
-      karmaChromeLauncher(),
-      karmaPhantomjsLauncher(),
-      karmaSourcemapLoader(),
+      'mocha',
+      'karma-webpack',
+      'karma-mocha',      
+      'karma-phantomjs-launcher',
+      'karma-chrome-launcher',
+      'karma-mocha-reporter',
+      'karma-sinon',
     ],
 
-    autoWatch: true,
+    frameworks: ['mocha', 'sinon'],
 
+    files: [
+      'node_modules/babel-polyfill/browser.js',
+      'test/View.test.js',
+      'test/Model.test.js',
+      'test/Controller.test.js',
+    ],
+
+    node: {
+      fs: 'empty',
+    },
+
+    watch: true,
+
+    reporters: ['mocha'],
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
     browsers: ['PhantomJS'],
+    webpack: webpackConfig('development'),
 
-    singleRun: false,
-
-    webpackServer: {
-      noInfo: true,
+    preprocessors: {
+      'test/Test.js': ['webpack'],
+      'test/View.test.js': ['webpack'],
+      'test/Model.test.js': ['webpack'],
+      'test/Controller.test.js': ['webpack'],
     },
   });
 };
